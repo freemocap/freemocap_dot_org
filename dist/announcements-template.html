@@ -1,0 +1,255 @@
+<!-- Annoucements Card Template-->
+<!-- Have your latest Annoucement card at the top of the list. Name the "data 
+target" with the post's date, eg "#2-10-22" is Feb 10th, 2022. This same ID 
+will be used to link to the corresponding Modal. The ID is set in 3 places 
+per card (Image, title, Read More)-->
+<div class="col-lg-4 col-md-6">
+  <div class="card mb-4 shadow-sm">
+    <!--IMAGE (set ID)-->
+    <a data-toggle="modal" data-target="#2-10-22"
+      >
+      <img
+        src="./assets/placeholder.jpg"
+        class="card-img-top"
+        alt="Card image cap"
+    /></a>
+    <div class="card-body">
+      <!--TITLE (set ID)-->
+      <h3 class="card-title">
+        <a
+          data-toggle="modal"
+          data-target="#2-10-22"
+          style="font-weight: 400"
+          >Annoucement Title</a
+        >
+      </h3>
+      <!--DATE-->
+      <small class="text-muted">Feb 3rd, 2022</small>
+      <!--READ MORE (set ID)-->
+      <p class="card-text">
+        Eius expedita at paria tur perspiciatis reprehenderit. Ut
+        ducimus consequatur tempora.
+        <a data-toggle="modal" data-target="#2-10-22"
+          >Read more...</a
+        >
+      </p>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</main>
+
+
+<!-- Modals-->
+<!-- Keep the latest Modal at the top. The ID should match the corresponding
+  ID set in the Annoucements card above.-->
+
+  <!--MODAL START (set ID)-->
+<div
+class="modal fade"
+id="2-10-22"
+tabindex="-1"
+role="dialog"
+aria-labelledby="myModalLabel"
+aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close primary-button"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!--TITLE-->
+      <div class="modal-body">
+        <h2>Annoucement Title</h2>
+        <!--IMAGE-->
+        <img src="./assets/placeholder.jpg" class="img-fluid" />
+        <p>
+          Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+        </p>
+
+        <!--COLLAPSING LIST ELEMENTS-->
+        <div id="accordion" role="tablist">
+          <!--COLLAPSING LIST ELEMENT 1-->
+          <div class="card">
+            <div class="card-header" role="tab" id="headingOne">
+              <h5 class="mb-0">
+                <a
+                  data-toggle="collapse"
+                  data-parent="#accordion"
+                  href="#collapseOne"
+                  aria-expanded="true"
+                  aria-controls="collapseOne"
+                >
+                  Collapsible Group Item #1
+                </a>
+              </h5>
+            </div>
+
+            <div
+              id="collapseOne"
+              class="collapse show"
+              role="tabpanel"
+              aria-labelledby="headingOne"
+            >
+              <div class="card-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life
+                accusamus terry richardson ad squid. 3 wolf moon officia
+                aute, non cupidatat skateboard dolor brunch. Food truck
+                quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
+                sunt aliqua put a bird on it squid single-origin coffee
+                nulla assumenda shoreditch et. Nihil anim keffiyeh
+                helvetica, craft beer labore wes anderson cred nesciunt
+                sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+                Leggings occaecat craft beer farm-to-table, raw denim
+                aesthetic synth nesciunt you probably haven't heard of them
+                accusamus labore sustainable VHS.
+              </div>
+            </div>
+          </div>
+          <!--COLLAPSING LIST ELEMENT 2-->
+          <div class="card">
+            <div class="card-header" role="tab" id="headingTwo">
+              <h5 class="mb-0">
+                <a
+                  class="collapsed"
+                  data-toggle="collapse"
+                  data-parent="#accordion"
+                  href="#collapseTwo"
+                  aria-expanded="false"
+                  aria-controls="collapseTwo"
+                >
+                  Collapsible Group Item #2
+                </a>
+              </h5>
+            </div>
+            <div
+              id="collapseTwo"
+              class="collapse"
+              role="tabpanel"
+              aria-labelledby="headingTwo"
+            >
+              <div class="card-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life
+                accusamus terry richardson ad squid. 3 wolf moon officia
+                aute, non cupidatat skateboard dolor brunch. Food truck
+                quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
+                sunt aliqua put a bird on it squid single-origin coffee
+                nulla assumenda shoreditch et. Nihil anim keffiyeh
+                helvetica, craft beer labore wes anderson cred nesciunt
+                sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+                Leggings occaecat craft beer farm-to-table, raw denim
+                aesthetic synth nesciunt you probably haven't heard of them
+                accusamus labore sustainable VHS.
+              </div>
+            </div>
+          </div>
+          <!--COLLAPSING LIST ELEMENT 3-->
+          <div class="card">
+            <div class="card-header" role="tab" id="headingThree">
+              <h5 class="mb-0">
+                <a
+                  class="collapsed"
+                  data-toggle="collapse"
+                  data-parent="#accordion"
+                  href="#collapseThree"
+                  aria-expanded="false"
+                  aria-controls="collapseThree"
+                >
+                  Collapsible Group Item #3
+                </a>
+              </h5>
+            </div>
+            <div
+              id="collapseThree"
+              class="collapse"
+              role="tabpanel"
+              aria-labelledby="headingThree"
+            >
+              <div class="card-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life
+                accusamus terry richardson ad squid. 3 wolf moon officia
+                aute, non cupidatat skateboard dolor brunch. Food truck
+                quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
+                sunt aliqua put a bird on it squid single-origin coffee
+                nulla assumenda shoreditch et. Nihil anim keffiyeh
+                helvetica, craft beer labore wes anderson cred nesciunt
+                sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+                Leggings occaecat craft beer farm-to-table, raw denim
+                aesthetic synth nesciunt you probably haven't heard of them
+                accusamus labore sustainable VHS.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr />
+
+        <h4>Overflowing text to show scroll behavior</h4>
+        <p>
+          Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+          dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
+          ac consectetur ac, vestibulum at eros.
+        </p>
+        <p>
+          Praesent commodo cursus magna, vel scelerisque nisl consectetur
+          et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor
+          auctor.
+        </p>
+        <p>
+          Aenean lacinia bibendum nulla sed consectetur. Praesent commodo
+          cursus magna, vel scelerisque nisl consectetur et. Donec sed odio
+          dui. Donec ullamcorper nulla non metus auctor fringilla.
+        </p>
+        <p>
+          Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+          dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
+          ac consectetur ac, vestibulum at eros.
+        </p>
+        <p>
+          Praesent commodo cursus magna, vel scelerisque nisl consectetur
+          et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor
+          auctor.
+        </p>
+        <p>
+          Aenean lacinia bibendum nulla sed consectetur. Praesent commodo
+          cursus magna, vel scelerisque nisl consectetur et. Donec sed odio
+          dui. Donec ullamcorper nulla non metus auctor fringilla.
+        </p>
+        <p>
+          Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+          dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
+          ac consectetur ac, vestibulum at eros.
+        </p>
+        <p>
+          Praesent commodo cursus magna, vel scelerisque nisl consectetur
+          et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor
+          auctor.
+        </p>
+        <p>
+          Aenean lacinia bibendum nulla sed consectetur. Praesent commodo
+          cursus magna, vel scelerisque nisl consectetur et. Donec sed odio
+          dui. Donec ullamcorper nulla non metus auctor fringilla.
+        </p>
+      </div>
+      <!--CLOSE BUTTON-->
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn primary-button"
+          data-dismiss="modal"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
