@@ -4,16 +4,17 @@
 // @import url("https://fonts.googleapis.com/css?family=Roboto");
 
 // COLOR VARIABLES
-$primary-dark: #254342;
-$primary-mid: #418a8c;
+$primary-dark: #064b4b;
+$primary-mid: #336e6d;
+$primary: #7db8b7;
 $primary-light: #a4d6d9;
-$accent-dark: #d95157;
+$accent-dark: #d64550;
 $accent-light: #ff9398;
 $light-gray: #f0f0ef;
 $mid-gray: #6c757d;
 $dark-gray: #233442;
-$mid-transparent: rgba(65, 138, 140, 0.75);
-$dark-transparent: rgba(37, 67, 66, 0.75);
+$mid-transparent: rgba(51, 110, 109, 0.7);
+$dark-transparent: rgba(6, 75, 75, 0.75);
 
 // FONT VARIABLES
 $hairline-wt: 100;
@@ -115,7 +116,7 @@ p {
 }
 
 hr {
-  border-top: 0.2rem solid $primary-mid;
+  border-top: 0.2rem solid $primary;
   opacity: 100%;
   width: 3rem;
 }
@@ -183,7 +184,7 @@ END NAVBAR SHIT
 }
 
 .accent-div {
-  background-color: $primary-mid;
+  background-color: $primary;
 }
 
 .gray-bg {
@@ -204,24 +205,7 @@ END NAVBAR SHIT
   margin-bottom: 100px;
   position: relative;
   overflow: hidden;
-  // background: rgba(255, 255, 255, 0.35);
-  background: rgba(0, 0, 0, 0.45);
-
-  /*background-image: linear-gradient(
-    to right top,
-    rgba(255, 147, 152, 0.5),
-    rgba(225, 151, 111, 0.5),
-    rgba(182, 156, 93, 0.5),
-    rgba(136, 156, 99, 0.5),
-    rgba(96, 151, 118, 0.5),
-    rgba(81, 147, 127, 0.5),
-    rgba(71, 143, 134, 0.5),
-    rgba(65, 138, 140, 0.5),
-    rgba(42, 159, 163, 0.4),
-    rgba(65, 138, 140, 0.5),
-    rgba(65, 138, 140, 0.5),
-    rgba(65, 138, 140, 0.5)
-  ); */
+  background: rgba(0, 0, 0, 0.1);
   min-height: 75vh;
 }
 
@@ -241,7 +225,7 @@ END NAVBAR SHIT
   font-size: 1.5rem;
   color: white;
   background-color: $accent-dark;
-  border: none;
+  border: 2px solid white;
   padding: 0.25rem 1.25rem;
 }
 
@@ -265,7 +249,6 @@ button.primary-button:hover {
 
 .semitrans-box {
   background: $mid-transparent;
-  border-radius: 15px;
 }
 
 button.secondary-button:hover {

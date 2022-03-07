@@ -86,7 +86,7 @@ p {
 }
 
 hr {
-  border-top: 0.2rem solid #418a8c;
+  border-top: 0.2rem solid #7db8b7;
   opacity: 100%;
   width: 3rem;
 }
@@ -104,7 +104,7 @@ a {
 }
 
 a:hover {
-  color: #d95157;
+  color: #d64550;
 }
 
 .body-image {
@@ -129,7 +129,7 @@ BEGIN NAVBAR SHIT
 
 #mainNav .navbar-brand:hover,
 #mainNav .navbar-brand:active {
-  color: #d95157;
+  color: #d64550;
 }
 
 #mainNav .navbar-toggler {
@@ -147,7 +147,7 @@ BEGIN NAVBAR SHIT
 }
 
 #mainNav .navbar-nav .nav-item .nav-link.active {
-  color: #d95157;
+  color: #d64550;
 }
 
 /*!
@@ -158,7 +158,7 @@ END NAVBAR SHIT
 }
 
 .accent-div {
-  background-color: #418a8c;
+  background-color: #7db8b7;
 }
 
 .gray-bg {
@@ -181,22 +181,7 @@ END NAVBAR SHIT
   margin-bottom: 100px;
   position: relative;
   overflow: hidden;
-  background: rgba(0, 0, 0, 0.45);
-  /*background-image: linear-gradient(
-    to right top,
-    rgba(255, 147, 152, 0.5),
-    rgba(225, 151, 111, 0.5),
-    rgba(182, 156, 93, 0.5),
-    rgba(136, 156, 99, 0.5),
-    rgba(96, 151, 118, 0.5),
-    rgba(81, 147, 127, 0.5),
-    rgba(71, 143, 134, 0.5),
-    rgba(65, 138, 140, 0.5),
-    rgba(42, 159, 163, 0.4),
-    rgba(65, 138, 140, 0.5),
-    rgba(65, 138, 140, 0.5),
-    rgba(65, 138, 140, 0.5)
-  ); */
+  background: rgba(0, 0, 0, 0.1);
   min-height: 75vh;
 }
 
@@ -215,13 +200,13 @@ END NAVBAR SHIT
   font-weight: 600;
   font-size: 1.5rem;
   color: white;
-  background-color: #d95157;
-  border: none;
+  background-color: #d64550;
+  border: 2px solid white;
   padding: 0.25rem 1.25rem;
 }
 
 button.primary-button:hover {
-  color: #418a8c;
+  color: #336e6d;
   background-color: white;
 }
 
@@ -231,7 +216,7 @@ button.primary-button:hover {
   font-weight: 600;
   font-size: 1rem;
   color: white;
-  background-color: #d95157;
+  background-color: #d64550;
   border: none;
   padding: 0.25rem 1.25rem;
   min-width: 100px;
@@ -239,12 +224,11 @@ button.primary-button:hover {
 }
 
 .semitrans-box {
-  background: rgba(65, 138, 140, 0.75);
-  border-radius: 15px;
+  background: rgba(51, 110, 109, 0.7);
 }
 
 button.secondary-button:hover {
-  color: #418a8c;
+  color: #336e6d;
   background-color: white;
 }
 

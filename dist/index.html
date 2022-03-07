@@ -98,15 +98,19 @@
           <ul class="navbar-nav ms-auto me-4 my-3 my-lg-0">
             <!-- Link 1-->
             <li class="nav-item">
-              <a class="nav-link me-lg-3" href="#install">Get the Code</a>
+              <a class="nav-link me-lg-3" href="#install"
+                >Get Started
+                <i class="fa-solid fa-arrow-up-right-from-square fa-2xs"></i
+              ></a>
             </li>
             <!-- Link 2-->
             <li class="nav-item">
               <a
                 class="nav-link me-lg-3"
-                href="https://github.com/freemocap/freemocap#readme"
-                >Documentation</a
-              >
+                href="https://github.com/freemocap/freemocap#readme" target="_blank"
+                >Documentation
+                <i class="fa-solid fa-arrow-up-right-from-square fa-2xs"></i
+              ></a>
             </li>
             <!-- Link 3-->
             <li class="nav-item">
@@ -140,7 +144,7 @@
           <div class="col">
             <img
               class="img-fluid"
-              src="./assets/logos/logo-color-border.png"
+              src="./assets/logos/fmc-logo-3-4-22.png"
               style="max-width: 250px"
             />
           </div>
@@ -169,6 +173,10 @@
             <button
               type="button"
               class="primary-button"
+              style="
+                box-shadow: 0 2px 5px 0 rgba(68, 15, 15, 0.15),
+                  0 6px 20px 0 rgba(0, 0, 0, 0.2);
+              "
               onclick="window.location.href='https://github.com/jonmatthis/freemocap';"
             >
               Get FreeMoCap
@@ -179,30 +187,37 @@
           <!-- Social media icons/links-->
           <div class="col">
             <!-- Twitter -->
-            <a href="https://twitter.com/freemocap">
+            <a href="https://twitter.com/freemocap" target="_blank">
               <i
                 class="fab fa-twitter fa-2x"
                 style="color: white; margin: 0px 15px 0px 0px"
               ></i>
             </a>
             <!-- Github -->
-            <a href="https://github.com/freemocap/">
+            <a href="https://github.com/freemocap/" target="_blank">
               <i
                 class="fab fa-github fa-2x"
                 style="color: white; margin: 0px 15px 0px 15px"
               ></i>
             </a>
             <!-- Discord -->
-            <a href="https://discord.gg/FFkY7kEE4m">
+            <a href="https://discord.gg/FFkY7kEE4m" target="_blank">
               <i
                 class="fab fa-discord fa-2x"
                 style="color: white; margin: 0px 15px 0px 15px"
               ></i>
             </a>
             <!-- Twitch -->
-            <a href="https://www.twitch.tv/jonmatthis">
+            <a href="https://www.twitch.tv/jonmatthis" target="_blank">
               <i
                 class="fab fa-twitch fa-2x"
+                style="color: white; margin: 0px 15px 0px 15px"
+              ></i>
+            </a>
+            <!-- Youtube -->
+            <a href="https://www.youtube.com/channel/UCOOQxlTCtUz9mr1NPWlJyYQ" target="_blank">
+              <i
+                class="fa-brands fa-youtube fa-2x"
                 style="color: white; margin: 0px 15px 0px 15px"
               ></i>
             </a>
@@ -257,21 +272,20 @@
 
       <!-- Instructions / Announcements / News / Donate (background with green boxes)-->
       <div
-        class="container-fluid body-image p-5"
+        class="container-fluid body-image"
         style="background-image: url(./assets/backgrounds/home-body.png)"
       >
         <!-- The id="install" is the ID for the navbar Install link-->
-        <div id="install"></div>
+        <div id="install" class="py-5"></div>
         <!-- Instructions-->
-        <div class="row m-3">
-          <div class="col-xl-7 col-lg-8 semitrans-box p-5">
+        <div class="row semitrans-box">
+          <div class="col-xl-7 col-lg-8 offset-xl-1 offset-lg-1 p-5">
             <div class="row">
               <div class="col-md-5">
                 <h2 class="text-white">Install Instructions</h2>
                 <br />
                 <p class="text-white">
-                  Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Learn
-                  more at Github.
+                  Learn more at Github.
                   <br />
                   <br />
                   1. Open an Anaconda Prompt (in Windows, or any terminal on
@@ -308,8 +322,8 @@ fmc.RunMe() #this is where the magic happens.</code></pre>
           </div>
         </div>
         <!-- Announcements-->
-        <div class="row justify-content-end my-5 mx-3">
-          <div class="col-xl-7 col-lg-8 semitrans-box p-5">
+        <div class="row my-5 semitrans-box">
+          <div class="col-xl-7 col-lg-8 offset-xl-4 offset-lg-3 p-5">
             <div class="row">
               <div class="col-md-6">
                 <h2 class="text-white">
@@ -334,8 +348,8 @@ fmc.RunMe() #this is where the magic happens.</code></pre>
           </div>
         </div>
         <!-- News-->
-        <div class="row m-3">
-          <div class="col-xl-7 col-lg-8 semitrans-box p-5">
+        <div class="row semitrans-box">
+          <div class="col-xl-7 col-lg-8 offset-xl-1 offset-lg-1 p-5">
             <div class="row">
               <div class="col-md-6">
                 <h2 class="text-white">
@@ -358,8 +372,8 @@ fmc.RunMe() #this is where the magic happens.</code></pre>
           </div>
         </div>
         <!-- Donate-->
-        <div class="row justify-content-end my-5 mx-3">
-          <div class="col-xl-7 col-lg-8 semitrans-box p-5">
+        <div class="row my-5 semitrans-box">
+          <div class="col-xl-7 col-lg-8 offset-xl-4 offset-lg-3 p-5">
             <div class="row">
               <div class="col-md-6">
                 <h2 class="text-white">
@@ -387,6 +401,76 @@ fmc.RunMe() #this is where the magic happens.</code></pre>
                 <a href="#"
                   ><img src="./assets/pictures/home-2.png" class="img-fluid"
                 /></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="py-4"></div>
+      </div>
+
+       <!-- Social Media Connections -->
+       <div class="container px-5 py-4" id="about">
+        <div class="row justify-content-center">
+          <div class="py-5">
+            <h1 class="text-center">Get Involved</h1>
+            <div class="row justify-content-evenly mt-4 mb-2">
+              <!-- Twitter -->
+              <div class="col-md-2 py-1 text-center align-bottom">
+                <a href="https://twitter.com/freemocap">
+                  <i
+                    class="fab fa-twitter fa-4x pt-4 pb-2"
+                    style="color: black"
+                  ></i>
+                  <br />
+                  <h5 class="text-center">Updates</h5>
+                </a>
+              </div>
+              <!-- Github -->
+              <div class="col-md-2 py-1 text-center align-bottom">
+                <a href="https://github.com/freemocap/">
+                  <i
+                    class="fab fa-github fa-4x pt-4 pb-2"
+                    style="color: black"
+                  ></i>
+                  <br />
+                  <h5 class="text-center">Code</h5>
+                </a>
+              </div>
+              <!-- Discord -->
+              <div class="col-md-2 py-1 text-center align-bottom">
+                <a href="https://discord.gg/FFkY7kEE4m">
+                  <i
+                    class="fab fa-discord fa-4x pt-4 pt-4 pb-2"
+                    style="color: black"
+                  ></i>
+                  <br />
+                  <h5 class="text-center">Community</h5>
+                </a>
+              </div>
+              <!-- Twitch -->
+              <div class="col-md-2 text-center align-bottom">
+                <a href="https://www.twitch.tv/jonmatthis">
+                  <i
+                    class="fab fa-twitch fa-4x pt-4 pb-2"
+                    style="color: black"
+                  ></i>
+                  <br />
+                  <h5 class="text-center">Livestream</h5>
+                </a>
+              </div>
+              <!-- Youtube -->
+              <div class="col-md-2 text-center align-bottom">
+                <a
+                  href="https://www.youtube.com/channel/UCOOQxlTCtUz9mr1NPWlJyYQ"
+                >
+                  <i
+                    class="fa-brands fa-youtube fa-4x pt-4 pb-2"
+                    style="color: black"
+                  ></i>
+                  <br />
+
+                  <h5 class="text-center">Video</h5>
+                </a>
               </div>
             </div>
           </div>
@@ -420,19 +504,19 @@ fmc.RunMe() #this is where the magic happens.</code></pre>
             <h5>Follow The FreeMoCap Project</h5>
             <p class="text-center" style="font-size: 1rem">
               <!-- Social Media Links-->
-              <a href="https://twitter.com/freemocap">
+              <a href="https://twitter.com/freemocap" target="_blank">
                 <i class="fab fa-twitter"></i> Twitter
               </a>
               •
-              <a href="https://github.com/jonmatthis/freemocap">
+              <a href="https://github.com/jonmatthis/freemocap" target="_blank">
                 <i class="fab fa-github"></i> Github
               </a>
               •
-              <a href="https://discord.gg/FFkY7kEE4m">
+              <a href="https://discord.gg/FFkY7kEE4m" target="_blank">
                 <i class="fab fa-discord"></i> Discord
               </a>
               •
-              <a href="https://www.twitch.tv/jonmatthis">
+              <a href="https://www.twitch.tv/jonmatthis" target="_blank">
                 <i class="fab fa-twitch"></i> Twitch
               </a>
             </p>
