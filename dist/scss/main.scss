@@ -13,7 +13,7 @@ $accent-light: #ff9398;
 $light-gray: #f0f0ef;
 $mid-gray: #777777;
 $dark-gray: #414141;
-$mid-transparent: rgba(51, 110, 109, 0.85);
+$mid-transparent: rgba(51, 110, 109, 0.75);
 $dark-transparent: rgba(6, 75, 75, 0.75);
 
 // FONT VARIABLES
@@ -48,12 +48,14 @@ h2,
 h3,
 h4 {
   font-family: "Dosis", sans-serif;
+  color: $dark-gray;
 }
 
 h5,
 h6,
 p {
   font-family: "Roboto", sans-serif;
+  color: $dark-gray;
 }
 
 h1 {
@@ -98,27 +100,24 @@ h4 {
 
 h5 {
   font-weight: $medium-wt;
-  color: $dark-gray;
   font-size: 1.2rem;
 }
 
 h6 {
   font-weight: $medium-wt;
-  color: $dark-gray;
   font-size: 1rem;
 }
 
 p {
   margin-top: 0;
   font-weight: $hairline-wt;
-  color: $dark-gray;
   font-size: 1.1rem;
 }
 
 hr {
-  border-top: 0.2rem solid $primary;
+  border-top: 0.1rem solid $dark-gray;
   opacity: 100%;
-  width: 3rem;
+  width: 4rem;
 }
 
 .hr-accent {
@@ -204,7 +203,7 @@ END NAVBAR SHIT
 }
 
 .gray-bg {
-  background-color: $mid-gray;
+  background-color: $dark-gray;
 }
 
 .white-bg {
@@ -213,6 +212,10 @@ END NAVBAR SHIT
 
 .text-gray {
   color: $light-gray;
+}
+
+.primary-icon {
+  color: $dark-gray;
 }
 
 .home-hero {

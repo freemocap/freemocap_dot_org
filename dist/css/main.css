@@ -16,12 +16,14 @@ h2,
 h3,
 h4 {
   font-family: "Dosis", sans-serif;
+  color: #414141;
 }
 
 h5,
 h6,
 p {
   font-family: "Roboto", sans-serif;
+  color: #414141;
 }
 
 h1 {
@@ -68,27 +70,24 @@ h4 {
 
 h5 {
   font-weight: 500;
-  color: #414141;
   font-size: 1.2rem;
 }
 
 h6 {
   font-weight: 500;
-  color: #414141;
   font-size: 1rem;
 }
 
 p {
   margin-top: 0;
   font-weight: 100;
-  color: #414141;
   font-size: 1.1rem;
 }
 
 hr {
-  border-top: 0.2rem solid #7db8b7;
+  border-top: 0.1rem solid #414141;
   opacity: 100%;
-  width: 3rem;
+  width: 4rem;
 }
 
 .hr-accent {
@@ -178,7 +177,7 @@ END NAVBAR SHIT
 }
 
 .gray-bg {
-  background-color: #777777;
+  background-color: #414141;
 }
 
 .white-bg {
@@ -187,6 +186,10 @@ END NAVBAR SHIT
 
 .text-gray {
   color: #f0f0ef;
+}
+
+.primary-icon {
+  color: #414141;
 }
 
 .home-hero {
@@ -240,7 +243,7 @@ button.primary-button:hover {
 }
 
 .semitrans-box {
-  background: rgba(51, 110, 109, 0.85);
+  background: rgba(51, 110, 109, 0.75);
 }
 
 button.secondary-button:hover {
