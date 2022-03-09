@@ -115,6 +115,14 @@ a:hover {
   color: #d64550;
 }
 
+.text-white a:hover {
+  color: #ff9398;
+}
+
+.text-gray a:hover {
+  color: #ff9398;
+}
+
 .body-image {
   background-position: center;
   background-repeat: no-repeat;
@@ -275,7 +283,7 @@ pre {
 
 @media (min-width: 768px) {
   .vl {
-    border-left: 1px solid #414141;
+    border-left: 1px solid #f0f0ef;
     height: 50px;
   }
 }

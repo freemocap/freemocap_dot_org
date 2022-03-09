@@ -145,6 +145,14 @@ a:hover {
   color: $accent-dark;
 }
 
+.text-white a:hover {
+  color: $accent-light;
+}
+
+.text-gray a:hover {
+  color: $accent-light;
+}
+
 .body-image {
   background-position: center;
   background-repeat: no-repeat;
@@ -304,7 +312,7 @@ pre {
 //md
 @media (min-width: 768px) {
   .vl {
-    border-left: 1px solid $dark-gray;
+    border-left: 1px solid $light-gray;
     height: 50px;
   }
 }
