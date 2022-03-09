@@ -79,11 +79,11 @@
       <div class="container px-2">
         <div class="col-xs-3">
           <!-- Navbar Logo-->
-          <img
-            src="./assets/logos/logo-color.png"
-            style="width: 40px; margin: 0 15px 0 15px"
-          />
-          <a href="./index.html" class="navbar-brand">The FreeMoCap Project</a>
+          <a href="/dist/index.html"
+            ><img
+              src="./assets/logos/fmc-logo-3-4-22.png"
+              style="width: 35px; margin: 0 15px 0 15px"
+          /></a>
         </div>
         <button
           class="navbar-toggler"
@@ -99,41 +99,49 @@
         <!-- Navbar links-->
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ms-auto me-4 my-3 my-lg-0">
-            <!-- Link 1-->
+            <!-- Home -->
             <li class="nav-item">
-              <a class="nav-link me-lg-3" href="/index.html#install"
+              <a class="nav-link me-lg-3" href="/dist/index.html">Home </a>
+            </li>
+            <!-- Get Started-->
+            <li class="nav-item">
+              <a class="nav-link me-lg-3" href="/dist/index.html#install"
                 >Get Started
-                </a>
+              </a>
             </li>
-            <!-- Link 2-->
+            <!-- Documentation-->
             <li class="nav-item">
-              <li class="nav-item">
-                <a
-                  class="nav-link me-lg-3"
-                  href="https://github.com/freemocap/freemocap#readme"
-                  >Documentation
-                  <i class="fa-solid fa-arrow-up-right-from-square fa-2xs"></i
-                ></a>
-              </li>
+              <a
+                class="nav-link me-lg-3"
+                href="https://github.com/freemocap/freemocap#readme"
+                target="_blank"
+                >Documentation
+                <i class="fa-solid fa-arrow-up-right-from-square fa-2xs"></i
+              ></a>
             </li>
-            <!-- Link 3-->
+            <!-- Announcements-->
             <li class="nav-item">
               <a class="nav-link me-lg-3" href="./announcements.html"
                 >Announcements</a
               >
             </li>
-            <!-- Link 4-->
+            <!-- News-->
             <li class="nav-item">
-              <a class="nav-link me-lg-3" style="color: #d95157;" href="#">News</a>
+              <a
+                class="nav-link me-lg-3 current-page"
+                style="color: #d64550"
+                href="#"
+                >News</a
+              >
             </li>
-            <!-- Link 5-->
+            <!-- About Us-->
             <li class="nav-item">
               <a class="nav-link me-lg-3" href="./about-us.html">About Us</a>
             </li>
-            <!-- Link 6-->
+            <!-- Donate <3 -->
             <li class="nav-item">
               <a class="nav-link me-lg-3" href="./about-us.html#donate"
-                >Donate <i class="fa-solid fa-heart" style="color: #d64550"></i
+                >Donate <i class="fa-solid fa-heart" style="color: #d95157"></i
               ></a>
             </li>
           </ul>
@@ -146,64 +154,37 @@
       <div class="container mt-5 py-5">
         <div class="row">
           <div class="col">
-            <h1>In The News</h1>
+            <h1 class="text-white">In The News</h1>
           </div>
         </div>
       </div>
       <div class="album py-3">
         <div class="container">
-          <!-- Row 1 -->
           <div class="row">
+            <!-- Latest Here-->
             <div class="col-lg-3 col-md-4 col-sm-6">
               <div class="card mb-4 shadow-sm">
-                <a href="#"
+                <a href="https://www.youtube.com/watch?v=DHpxTOq1d9g"
                   ><img
-                    src="./assets/pictures/placeholder.jpg"
-                    class="card-img-top"
-                    alt="Card image cap"
-                /></a>
-                <div class="card-body">
-                  <h3 class="card-title">
-                    <a href="#" style="font-weight: 400"
-                      >Media Title
-                      <i
-                        class="fa-solid fa-arrow-up-right-from-square fa-2xs"
-                      ></i
-                    ></a>
-                  </h3>
-                  <small class="text-muted">Feb 3rd, 2022</small>
-                  <p class="card-text">
-                    Eius expedita at paria tur perspiciatis reprehenderit. Ut
-                    ducimus consequatur tempora odit laboriosam est nisi ab.
-                  </p>
-                  <div
-                    class="d-flex justify-content-between align-items-center"
-                  ></div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6">
-              <div class="card mb-4 shadow-sm">
-                <a href="#"
-                  ><img
-                    src="./assets/pictures/placeholder.jpg"
+                    src="https://i.ytimg.com/vi/DHpxTOq1d9g/hqdefault.jpg"
                     class="card-img-top"
                     alt="Card image cap"
                 /></a>
                 <div class="card-body">
                   <h3 class="card-title">
                     <!-- Make sure the <i> tag is after the title-->
-                    <a href="#" style="font-weight: 400"
-                      >Media Title
+                    <a
+                      href="https://www.youtube.com/watch?v=DHpxTOq1d9g"
+                      style="font-weight: 400"
+                      >GOSH September Community Call
                       <i
                         class="fa-solid fa-arrow-up-right-from-square fa-2xs"
                       ></i
                     ></a>
                   </h3>
-                  <small class="text-muted">Feb 3rd, 2022</small>
+                  <small class="text-muted">Oct 1, 2021</small>
                   <p class="card-text">
-                    Eius expedita at paria tur perspiciatis reprehenderit. Ut
-                    ducimus consequatur tempora odit laboriosam est nisi ab.
+                    Presented at the September 2021 GOSH Community Call.
                   </p>
                   <div
                     class="d-flex justify-content-between align-items-center"
@@ -213,53 +194,27 @@
             </div>
             <div class="col-lg-3 col-md-4 col-sm-6">
               <div class="card mb-4 shadow-sm">
-                <a href="#"
+                <a
+                  href="https://beforesandafters.com/2021/09/29/vfx-futures-the-freemocap-project/"
                   ><img
-                    src="./assets/pictures/placeholder.jpg"
+                    src="https://beforesandafters.com/wp-content/uploads/2021/09/freemocap.jpg"
                     class="card-img-top"
                     alt="Card image cap"
                 /></a>
                 <div class="card-body">
                   <h3 class="card-title">
-                    <a href="#" style="font-weight: 400"
-                      >Media Title
+                    <a
+                      href="https://beforesandafters.com/2021/09/29/vfx-futures-the-freemocap-project/"
+                      style="font-weight: 400"
+                      >VFX Futures: The FreeMoCap Project
                       <i
                         class="fa-solid fa-arrow-up-right-from-square fa-2xs"
                       ></i
                     ></a>
                   </h3>
-                  <small class="text-muted">Feb 3rd, 2022</small>
+                  <small class="text-muted">Sep 29th, 2021</small>
                   <p class="card-text">
-                    Eius expedita at paria tur perspiciatis reprehenderit. Ut
-                    ducimus consequatur tempora odit laboriosam est nisi ab.
-                  </p>
-                  <div
-                    class="d-flex justify-content-between align-items-center"
-                  ></div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6">
-              <div class="card mb-4 shadow-sm">
-                <a href="#"
-                  ><img
-                    src="./assets/pictures/placeholder.jpg"
-                    class="card-img-top"
-                    alt="Card image cap"
-                /></a>
-                <div class="card-body">
-                  <h3 class="card-title">
-                    <a href="#" style="font-weight: 400"
-                      >Media Title
-                      <i
-                        class="fa-solid fa-arrow-up-right-from-square fa-2xs"
-                      ></i
-                    ></a>
-                  </h3>
-                  <small class="text-muted">Feb 3rd, 2022</small>
-                  <p class="card-text">
-                    Eius expedita at paria tur perspiciatis reprehenderit. Ut
-                    ducimus consequatur tempora odit laboriosam est nisi ab.
+                    Interview with Ian Failes from <i>befores & afters</i>.
                   </p>
                   <div
                     class="d-flex justify-content-between align-items-center"

@@ -68,20 +68,20 @@ h4 {
 
 h5 {
   font-weight: 500;
-  color: #233442;
+  color: #414141;
   font-size: 1.2rem;
 }
 
 h6 {
   font-weight: 500;
-  color: #233442;
+  color: #414141;
   font-size: 1rem;
 }
 
 p {
   margin-top: 0;
   font-weight: 100;
-  color: #233442;
+  color: #414141;
   font-size: 1.1rem;
 }
 
@@ -98,8 +98,16 @@ hr {
 }
 
 a {
-  color: #233442;
+  color: inherit;
   font-weight: 100;
+  text-decoration: none;
+}
+
+p > a {
+  text-decoration: underline;
+}
+
+footer > a {
   text-decoration: none;
 }
 
@@ -135,15 +143,15 @@ BEGIN NAVBAR SHIT
 #mainNav .navbar-toggler {
   font-size: 0.875rem;
   padding: 0.75rem 1rem;
-  color: #233442;
+  color: #414141;
 }
 
 #mainNav .navbar-nav .nav-item .nav-link {
-  color: #233442;
+  color: #414141;
 }
 
 #mainNav .navbar-nav .nav-item .nav-link:hover {
-  color: #6c757d;
+  color: #777777;
 }
 
 #mainNav .navbar-nav .nav-item .nav-link.active {
@@ -158,19 +166,19 @@ END NAVBAR SHIT
 }
 
 .accent-div {
-  background-color: #7db8b7;
+  background-color: #336e6d;
 }
 
 .gray-bg {
-  background-color: #f0f0ef;
+  background-color: #777777;
 }
 
 .white-bg {
   background-color: white;
 }
 
-.accent-text {
-  color: white;
+.text-gray {
+  color: #f0f0ef;
 }
 
 .home-hero {
@@ -224,7 +232,7 @@ button.primary-button:hover {
 }
 
 .semitrans-box {
-  background: rgba(51, 110, 109, 0.7);
+  background: rgba(51, 110, 109, 0.85);
 }
 
 button.secondary-button:hover {
@@ -234,7 +242,7 @@ button.secondary-button:hover {
 
 pre,
 code {
-  background-color: #233442;
+  background-color: #414141;
   color: #f0f0ef;
   overflow: auto;
   border-radius: 5px;
@@ -256,9 +264,18 @@ pre {
   border: none;
 }
 
+.current-page {
+  color: #d64550;
+  border-top: 2px #d64550 solid;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-left: 2px #d64550 solid;
+  border-right: 2px #d64550 solid;
+}
+
 @media (min-width: 768px) {
   .vl {
-    border-left: 1px solid #233442;
+    border-left: 1px solid #414141;
     height: 50px;
   }
 }

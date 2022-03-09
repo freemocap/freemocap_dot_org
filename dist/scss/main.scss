@@ -11,9 +11,9 @@ $primary-light: #a4d6d9;
 $accent-dark: #d64550;
 $accent-light: #ff9398;
 $light-gray: #f0f0ef;
-$mid-gray: #6c757d;
-$dark-gray: #233442;
-$mid-transparent: rgba(51, 110, 109, 0.7);
+$mid-gray: #777777;
+$dark-gray: #414141;
+$mid-transparent: rgba(51, 110, 109, 0.85);
 $dark-transparent: rgba(6, 75, 75, 0.75);
 
 // FONT VARIABLES
@@ -128,8 +128,16 @@ hr {
 }
 
 a {
-  color: $dark-gray;
+  color: inherit;
   font-weight: $hairline-wt;
+  text-decoration: none;
+}
+
+p > a {
+  text-decoration: underline;
+}
+
+footer > a {
   text-decoration: none;
 }
 
@@ -184,19 +192,19 @@ END NAVBAR SHIT
 }
 
 .accent-div {
-  background-color: $primary;
+  background-color: $primary-mid;
 }
 
 .gray-bg {
-  background-color: $light-gray;
+  background-color: $mid-gray;
 }
 
 .white-bg {
   background-color: white;
 }
 
-.accent-text {
-  color: white;
+.text-gray {
+  color: $light-gray;
 }
 
 .home-hero {
@@ -278,6 +286,15 @@ pre {
 
 .navbar-toggler {
   border: none;
+}
+
+.current-page {
+  color: $accent-dark;
+  border-top: 2px $accent-dark solid;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-left: 2px $accent-dark solid;
+  border-right: 2px $accent-dark solid;
 }
 
 //sm
