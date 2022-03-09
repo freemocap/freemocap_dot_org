@@ -246,6 +246,10 @@ button.primary-button:hover {
   background: rgba(51, 110, 109, 0.75);
 }
 
+.semitrans-box-gray {
+  background: rgba(65, 65, 65, 0.5);
+}
+
 button.secondary-button:hover {
   color: #336e6d;
   background-color: white;

@@ -15,6 +15,7 @@ $mid-gray: #777777;
 $dark-gray: #414141;
 $mid-transparent: rgba(51, 110, 109, 0.75);
 $dark-transparent: rgba(6, 75, 75, 0.75);
+$gray-transparent: rgba(65, 65, 65, 0.5);
 
 // FONT VARIABLES
 $hairline-wt: 100;
@@ -268,6 +269,10 @@ button.primary-button:hover {
 
 .semitrans-box {
   background: $mid-transparent;
+}
+
+.semitrans-box-gray {
+  background: $gray-transparent;
 }
 
 button.secondary-button:hover {
