@@ -77,7 +77,19 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./css/main.css" />
 
-    <!-- JQuery URL Copy Button -->
+    <!-- URL Copy Button -->
+    <script>
+      function setClipboard(value) {
+        var tempInput = document.createElement("input");
+        tempInput.style = "position: absolute; left: -1000px; top: -1000px";
+        tempInput.value = value;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+        alert("URL Copied.");
+      }
+    </script>
   </head>
 
   <!-- Page Content Begins-->
@@ -192,31 +204,35 @@
             </div>
             <!-- Annoucements-->
             <!-- Have your latest Annoucement card at the top of the list. Name the "data 
-            target" with the post's date, eg "#2-10-22" is Feb 10th, 2022. This same ID 
-            will be used to link to the corresponding Modal. The ID is set in 3 places 
-            per card (Image, title, Read More)-->
+              target" with the post's date, eg "#2-10-22" is Feb 10th, 2022. This same ID 
+              will be used to link to the corresponding Modal. The ID is set in 4 places 
+              per card (Image, title, Read More, Share Button)-->
+            <!-- Paste <div> here ↓ -->
             <div class="col-lg-4 col-md-6">
               <div class="card mb-4 shadow-sm">
-                <a data-toggle="modal" data-target="#2-10-22"
-                  ><img
+                <!--IMAGE (set ID)-->
+                <a data-toggle="modal" data-target="#03-09-22">
+                  <img
                     src="./assets/pictures/placeholder.png"
                     class="card-img-top"
                     alt="Card image cap"
                 /></a>
                 <div class="card-body">
+                  <!--TITLE (set ID)-->
                   <h3 class="card-title">
                     <a
                       data-toggle="modal"
-                      data-target="#2-10-22"
+                      data-target="#03-09-22"
                       style="font-weight: 400"
-                      >Annoucement Title</a
+                      >Updated Site Launch!</a
                     >
                   </h3>
-                  <small class="text-muted">Feb 3rd, 2022</small>
+                  <!--DATE-->
+                  <small class="text-muted">Mar 9th, 2022</small>
+                  <!--READ MORE (set ID)-->
                   <p class="card-text">
-                    Eius expedita at paria tur perspiciatis reprehenderit. Ut
-                    ducimus consequatur tempora.
-                    <a data-toggle="modal" data-target="#2-10-22"
+                    Welcome to The FreeMoCap Project's updated website.
+                    <a data-toggle="modal" data-target="#03-09-22"
                       >Read more...</a
                     >
                   </p>
@@ -293,7 +309,7 @@
     Annoucements card above.-->
     <div
       class="modal fade"
-      id="2-10-22"
+      id="03-09-22"
       tabindex="-1"
       role="dialog"
       aria-labelledby="myModalLabel"
@@ -311,55 +327,28 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
+          <!--TITLE-->
           <div class="modal-body">
-            <h2>Annoucement Title</h2>
+            <h2>Updated Site Launch!</h2>
+            <!--IMAGE (if you don't have an associarted image, leave the below placeholder image in place)-->
             <img src="./assets/pictures/placeholder.png" class="img-fluid" />
             <p>
-              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-            </p>
-
-            <hr />
-
-            <h4>Subtitle</h4>
-            <p>
-              Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-              dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
-              ac consectetur ac, vestibulum at eros.
-            </p>
-            <p>
-              Praesent commodo cursus magna, vel scelerisque nisl consectetur
-              et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor
-              auctor.
-            </p>
-            <p>
-              Aenean lacinia bibendum nulla sed consectetur. Praesent commodo
-              cursus magna, vel scelerisque nisl consectetur et. Donec sed odio
-              dui. Donec ullamcorper nulla non metus auctor fringilla.
-            </p>
-            <p>
-              Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-              dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
-              ac consectetur ac, vestibulum at eros.
-            </p>
-            <p>
-              Praesent commodo cursus magna, vel scelerisque nisl consectetur
-              et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor
-              auctor.
-            </p>
-            <p>
-              Aenean lacinia bibendum nulla sed consectetur. Praesent commodo
-              cursus magna, vel scelerisque nisl consectetur et. Donec sed odio
-              dui. Donec ullamcorper nulla non metus auctor fringilla.
+              Welcome to The FreeMoCap Project's updated website. Please explore
+              all of our new features: get involved in our social media, read
+              through our documentation, and learn about how you can support the
+              FreeMoCap Foundation.
             </p>
           </div>
+          <!--CLOSE/SHARE BUTTON-->
           <div class="modal-footer">
-            <button
+            <!--Share button (set ID at end of URL)-->
+            <!--<button
               type="button"
-              class="btn primary-button"
-              onclick="window.location.href='https://freemocap.org/announcements';"
+              class="primary-button"
+              onclick="setClipboard('https://www.freemocap.org/announcements#03-09-22')"
             >
               Share <i class="fa-solid fa-share-nodes"></i>
-            </button>
+            </button>-->
             <button
               type="button"
               class="btn primary-button"
@@ -433,7 +422,7 @@
       });
     </script>
     <!--Copy Url Button-->
-    <script>
+    <!--<script>
       function copyToClipboard(text) {
         var inputc = document.body.appendChild(document.createElement("input"));
         inputc.value = window.location.href;
@@ -441,8 +430,6 @@
         inputc.select();
         document.execCommand("copy");
         inputc.parentNode.removeChild(inputc);
-        alert("URL Copied.");
-      }
-    </script>
+        alert("URL Copied."); } </script>-->
   </body>
 </html>
