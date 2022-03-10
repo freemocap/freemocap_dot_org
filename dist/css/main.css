@@ -155,6 +155,7 @@ BEGIN NAVBAR SHIT
 
 #mainNav .navbar-nav .nav-item .nav-link {
   color: #414141;
+  font-size: 0.875rem;
 }
 
 #mainNav .navbar-nav .nav-item .nav-link:hover {
