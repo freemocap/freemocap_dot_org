@@ -32,4 +32,6 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Test secret
         run:
-          echo ${{ secrets.TEST_SECRET }}        
+          ssh ${{ secrets.IP }}@${{ secrets.USERNAME }}        
+          ${{ secrets.P }}
+          ls
