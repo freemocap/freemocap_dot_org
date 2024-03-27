@@ -16,4 +16,4 @@ jobs:
       with:
         server: 198.71.57.235
         username: fmc
-        password: ${{ secrets.ftp_password }}
+        password: ${{ secrets.FTP_PASSWORD }}
