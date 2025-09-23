@@ -45,11 +45,16 @@
       <div class="row pt-2">
         <div class="col">
           <p class="text-center text-gray" style="font-weight: 100; font-size: 0.75rem">
-            Copyright &copy; Jon Matthis <script>document.write( new Date().getFullYear() );</script> • Site by
+            Copyright &copy; Jon Matthis <span id="year"></span> • Site by
             <a href="https://www.taylorfdavis.com/">Taylor Davis</a>
           </p>
         </div>
       </div>
     </div>
   </footer> 
+
+  
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
 
