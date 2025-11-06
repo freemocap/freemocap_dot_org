@@ -231,6 +231,8 @@ END NAVBAR
 button.primary-button:hover {
   color: #336e6d;
   background-color: white;
+  border: 2px solid #d64550;
+
 }
 
 .secondary-button {
