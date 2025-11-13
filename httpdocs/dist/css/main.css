@@ -223,11 +223,12 @@ END NAVBAR
   position: absolute;
   z-index: -1;
   bottom: -32px;
-  left: 0;
+  left: 50%;
   min-width: 100%;
   min-height: 100%;
+  transform: translateX(-50%);
   object-fit: cover;
-  object-position: bottom right;
+  object-position: center bottom;
 }
 
 .primary-button {
