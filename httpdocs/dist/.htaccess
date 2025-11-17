@@ -1,0 +1,6 @@
+RewriteEngine On
+
+# Redirect /foo and /foo/ to /foo.html
+RewriteRule ^services/?$ services.html [L,R=301]
+RewriteRule ^portfolio/?$ portfolio.html [L,R=301]
+RewriteRule ^about-us/?$ about-us.html [L,R=301]
