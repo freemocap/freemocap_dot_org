@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="32a0ed93-e064-4292-aa4a-0270c27efa59" name="Changes" comment="">
+    <list default="true" id="32a0ed93-e064-4292-aa4a-0270c27efa59" name="Changes" comment="good enough for nw, I think">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_dashboard_animated.html" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_dashboard_animated.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_dashboard_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_dashboard_data.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_lifespan_analysis.html" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_lifespan_analysis.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_users_analysis.html" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_users_analysis.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_users_dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_users_dashboard.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,7 +16,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="80e4ff8bbdfafb58bf74131e7c34c3f812310aa2" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -90,8 +87,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-PY-253.30387.127" />
-        <option value="bundled-python-sdk-3944b0c99280-6d6dccd035ac-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-253.30387.127" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-PY-253.30387.173" />
+        <option value="bundled-python-sdk-4762d8aabb82-6d6dccd035ac-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-253.30387.173" />
       </set>
     </attachedChunks>
   </component>
@@ -109,7 +106,36 @@
       <workItem from="1768159150370" duration="782000" />
       <workItem from="1769951459338" duration="731000" />
       <workItem from="1770082891081" duration="3398000" />
+      <workItem from="1770119225619" duration="4470000" />
+      <workItem from="1770133538228" duration="476000" />
+      <workItem from="1770135866886" duration="384000" />
+      <workItem from="1770136866115" duration="1776000" />
     </task>
+    <task id="LOCAL-00001" summary="pretty nice!">
+      <option name="closed" value="true" />
+      <created>1770132716907</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1770132716907</updated>
+    </task>
+    <task id="LOCAL-00002" summary="jfc - dont touch it lol">
+      <option name="closed" value="true" />
+      <created>1770142152191</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1770142152191</updated>
+    </task>
+    <task id="LOCAL-00003" summary="good enough for nw, I think">
+      <option name="closed" value="true" />
+      <created>1770142812580</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1770142812580</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -126,13 +152,18 @@
       </map>
     </option>
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="pretty nice!" />
+    <MESSAGE value="jfc - dont touch it lol" />
+    <MESSAGE value="good enough for nw, I think" />
+    <option name="LAST_COMMIT_MESSAGE" value="good enough for nw, I think" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/httpdocs/dist/data/freemocap_dashboard_animated.html</url>
-          <line>547</line>
-          <properties lambdaOrdinal="-1" />
+          <url>file://$PROJECT_DIR$/httpdocs/dist/data/freemocap_growth_animation.html</url>
+          <line>744</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>

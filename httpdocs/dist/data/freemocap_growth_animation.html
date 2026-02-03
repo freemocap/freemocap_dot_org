@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreeMoCap Growth Animation</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #1a1a2e;
+            color: #f0f0f5;
+        }
+
+        /* =====================================================
+           MAIN LAYOUT - Map-first, compact everything else
+           ===================================================== */
+        .dashboard {
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            height: 100%;
+        }
+
+        /* =====================================================
+           CONTROL BAR - Compact but readable
+           ===================================================== */
+        .control-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(180deg, #252545 0%, #1f1f35 100%);
+            border-bottom: 1px solid #3a3a5a;
+            flex-wrap: wrap;
+        }
+
+        .play-btn {
+            padding: 0.5rem 1.2rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: 2px solid #feca57;
+            border-radius: 6px;
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            box-shadow: 0 0 12px rgba(254, 202, 87, 0.5), 0 0 24px rgba(254, 202, 87, 0.2);
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+        .play-btn:hover { 
+            filter: brightness(1.15); 
+            box-shadow: 0 0 16px rgba(254, 202, 87, 0.7), 0 0 32px rgba(254, 202, 87, 0.3);
+        }
+        .play-btn.playing {
+            animation: none;
+            border-color: #34d399;
+            box-shadow: 0 0 12px rgba(52, 211, 153, 0.5);
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 12px rgba(254, 202, 87, 0.5), 0 0 24px rgba(254, 202, 87, 0.2); }
+            50% { box-shadow: 0 0 20px rgba(254, 202, 87, 0.8), 0 0 40px rgba(254, 202, 87, 0.4); }
+        }
+
+        .ctrl-group {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .ctrl-group label {
+            color: #a0a0c0;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .ctrl-group select,
+        .ctrl-group input[type="date"],
+        .ctrl-group input[type="text"] {
+            padding: 0.3rem 0.4rem;
+            border: 1px solid #4a4a6a;
+            border-radius: 4px;
+            background: #2a2a4a;
+            color: #f0f0f5;
+            font-size: 0.8rem;
+            width: 6.5em;
+        }
+
+        .slider-wrap {
+            flex: 1;
+            min-width: 150px;
+            max-width: 300px;
+            position: relative;
+            height: 20px;
+        }
+        .range-slider {
+            width: 100%;
+            height: 6px;
+            -webkit-appearance: none;
+            background: linear-gradient(90deg, #3a3a5a, #667eea);
+            border-radius: 3px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #feca57;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        .range-slider::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: #feca57;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            border: none;
+        }
+
+        .current-date {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #feca57;
+            min-width: 110px;
+            text-align: center;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .stats-inline {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+        }
+        .stats-inline .stat-val {
+            font-weight: 700;
+            color: #a78bfa;
+            font-variant-numeric: tabular-nums;
+            min-width: 3.5em;
+            display: inline-block;
+            text-align: right;
+        }
+        .stats-inline .stat-lbl {
+            color: #8080a0;
+            font-size: 0.75rem;
+            margin-left: 0.2rem;
+        }
+
+        /* Mobile: collapse advanced controls */
+        .ctrl-group.advanced { display: flex; }
+        
+        @media (max-width: 800px) {
+            .ctrl-group.advanced { display: none; }
+            .control-bar { gap: 0.5rem; padding: 0.4rem 0.5rem; }
+        }
+
+        /* =====================================================
+           MAP SECTION - Takes most vertical space
+           ===================================================== */
+        .map-section {
+            position: relative;
+            min-height: 250px;
+        }
+
+        .map-container {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            overflow: hidden;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+            background: #2a2a4a;
+        }
+
+        #marker-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 400;
+        }
+
+        .reset-view-btn {
+            position: absolute;
+            top: 80px;
+            right: 10px;
+            z-index: 500;
+            width: 30px;
+            height: 30px;
+            background: #fff;
+            border: 2px solid rgba(0,0,0,0.2);
+            border-radius: 4px;
+            font-size: 18px;
+            line-height: 1;
+            cursor: pointer;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .reset-view-btn:hover {
+            background: #f4f4f4;
+        }
+
+        .leaflet-control-attribution { display: none !important; }
+
+        /* Color scale overlay */
+        .color-scale {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(26, 26, 46, 0.95);
+            padding: 0.4rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: #a0a0c0;
+            font-weight: 500;
+        }
+        .color-bar {
+            width: 100px;
+            height: 6px;
+            border-radius: 3px;
+            background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #1dd1a1);
+        }
+
+        /* =====================================================
+           CHARTS ROW - Spirals + Cumulative side by side
+           ===================================================== */
+        .charts-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: #151528;
+            max-height: 240px;
+            min-height: 200px;
+        }
+
+        .chart-panel {
+            background: linear-gradient(135deg, #252550 0%, #1f1f3a 100%);
+            border: 1px solid #3a3a5a;
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chart-header {
+            padding: 0.3rem 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-align: center;
+            border-bottom: 2px solid;
+        }
+        .chart-header.users {
+            color: #c4b5fd;
+            border-color: #a78bfa;
+            background: linear-gradient(90deg, rgba(167,139,250,0.25), transparent);
+        }
+        .chart-header.pings {
+            color: #6ee7b7;
+            border-color: #34d399;
+            background: linear-gradient(90deg, rgba(52,211,153,0.25), transparent);
+        }
+        .chart-header.cumulative {
+            color: #93c5fd;
+            border-color: #60a5fa;
+            background: linear-gradient(90deg, rgba(96,165,250,0.25), transparent);
+        }
+
+        .chart-body {
+            flex: 1;
+            display: flex;
+            gap: 0.25rem;
+            padding: 0.25rem;
+            min-height: 0;
+        }
+
+        .spiral-box {
+            flex: 1;
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
+            position: relative;
+        }
+        .spiral-box canvas { width: 100%; height: 100%; }
+        .spiral-label {
+            position: absolute;
+            top: 3px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.65rem;
+            color: #8080a0;
+            font-weight: 500;
+        }
+
+        /* Cumulative panel - stacked charts */
+        .cumulative-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            padding: 0.25rem;
+            min-height: 0;
+        }
+        .cumulative-chart {
+            flex: 1;
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
+            position: relative;
+            min-height: 50px;
+        }
+        .cumulative-chart canvas { width: 100%; height: 100%; }
+        .cumulative-label {
+            position: absolute;
+            top: 2px;
+            right: 4px;
+            font-size: 0.6rem;
+            color: #8080a0;
+            font-weight: 500;
+        }
+
+        /* Responsive: stack on mobile */
+        @media (max-width: 900px) {
+            .charts-row {
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: 1fr auto;
+                max-height: 280px;
+            }
+            .chart-panel:nth-child(3) {
+                grid-column: span 2;
+                max-height: 80px;
+            }
+            .cumulative-body { flex-direction: row; }
+        }
+
+        @media (max-width: 600px) {
+            /* Allow scrolling on mobile */
+            html, body {
+                height: auto;
+                overflow: auto;
+            }
+            
+            .dashboard {
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+                height: auto;
+            }
+            
+            /* Control bar: wrap nicely */
+            .control-bar {
+                flex-wrap: wrap;
+                gap: 0.4rem;
+                padding: 0.5rem;
+            }
+            
+            .slider-wrap {
+                order: 10;
+                flex-basis: 100%;
+                max-width: 100%;
+                margin: 0.25rem 0;
+            }
+            
+            .current-date {
+                order: 11;
+                flex-basis: 100%;
+                text-align: center;
+            }
+            
+            .stats-inline {
+                order: 12;
+                flex-basis: 100%;
+                justify-content: center;
+                margin-top: 0.25rem;
+            }
+            
+            /* Map: full width, fixed height */
+            .map-section {
+                min-height: 50vh;
+                height: 50vh;
+                flex: none;
+            }
+            
+            /* Charts: stack vertically with good height */
+            .charts-row {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto;
+                max-height: none;
+                min-height: auto;
+                gap: 0.5rem;
+                padding: 0.5rem;
+            }
+            
+            .chart-panel {
+                min-height: 150px;
+            }
+            
+            .chart-panel:nth-child(3) {
+                grid-column: span 1;
+                max-height: none;
+                min-height: 120px;
+            }
+            
+            .cumulative-body { 
+                flex-direction: column; 
+            }
+            
+            .cumulative-chart {
+                min-height: 50px;
+            }
+            
+            /* Hide color scale on mobile to save space */
+            .color-scale {
+                bottom: 8px;
+                padding: 0.3rem 0.5rem;
+                font-size: 0.65rem;
+            }
+        }
+        
+        /* Extra small screens */
+        @media (max-width: 400px) {
+            .ctrl-group label {
+                display: none;
+            }
+            
+            .play-btn {
+                padding: 0.4rem 0.75rem;
+            }
+            
+            .stats-inline {
+                gap: 0.5rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Control bar -->
+        <div class="control-bar">
+            <button class="play-btn" id="play-btn">
+                <span id="play-icon">▶</span>
+                <span id="play-text">Play</span>
+            </button>
+
+            <div class="slider-wrap">
+                <input type="range" class="range-slider" id="date-slider" min="0" max="100" value="100">
+            </div>
+
+            <div class="current-date" id="current-date">-</div>
+
+            <div class="ctrl-group">
+                <label>Speed</label>
+                <select id="speed-select">
+                    <option value="5">5×</option>
+                    <option value="2" selected>2×</option>
+                    <option value="1">1×</option>
+                </select>
+            </div>
+
+            <div class="ctrl-group advanced">
+                <label>Smooth</label>
+                <select id="smoothing-select">
+                    <option value="1">Off</option>
+                    <option value="7">7d</option>
+                    <option value="14">14d</option>
+                    <option value="30" selected>30d</option>
+                </select>
+            </div>
+
+            <div class="ctrl-group">
+                <label style="display:flex;align-items:center;gap:0.3rem;cursor:pointer;">
+                    <input type="checkbox" id="loop-checkbox" style="width:14px;height:14px;cursor:pointer;">
+                    Loop
+                </label>
+            </div>
+
+            <div class="stats-inline">
+                <span><span class="stat-val" id="stat-users">0</span><span class="stat-lbl">users</span></span>
+                <span><span class="stat-val" id="stat-pings">0</span><span class="stat-lbl">pings</span></span>
+                <span><span class="stat-val" id="stat-countries">0</span><span class="stat-lbl">countries</span></span>
+            </div>
+        </div>
+
+        <!-- Map section -->
+        <div class="map-section">
+            <div class="map-container">
+                <div id="map"></div>
+                <canvas id="marker-canvas"></canvas>
+                <button class="reset-view-btn" id="reset-view-btn" title="Reset View">⟲</button>
+            </div>
+            <div class="color-scale">
+                <span id="color-start">-</span>
+                <div class="color-bar"></div>
+                <span id="color-end">-</span>
+            </div>
+        </div>
+
+        <!-- Charts row -->
+        <div class="charts-row">
+            <div class="chart-panel">
+                <div class="chart-header users">📈 New Users/Day</div>
+                <div class="chart-body">
+                    <div class="spiral-box">
+                        <span class="spiral-label">Yearly</span>
+                        <canvas id="users-yearly"></canvas>
+                    </div>
+                    <div class="spiral-box">
+                        <span class="spiral-label">Monthly</span>
+                        <canvas id="users-monthly"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-panel">
+                <div class="chart-header pings">🔔 Daily Pings</div>
+                <div class="chart-body">
+                    <div class="spiral-box">
+                        <span class="spiral-label">Yearly</span>
+                        <canvas id="pings-yearly"></canvas>
+                    </div>
+                    <div class="spiral-box">
+                        <span class="spiral-label">Monthly</span>
+                        <canvas id="pings-monthly"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-panel">
+                <div class="chart-header cumulative">📊 Cumulative Totals</div>
+                <div class="cumulative-body">
+                    <div class="cumulative-chart">
+                        <span class="cumulative-label" style="color:#a78bfa;">Users</span>
+                        <canvas id="cumulative-users"></canvas>
+                    </div>
+                    <div class="cumulative-chart">
+                        <span class="cumulative-label" style="color:#34d399;">Pings</span>
+                        <canvas id="cumulative-pings"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // GLOBAL STATE
+        // ============================================================
+        let globalData = null;
+        let isPlaying = false;
+        let animationFrame = null;
+        let currentIndex = 0;
+        let filteredIndices = [];
+        let cachedValues = { users: [], pings: [] };
+        let markerData = [];
+        let markerDateIndex = new Map();
+        let map = null;
+        let markerCanvas = null;
+        let markerCtx = null;
+        const canvases = {};
+        const contexts = {};
+
+        // ============================================================
+        // UTILITIES
+        // ============================================================
+        function formatDate(dateStr) {
+            return dateStr; // Already in ISO8601 YYYY-MM-DD format
+        }
+
+        function formatDateShort(dateStr) {
+            const d = new Date(dateStr);
+            return d.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+        }
+
+        function getColor(t) {
+            const colors = [[255,107,107],[255,159,67],[254,202,87],[72,219,251],[29,209,161]];
+            const idx = Math.min(Math.floor(t * (colors.length - 1)), colors.length - 2);
+            const frac = (t * (colors.length - 1)) - idx;
+            return [
+                Math.round(colors[idx][0] + frac * (colors[idx+1][0] - colors[idx][0])),
+                Math.round(colors[idx][1] + frac * (colors[idx+1][1] - colors[idx][1])),
+                Math.round(colors[idx][2] + frac * (colors[idx+1][2] - colors[idx][2]))
+            ];
+        }
+
+        function smoothData(values, windowSize) {
+            if (windowSize <= 1) return values.slice();
+            return values.map((_, i, arr) => {
+                let sum = 0, count = 0;
+                for (let j = Math.max(0, i - windowSize + 1); j <= i; j++) {
+                    sum += arr[j];
+                    count++;
+                }
+                return sum / count;
+            });
+        }
+
+        function hashString(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = ((hash << 5) - hash) + str.charCodeAt(i);
+                hash = hash & hash;
+            }
+            return hash;
+        }
+
+        function seededRandom(seed) {
+            const x = Math.sin(seed) * 10000;
+            return x - Math.floor(x);
+        }
+
+        // ============================================================
+        // DATA LOADING & PREPROCESSING (from working original)
+        // ============================================================
+        async function loadData() {
+            try {
+                const response = await fetch('freemocap_dashboard_data.json');
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                globalData = await response.json();
+                preprocessMarkers();
+                initializeAll();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.body.innerHTML = `<div style="padding:2rem;color:#ff6b6b;font-size:1.2rem;">Error: ${error.message}<br>Make sure freemocap_dashboard_data.json is in the same directory.</div>`;
+            }
+        }
+
+        function preprocessMarkers() {
+            // Pre-compute all marker properties for fast rendering
+            const userIndexToFirstPing = {};
+            for (const u of globalData.lifespan_data) {
+                userIndexToFirstPing[u.user_index] = u.first_ping;
+            }
+
+            const ts = globalData.time_series;
+            const startDate = new Date(ts[0].date);
+            const endDate = new Date(ts[ts.length - 1].date);
+            const totalMs = endDate - startDate;
+
+            markerData = globalData.map_data.map(m => {
+                const firstPing = userIndexToFirstPing[m.user_index] || ts[0].date;
+                const markerDate = new Date(firstPing);
+                const t = totalMs > 0 ? Math.max(0, Math.min(1, (markerDate - startDate) / totalMs)) : 0.5;
+                const [r, g, b] = getColor(t);
+
+                // Deterministic jitter
+                const hash = hashString(m.user_index);
+                const jitterLat = (seededRandom(hash) - 0.5) * 0.3;
+                const jitterLon = (seededRandom(hash + 1) - 0.5) * 0.3;
+
+                return {
+                    lat: m.lat + jitterLat,
+                    lon: m.lon + jitterLon,
+                    firstPing,
+                    firstPingMs: markerDate.getTime(),
+                    color: `rgb(${r},${g},${b})`,
+                    r, g, b,
+                    city: m.city,
+                    country: m.country,
+                    count: m.count
+                };
+            });
+
+            // Sort by first ping date
+            markerData.sort((a, b) => a.firstPingMs - b.firstPingMs);
+
+            // Build index: for each date, count of visible markers
+            let markerIdx = 0;
+            for (let i = 0; i < ts.length; i++) {
+                const dateMs = new Date(ts[i].date).getTime() + 86400000;
+                while (markerIdx < markerData.length && markerData[markerIdx].firstPingMs <= dateMs) {
+                    markerIdx++;
+                }
+                markerDateIndex.set(ts[i].date, markerIdx);
+            }
+
+            // Pre-compute country counts for performance
+            precomputeCountryCounts();
+        }
+
+        function initializeAll() {
+            initMap();
+            initControls();
+            computeCachedValues();
+            setupCanvases();
+            render();
+
+            // Debounced resize handler for performance
+            let resizeTimeout;
+            const handleResize = () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    setupCanvases();
+                    resizeMarkerCanvas();
+                    if (map) {
+                        map.invalidateSize();
+                    }
+                    render();
+                }, 100);
+            };
+
+            window.addEventListener('resize', handleResize);
+            window.addEventListener('orientationchange', () => {
+                // Delay slightly for orientation to complete
+                setTimeout(() => {
+                    handleResize();
+                    // Reset view after orientation change
+                    setTimeout(resetMapView, 150);
+                }, 150);
+            });
+        }
+
+        // ============================================================
+        // MAP (from working original)
+        // ============================================================
+        function initMap() {
+            const isMobile = window.innerWidth <= 600;
+
+            map = L.map('map', {
+                maxBounds: [[-60, -180], [72, 180]],
+                maxBoundsViscosity: 1.0,
+                minZoom: 1,
+                zoomControl: false
+            });
+
+            // Fit world view based on container size
+            resetMapView();
+
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '',
+                maxZoom: 19,
+                noWrap: true
+            }).addTo(map);
+
+            L.control.zoom({ position: 'topright' }).addTo(map);
+
+            // Reset view button
+            document.getElementById('reset-view-btn').addEventListener('click', resetMapView);
+
+            markerCanvas = document.getElementById('marker-canvas');
+            markerCtx = markerCanvas.getContext('2d');
+            resizeMarkerCanvas();
+
+            map.on('moveend zoomend', () => renderMarkers());
+        }
+
+        function resetMapView() {
+            if (!map) return;
+            // Fit to inhabited world (Tórshavn at 62°N is our northernmost user)
+            map.fitBounds([[-55, -170], [70, 180]], { padding: [10, 10] });
+            // Re-render markers after view change
+            setTimeout(renderMarkers, 100);
+        }
+
+        function resizeMarkerCanvas() {
+            const container = markerCanvas.parentElement;
+            const dpr = window.devicePixelRatio || 1;
+            const rect = container.getBoundingClientRect();
+            markerCanvas.width = rect.width * dpr;
+            markerCanvas.height = rect.height * dpr;
+            markerCanvas.style.width = rect.width + 'px';
+            markerCanvas.style.height = rect.height + 'px';
+            markerCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+
+        // ============================================================
+        // MARKER RENDERING - Optimized with color batching
+        // ============================================================
+
+        function renderMarkers() {
+            if (!map || !markerCtx || filteredIndices.length === 0) return;
+
+            const dpr = window.devicePixelRatio || 1;
+            const width = markerCanvas.width / dpr;
+            const height = markerCanvas.height / dpr;
+            markerCtx.clearRect(0, 0, width, height);
+
+            const idx = filteredIndices[currentIndex];
+            const currentDate = globalData.time_series[idx].date;
+            const currentDateMs = new Date(currentDate).getTime() + 86400000;
+
+            const visibleCount = markerDateIndex.get(currentDate) || 0;
+            if (visibleCount === 0) return;
+
+            const fadeWindowMs = 14 * 86400000;
+            const freshThresholdMs = currentDateMs - fadeWindowMs;
+
+            // Find the split point between old and fresh markers using binary search
+            let lo = 0, hi = visibleCount;
+            while (lo < hi) {
+                const mid = (lo + hi) >>> 1;
+                if (markerData[mid].firstPingMs < freshThresholdMs) {
+                    lo = mid + 1;
+                } else {
+                    hi = mid;
+                }
+            }
+            const freshStartIdx = lo;
+
+            // === BATCH OLD MARKERS BY COLOR ===
+            // Group old markers by their color string, then draw each group in one path
+            const colorBatches = new Map();
+
+            for (let i = 0; i < freshStartIdx; i++) {
+                const m = markerData[i];
+                const point = map.latLngToContainerPoint([m.lat, m.lon]);
+                const x = point.x;
+                const y = point.y;
+
+                if (x < -10 || x > width + 10 || y < -10 || y > height + 10) continue;
+
+                if (!colorBatches.has(m.color)) {
+                    colorBatches.set(m.color, []);
+                }
+                colorBatches.get(m.color).push(x, y);
+            }
+
+            // Draw all old markers - one fill call per color
+            markerCtx.globalAlpha = 0.5;
+            for (const [color, coords] of colorBatches) {
+                markerCtx.fillStyle = color;
+                markerCtx.beginPath();
+                for (let j = 0; j < coords.length; j += 2) {
+                    const x = coords[j];
+                    const y = coords[j + 1];
+                    markerCtx.moveTo(x + 3, y);
+                    markerCtx.arc(x, y, 3, 0, Math.PI * 2);
+                }
+                markerCtx.fill();
+            }
+            markerCtx.globalAlpha = 1.0;
+
+            // === DRAW FRESH MARKERS (fewer of these, so individual draws are fine) ===
+            const defaultSize = 3;
+            const freshSize = 8;
+
+            for (let i = freshStartIdx; i < visibleCount; i++) {
+                const m = markerData[i];
+                const point = map.latLngToContainerPoint([m.lat, m.lon]);
+                const x = point.x;
+                const y = point.y;
+
+                if (x < -20 || x > width + 20 || y < -20 || y > height + 20) continue;
+
+                const ageMs = currentDateMs - m.firstPingMs;
+                const freshness = Math.max(0, 1 - (ageMs / fadeWindowMs));
+                const size = defaultSize + (freshSize - defaultSize) * freshness;
+                const opacity = 0.5 + 0.5 * freshness;
+
+                // Glow
+                if (freshness > 0.3) {
+                    markerCtx.beginPath();
+                    markerCtx.arc(x, y, size + 4, 0, Math.PI * 2);
+                    markerCtx.fillStyle = `rgba(${m.r},${m.g},${m.b},${0.3 * freshness})`;
+                    markerCtx.fill();
+                }
+
+                // Main dot
+                markerCtx.beginPath();
+                markerCtx.arc(x, y, size, 0, Math.PI * 2);
+                markerCtx.fillStyle = `rgba(${m.r},${m.g},${m.b},${opacity})`;
+                markerCtx.fill();
+
+                // White ring
+                if (freshness > 0.2) {
+                    markerCtx.strokeStyle = `rgba(255,255,255,${0.6 * freshness})`;
+                    markerCtx.lineWidth = 0.5 + freshness;
+                    markerCtx.stroke();
+                }
+            }
+        }
+
+        // ============================================================
+        // CONTROLS
+        // ============================================================
+        function initControls() {
+            const ts = globalData.time_series;
+            const startDate = ts[0].date;
+            const endDate = ts[ts.length - 1].date;
+
+            document.getElementById('color-start').textContent = formatDateShort(startDate);
+            document.getElementById('color-end').textContent = formatDateShort(endDate);
+
+            document.getElementById('play-btn').addEventListener('click', togglePlay);
+            document.getElementById('date-slider').addEventListener('input', onSliderChange);
+
+            document.getElementById('smoothing-select').addEventListener('change', () => {
+                computeCachedValues();
+                render();
+            });
+        }
+
+        function computeCachedValues() {
+            const ts = globalData.time_series;
+            const smoothing = parseInt(document.getElementById('smoothing-select').value);
+
+            // Use full timeline
+            filteredIndices = ts.map((_, i) => i);
+
+            const rawUsers = ts.map(d => d.new_users || 0);
+            const rawPings = ts.map(d => d.daily_records || 0);
+            cachedValues.users = smoothData(rawUsers, smoothing);
+            cachedValues.pings = smoothData(rawPings, smoothing);
+
+            // Cache cumulative values too (used by cumulative charts)
+            cachedValues.cumulativeUsers = ts.map(d => d.cumulative_users);
+            cachedValues.cumulativePings = ts.map(d => d.cumulative_records);
+            cachedValues.maxCumulativeUsers = Math.max(...cachedValues.cumulativeUsers);
+            cachedValues.maxCumulativePings = Math.max(...cachedValues.cumulativePings);
+
+            currentIndex = Math.min(currentIndex, filteredIndices.length - 1);
+            if (currentIndex < 0) currentIndex = filteredIndices.length - 1;
+        }
+
+        let lastAnimationTime = 0;
+        const BASE_FRAME_INTERVAL = 50; // ms per frame at 1x speed
+
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            const btn = document.getElementById('play-btn');
+            document.getElementById('play-icon').textContent = isPlaying ? '⏸' : '▶';
+            document.getElementById('play-text').textContent = isPlaying ? 'Pause' : 'Play';
+            btn.classList.toggle('playing', isPlaying);
+            if (isPlaying) {
+                if (currentIndex >= filteredIndices.length - 1) currentIndex = 0;
+                lastAnimationTime = performance.now();
+                animationFrame = requestAnimationFrame(animate);
+            }
+        }
+
+        function animate(timestamp) {
+            if (!isPlaying) return;
+
+            const speed = parseInt(document.getElementById('speed-select').value);
+            const elapsed = timestamp - lastAnimationTime;
+            const targetInterval = BASE_FRAME_INTERVAL / speed;
+
+            if (elapsed >= targetInterval) {
+                const framesToAdvance = Math.floor(elapsed / targetInterval);
+                currentIndex = Math.min(currentIndex + framesToAdvance, filteredIndices.length - 1);
+                lastAnimationTime = timestamp - (elapsed % targetInterval);
+
+                // Sync slider
+                document.getElementById('date-slider').value = (currentIndex / (filteredIndices.length - 1)) * 100;
+                render();
+            }
+
+            if (currentIndex >= filteredIndices.length - 1) {
+                const shouldLoop = document.getElementById('loop-checkbox').checked;
+                if (shouldLoop) {
+                    currentIndex = 0;
+                    animationFrame = requestAnimationFrame(animate);
+                } else {
+                    isPlaying = false;
+                    document.getElementById('play-icon').textContent = '▶';
+                    document.getElementById('play-text').textContent = 'Play';
+                    document.getElementById('play-btn').classList.remove('playing');
+                }
+            } else {
+                animationFrame = requestAnimationFrame(animate);
+            }
+        }
+
+        function onSliderChange() {
+            const pct = parseFloat(document.getElementById('date-slider').value) / 100;
+            currentIndex = Math.round(pct * (filteredIndices.length - 1));
+            render();
+        }
+
+        // ============================================================
+        // CANVAS SETUP
+        // ============================================================
+        function setupCanvases() {
+            const ids = ['users-yearly', 'users-monthly', 'pings-yearly', 'pings-monthly', 'cumulative-users', 'cumulative-pings'];
+            ids.forEach(id => {
+                const canvas = document.getElementById(id);
+                if (canvas) {
+                    const rect = canvas.parentElement.getBoundingClientRect();
+                    const dpr = window.devicePixelRatio || 1;
+                    canvas.width = rect.width * dpr;
+                    canvas.height = rect.height * dpr;
+                    canvases[id] = canvas;
+                    contexts[id] = canvas.getContext('2d');
+                    contexts[id].setTransform(dpr, 0, 0, dpr, 0, 0);
+                }
+            });
+        }
+
+        // ============================================================
+        // RENDER
+        // ============================================================
+        let cachedCountryCount = [];
+        
+        function precomputeCountryCounts() {
+            if (!globalData) return;
+            const ts = globalData.time_series;
+            cachedCountryCount = new Array(ts.length);
+            const seenCountries = new Set();
+            let markerIdx = 0;
+            
+            for (let i = 0; i < ts.length; i++) {
+                const dateMs = new Date(ts[i].date).getTime() + 86400000;
+                while (markerIdx < markerData.length && markerData[markerIdx].firstPingMs <= dateMs) {
+                    seenCountries.add(markerData[markerIdx].country);
+                    markerIdx++;
+                }
+                cachedCountryCount[i] = seenCountries.size;
+            }
+        }
+        
+        function render() {
+            if (!globalData || filteredIndices.length === 0) return;
+
+            const ts = globalData.time_series;
+            const idx = filteredIndices[currentIndex];
+            const d = ts[idx];
+
+            document.getElementById('current-date').textContent = formatDate(d.date);
+
+            const fmt = n => n >= 1e6 ? (n/1e6).toFixed(1)+'M' : n >= 1e3 ? (n/1e3).toFixed(1)+'K' : n.toString();
+            document.getElementById('stat-pings').textContent = fmt(d.cumulative_records);
+            document.getElementById('stat-users').textContent = fmt(d.cumulative_users);
+            document.getElementById('stat-countries').textContent = cachedCountryCount[idx] || 0;
+
+            renderMarkers();
+            renderSpiralCharts();
+            renderCumulativeCharts();
+        }
+
+        // ============================================================
+        // SPIRAL CHARTS
+        // ============================================================
+        function renderSpiralCharts() {
+            if (!globalData) return;
+            renderSpiral('users-yearly', cachedValues.users, 'year', [167, 139, 250]);
+            renderSpiral('users-monthly', cachedValues.users, 'month', [167, 139, 250]);
+            renderSpiral('pings-yearly', cachedValues.pings, 'year', [52, 211, 153]);
+            renderSpiral('pings-monthly', cachedValues.pings, 'month', [52, 211, 153]);
+        }
+
+        function renderSpiral(canvasId, values, cycleType, baseColor) {
+            const ctx = contexts[canvasId];
+            const canvas = canvases[canvasId];
+            if (!ctx || !canvas) return;
+
+            const dpr = window.devicePixelRatio || 1;
+            const width = canvas.width / dpr;
+            const height = canvas.height / dpr;
+            const ts = globalData.time_series;
+            
+            // Trail length = one full cycle
+            const trailLength = cycleType === 'year' ? 365 : 30;
+
+            ctx.clearRect(0, 0, width, height);
+
+            const cx = width / 2;
+            const cy = height / 2;
+            const radius = Math.min(width, height) / 2 - 14;
+            const maxVal = Math.max(...values, 1);
+            const scale = radius / maxVal;
+            const totalLen = filteredIndices.length;
+
+            function getTheta(date, type) {
+                if (type === 'year') {
+                    const startOfYear = new Date(date.getFullYear(), 0, 1);
+                    const dayOfYear = Math.floor((date - startOfYear) / 86400000);
+                    return (dayOfYear / 365) * Math.PI * 2 - Math.PI / 2;
+                } else {
+                    const dayOfMonth = date.getDate();
+                    const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+                    return (dayOfMonth / daysInMonth) * Math.PI * 2 - Math.PI / 2;
+                }
+            }
+
+            // Draw guides
+            const labels = cycleType === 'year' ? ['J','F','M','A','M','J','J','A','S','O','N','D'] : ['1','','10','','20','','30'];
+            ctx.fillStyle = '#8090a0';
+            ctx.font = '9px system-ui';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            for (let i = 0; i < labels.length; i++) {
+                const angle = (i / labels.length) * Math.PI * 2 - Math.PI / 2;
+                ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(cx + radius * Math.cos(angle), cy + radius * Math.sin(angle));
+                ctx.stroke();
+                if (labels[i]) {
+                    const lr = radius + 10;
+                    ctx.fillText(labels[i], cx + lr * Math.cos(angle), cy + lr * Math.sin(angle));
+                }
+            }
+
+            const snakeStart = Math.max(0, currentIndex - trailLength);
+
+            // Draw non-highlighted segments using colormap
+            function drawSeg(i1, i2, alpha, lw) {
+                const idx1 = filteredIndices[i1], idx2 = filteredIndices[i2];
+                const d1 = new Date(ts[idx1].date), d2 = new Date(ts[idx2].date);
+                const t1 = getTheta(d1, cycleType), t2 = getTheta(d2, cycleType);
+                const p1x = cx + values[i1] * scale * Math.cos(t1);
+                const p1y = cy + values[i1] * scale * Math.sin(t1);
+                const p2x = cx + values[i2] * scale * Math.cos(t2);
+                const p2y = cy + values[i2] * scale * Math.sin(t2);
+                const t = (i1 + 0.5) / Math.max(1, totalLen - 1);
+                const [r, g, b] = getColor(t);
+
+                ctx.beginPath();
+                ctx.moveTo(p1x, p1y);
+                ctx.lineTo(p2x, p2y);
+                ctx.strokeStyle = `rgba(${r},${g},${b},${alpha})`;
+                ctx.lineWidth = lw;
+                ctx.lineCap = 'round';
+                ctx.stroke();
+            }
+            
+            // Draw highlighted tail segments (current cycle) in white/bright
+            function drawTailSeg(i1, i2, progress) {
+                const idx1 = filteredIndices[i1], idx2 = filteredIndices[i2];
+                const d1 = new Date(ts[idx1].date), d2 = new Date(ts[idx2].date);
+                const t1 = getTheta(d1, cycleType), t2 = getTheta(d2, cycleType);
+                const p1x = cx + values[i1] * scale * Math.cos(t1);
+                const p1y = cy + values[i1] * scale * Math.sin(t1);
+                const p2x = cx + values[i2] * scale * Math.cos(t2);
+                const p2y = cy + values[i2] * scale * Math.sin(t2);
+                
+                // Highlight color: white fading to the base color
+                const alpha = 0.4 + progress * 0.6;
+                const lw = 1.5 + progress * 3;
+
+                ctx.beginPath();
+                ctx.moveTo(p1x, p1y);
+                ctx.lineTo(p2x, p2y);
+                ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+                ctx.lineWidth = lw;
+                ctx.lineCap = 'round';
+                ctx.stroke();
+            }
+
+            // Future segments (faded)
+            for (let i = currentIndex + 1; i < totalLen - 1; i++) drawSeg(i, i + 1, 0.15, 1);
+            // Past segments (before current cycle)
+            for (let i = 0; i < snakeStart - 1; i++) drawSeg(i, i + 1, 0.5, 1.5);
+            // Current cycle tail (highlighted in white)
+            for (let i = snakeStart; i < currentIndex && i < totalLen - 1; i++) {
+                const progress = (i - snakeStart) / Math.max(1, currentIndex - snakeStart);
+                drawTailSeg(i, i + 1, progress);
+            }
+
+            // Current position marker
+            if (currentIndex >= 0 && currentIndex < totalLen) {
+                const idx = filteredIndices[currentIndex];
+                const d = new Date(ts[idx].date);
+                const theta = getTheta(d, cycleType);
+                const px = cx + values[currentIndex] * scale * Math.cos(theta);
+                const py = cy + values[currentIndex] * scale * Math.sin(theta);
+
+                // Glow
+                ctx.beginPath();
+                ctx.arc(px, py, 10, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.fill();
+
+                // White ring
+                ctx.beginPath();
+                ctx.arc(px, py, 6, 0, Math.PI * 2);
+                ctx.strokeStyle = 'white';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Center dot
+                ctx.beginPath();
+                ctx.arc(px, py, 4, 0, Math.PI * 2);
+                ctx.fillStyle = '#feca57';
+                ctx.fill();
+            }
+        }
+
+        // ============================================================
+        // CUMULATIVE CHARTS - Using cached values
+        // ============================================================
+        function renderCumulativeCharts() {
+            if (!globalData) return;
+            renderCumulativeChart('cumulative-users', cachedValues.cumulativeUsers, cachedValues.maxCumulativeUsers, 'rgb(167,139,250)');
+            renderCumulativeChart('cumulative-pings', cachedValues.cumulativePings, cachedValues.maxCumulativePings, 'rgb(52,211,153)');
+        }
+
+        function renderCumulativeChart(canvasId, values, maxVal, color) {
+            const ctx = contexts[canvasId];
+            const canvas = canvases[canvasId];
+            if (!ctx || !canvas || !values) return;
+
+            const dpr = window.devicePixelRatio || 1;
+            const width = canvas.width / dpr;
+            const height = canvas.height / dpr;
+            const totalLen = filteredIndices.length;
+
+            const ml = 32, mr = 6, mt = 4, mb = 4;
+            const cw = width - ml - mr;
+            const ch = height - mt - mb;
+
+            ctx.clearRect(0, 0, width, height);
+            ctx.fillStyle = 'rgba(20,20,40,0.4)';
+            ctx.fillRect(ml, mt, cw, ch);
+
+            // Y labels
+            ctx.fillStyle = '#8090a0';
+            ctx.font = '9px system-ui';
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'middle';
+            const topLabel = maxVal >= 1e6 ? (maxVal/1e6).toFixed(1)+'M' : maxVal >= 1e3 ? (maxVal/1e3).toFixed(0)+'K' : Math.round(maxVal).toString();
+            ctx.fillText(topLabel, ml - 3, mt + 6);
+            ctx.fillText('0', ml - 3, mt + ch - 2);
+
+            if (currentIndex <= 0 || totalLen <= 1) return;
+
+            // Sample points if too many (target ~150 points max for smooth rendering)
+            const maxPoints = 150;
+            const step = currentIndex > maxPoints ? Math.floor(currentIndex / maxPoints) : 1;
+            
+            // Fill area
+            ctx.beginPath();
+            ctx.moveTo(ml, mt + ch);
+            for (let i = 0; i <= currentIndex; i += step) {
+                const x = ml + (i / (totalLen - 1)) * cw;
+                const y = mt + ch - (values[i] / maxVal) * ch;
+                ctx.lineTo(x, y);
+            }
+            // Always include the current point
+            if (currentIndex % step !== 0) {
+                const x = ml + (currentIndex / (totalLen - 1)) * cw;
+                const y = mt + ch - (values[currentIndex] / maxVal) * ch;
+                ctx.lineTo(x, y);
+            }
+            ctx.lineTo(ml + (currentIndex / (totalLen - 1)) * cw, mt + ch);
+            ctx.closePath();
+            const grad = ctx.createLinearGradient(0, mt, 0, mt + ch);
+            grad.addColorStop(0, color.replace('rgb', 'rgba').replace(')', ',0.5)'));
+            grad.addColorStop(1, color.replace('rgb', 'rgba').replace(')', ',0.1)'));
+            ctx.fillStyle = grad;
+            ctx.fill();
+
+            // Line
+            ctx.beginPath();
+            for (let i = 0; i <= currentIndex; i += step) {
+                const x = ml + (i / (totalLen - 1)) * cw;
+                const y = mt + ch - (values[i] / maxVal) * ch;
+                if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            // Always include the current point
+            if (currentIndex % step !== 0) {
+                const x = ml + (currentIndex / (totalLen - 1)) * cw;
+                const y = mt + ch - (values[currentIndex] / maxVal) * ch;
+                ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Future faded (also sampled)
+            if (currentIndex < totalLen - 1) {
+                const futureLen = totalLen - currentIndex;
+                const futureStep = futureLen > maxPoints ? Math.floor(futureLen / maxPoints) : 1;
+                ctx.beginPath();
+                for (let i = currentIndex; i < totalLen; i += futureStep) {
+                    const x = ml + (i / (totalLen - 1)) * cw;
+                    const y = mt + ch - (values[i] / maxVal) * ch;
+                    if (i === currentIndex) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+                }
+                // Always include last point
+                if ((totalLen - 1 - currentIndex) % futureStep !== 0) {
+                    const x = ml + ((totalLen - 1) / (totalLen - 1)) * cw;
+                    const y = mt + ch - (values[totalLen - 1] / maxVal) * ch;
+                    ctx.lineTo(x, y);
+                }
+                ctx.strokeStyle = 'rgba(150,150,180,0.2)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+
+            // Current marker
+            const cx = ml + (currentIndex / (totalLen - 1)) * cw;
+            const cy = mt + ch - (values[currentIndex] / maxVal) * ch;
+
+            ctx.beginPath();
+            ctx.arc(cx, cy, 5, 0, Math.PI * 2);
+            ctx.fillStyle = color.replace('rgb', 'rgba').replace(')', ',0.3)');
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.arc(cx, cy, 3, 0, Math.PI * 2);
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(cx, cy, 2, 0, Math.PI * 2);
+            ctx.fillStyle = color;
+            ctx.fill();
+
+            // Value label
+            const val = values[currentIndex];
+            const label = val >= 1e6 ? (val/1e6).toFixed(2)+'M' : val >= 1e3 ? (val/1e3).toFixed(1)+'K' : val.toLocaleString();
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 10px system-ui';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+            ctx.fillText(label, cx, cy - 6);
+        }
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        loadData();
+    </script>
+</body>
+</html>
