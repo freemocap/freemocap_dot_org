@@ -487,6 +487,13 @@
                 </select>
             </div>
 
+            <div class="ctrl-group">
+                <label style="display:flex;align-items:center;gap:0.3rem;cursor:pointer;">
+                    <input type="checkbox" id="loop-checkbox" style="width:14px;height:14px;cursor:pointer;">
+                    Loop
+                </label>
+            </div>
+
             <div class="stats-inline">
                 <span><span class="stat-val" id="stat-users">0</span><span class="stat-lbl">users</span></span>
                 <span><span class="stat-val" id="stat-pings">0</span><span class="stat-lbl">pings</span></span>
@@ -685,7 +692,7 @@
                 }
                 markerDateIndex.set(ts[i].date, markerIdx);
             }
-            
+
             // Pre-compute country counts for performance
             precomputeCountryCounts();
         }
@@ -710,7 +717,7 @@
                     render();
                 }, 100);
             };
-            
+
             window.addEventListener('resize', handleResize);
             window.addEventListener('orientationchange', () => {
                 // Delay slightly for orientation to complete
@@ -727,14 +734,14 @@
         // ============================================================
         function initMap() {
             const isMobile = window.innerWidth <= 600;
-            
+
             map = L.map('map', {
                 maxBounds: [[-60, -180], [72, 180]],
                 maxBoundsViscosity: 1.0,
                 minZoom: 1,
                 zoomControl: false
             });
-            
+
             // Fit world view based on container size
             resetMapView();
 
@@ -745,7 +752,7 @@
             }).addTo(map);
 
             L.control.zoom({ position: 'topright' }).addTo(map);
-            
+
             // Reset view button
             document.getElementById('reset-view-btn').addEventListener('click', resetMapView);
 
@@ -755,7 +762,7 @@
 
             map.on('moveend zoomend', () => renderMarkers());
         }
-        
+
         function resetMapView() {
             if (!map) return;
             // Fit to inhabited world (Tórshavn at 62°N is our northernmost user)
@@ -776,18 +783,9 @@
         }
 
         // ============================================================
-        // MARKER RENDERING - Optimized with batching
+        // MARKER RENDERING - Optimized with color batching
         // ============================================================
-        let offscreenCanvas = null;
-        let offscreenCtx = null;
-        let lastRenderedIndex = -1;
-        let lastMapBounds = null;
-        
-        function initOffscreenCanvas() {
-            offscreenCanvas = document.createElement('canvas');
-            offscreenCtx = offscreenCanvas.getContext('2d');
-        }
-        
+
         function renderMarkers() {
             if (!map || !markerCtx || filteredIndices.length === 0) return;
 
@@ -805,38 +803,56 @@
 
             const fadeWindowMs = 14 * 86400000;
             const freshThresholdMs = currentDateMs - fadeWindowMs;
-            
-            // Find the split point between old and fresh markers
-            let freshStartIdx = visibleCount;
-            for (let i = visibleCount - 1; i >= 0; i--) {
-                if (markerData[i].firstPingMs < freshThresholdMs) {
-                    freshStartIdx = i + 1;
-                    break;
+
+            // Find the split point between old and fresh markers using binary search
+            let lo = 0, hi = visibleCount;
+            while (lo < hi) {
+                const mid = (lo + hi) >>> 1;
+                if (markerData[mid].firstPingMs < freshThresholdMs) {
+                    lo = mid + 1;
+                } else {
+                    hi = mid;
                 }
-                if (i === 0) freshStartIdx = 0;
             }
-            
-            // Draw old markers (simplified - just dots, no glow)
-            markerCtx.globalAlpha = 0.5;
+            const freshStartIdx = lo;
+
+            // === BATCH OLD MARKERS BY COLOR ===
+            // Group old markers by their color string, then draw each group in one path
+            const colorBatches = new Map();
+
             for (let i = 0; i < freshStartIdx; i++) {
                 const m = markerData[i];
                 const point = map.latLngToContainerPoint([m.lat, m.lon]);
                 const x = point.x;
                 const y = point.y;
-                
+
                 if (x < -10 || x > width + 10 || y < -10 || y > height + 10) continue;
-                
-                markerCtx.fillStyle = m.color;
+
+                if (!colorBatches.has(m.color)) {
+                    colorBatches.set(m.color, []);
+                }
+                colorBatches.get(m.color).push(x, y);
+            }
+
+            // Draw all old markers - one fill call per color
+            markerCtx.globalAlpha = 0.5;
+            for (const [color, coords] of colorBatches) {
+                markerCtx.fillStyle = color;
                 markerCtx.beginPath();
-                markerCtx.arc(x, y, 3, 0, Math.PI * 2);
+                for (let j = 0; j < coords.length; j += 2) {
+                    const x = coords[j];
+                    const y = coords[j + 1];
+                    markerCtx.moveTo(x + 3, y);
+                    markerCtx.arc(x, y, 3, 0, Math.PI * 2);
+                }
                 markerCtx.fill();
             }
             markerCtx.globalAlpha = 1.0;
-            
-            // Draw fresh markers (full effect with glow)
+
+            // === DRAW FRESH MARKERS (fewer of these, so individual draws are fine) ===
             const defaultSize = 3;
             const freshSize = 8;
-            
+
             for (let i = freshStartIdx; i < visibleCount; i++) {
                 const m = markerData[i];
                 const point = map.latLngToContainerPoint([m.lat, m.lon]);
@@ -886,7 +902,7 @@
 
             document.getElementById('play-btn').addEventListener('click', togglePlay);
             document.getElementById('date-slider').addEventListener('input', onSliderChange);
-            
+
             document.getElementById('smoothing-select').addEventListener('change', () => {
                 computeCachedValues();
                 render();
@@ -904,7 +920,7 @@
             const rawPings = ts.map(d => d.daily_records || 0);
             cachedValues.users = smoothData(rawUsers, smoothing);
             cachedValues.pings = smoothData(rawPings, smoothing);
-            
+
             // Cache cumulative values too (used by cumulative charts)
             cachedValues.cumulativeUsers = ts.map(d => d.cumulative_users);
             cachedValues.cumulativePings = ts.map(d => d.cumulative_records);
@@ -917,7 +933,7 @@
 
         let lastAnimationTime = 0;
         const BASE_FRAME_INTERVAL = 50; // ms per frame at 1x speed
-        
+
         function togglePlay() {
             isPlaying = !isPlaying;
             const btn = document.getElementById('play-btn');
@@ -933,26 +949,32 @@
 
         function animate(timestamp) {
             if (!isPlaying) return;
-            
+
             const speed = parseInt(document.getElementById('speed-select').value);
             const elapsed = timestamp - lastAnimationTime;
             const targetInterval = BASE_FRAME_INTERVAL / speed;
-            
+
             if (elapsed >= targetInterval) {
                 const framesToAdvance = Math.floor(elapsed / targetInterval);
                 currentIndex = Math.min(currentIndex + framesToAdvance, filteredIndices.length - 1);
                 lastAnimationTime = timestamp - (elapsed % targetInterval);
-                
+
                 // Sync slider
                 document.getElementById('date-slider').value = (currentIndex / (filteredIndices.length - 1)) * 100;
                 render();
             }
-            
+
             if (currentIndex >= filteredIndices.length - 1) {
-                isPlaying = false;
-                document.getElementById('play-icon').textContent = '▶';
-                document.getElementById('play-text').textContent = 'Play';
-                document.getElementById('play-btn').classList.remove('playing');
+                const shouldLoop = document.getElementById('loop-checkbox').checked;
+                if (shouldLoop) {
+                    currentIndex = 0;
+                    animationFrame = requestAnimationFrame(animate);
+                } else {
+                    isPlaying = false;
+                    document.getElementById('play-icon').textContent = '▶';
+                    document.getElementById('play-text').textContent = 'Play';
+                    document.getElementById('play-btn').classList.remove('playing');
+                }
             } else {
                 animationFrame = requestAnimationFrame(animate);
             }

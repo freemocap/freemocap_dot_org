@@ -7,9 +7,9 @@
     <list default="true" id="32a0ed93-e064-4292-aa4a-0270c27efa59" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/httpdocs/dist/data.html" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/data.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_dashboard_animated.html" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_dashboard_animated.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_dashboard_animated.html" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_growth_animation.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_lifespan_analysis.html" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_lifespan_analysis.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_users_analysis.html" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_users_analysis.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_users_analysis.html" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_users_dashboard.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,7 +66,7 @@
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "WebServerToolWindowFactoryState": "false",
     "ai.playground.ignore.import.keys.banner.in.settings": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "jon/data",
     "ignore.virus.scanning.warn.message": "true",
     "javascript.preferred.runtime.type.id": "node",
     "last_opened_file_path": "C:/Users/jonma/github_repos/freemocap_organization/freemocap_dot_org/httpdocs/dist/data",
@@ -109,7 +109,7 @@
       <workItem from="1768159150370" duration="782000" />
       <workItem from="1769951459338" duration="731000" />
       <workItem from="1770082891081" duration="3398000" />
-      <workItem from="1770119225619" duration="1960000" />
+      <workItem from="1770119225619" duration="3724000" />
     </task>
     <servers />
   </component>
@@ -131,8 +131,8 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/httpdocs/dist/data/freemocap_dashboard_animated.html</url>
-          <line>745</line>
+          <url>file://$PROJECT_DIR$/httpdocs/dist/data/freemocap_growth_animation.html</url>
+          <line>744</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
