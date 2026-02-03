@@ -1,40 +1,110 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="32a0ed93-e064-4292-aa4a-0270c27efa59" name="Changes" comment="" />
+    <list default="true" id="32a0ed93-e064-4292-aa4a-0270c27efa59" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/httpdocs/dist/data.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_dashboard_animated.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_dashboard_data.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_lifespan_analysis.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_users_analysis.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Editing HTML Files - Instructions from Taylor.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/JSM-About-Us-Notes.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/JSM-Fiddly-notes.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/JSM-To-Do.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/httpdocs/dist/announcements-template.html" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/announcements-template.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/httpdocs/dist/announcements.html" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/announcements.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/httpdocs/dist/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/header.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/httpdocs/dist/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/index.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GithubProjectSettings">
-    <option name="branchProtectionPatterns">
-      <list>
-        <option value="main" />
-      </list>
-    </option>
-  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;jonmatthis&quot;
+  }
+}</component>
+  <component name="GitHubPullRequestState">{
+  &quot;prStates&quot;: [
+    {
+      &quot;id&quot;: {
+        &quot;id&quot;: &quot;PR_kwDOG6sav868ZSmf&quot;,
+        &quot;number&quot;: 6
+      },
+      &quot;lastSeen&quot;: 1768159181138
+    }
+  ]
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/freemocap/freemocap_dot_org&quot;,
+    &quot;accountId&quot;: &quot;bfd2c883-fda7-4e39-983f-5f7538f5da46&quot;
+  }
+}</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="2LR4ALh1uB2Hm9eD73EIJhOCyxm" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/jonma/Dropbox/GitKrakenRepos&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "ai.playground.ignore.import.keys.banner.in.settings": "true",
+    "git-widget-placeholder": "jon/data",
+    "ignore.virus.scanning.warn.message": "true",
+    "javascript.preferred.runtime.type.id": "node",
+    "last_opened_file_path": "C:/Users/jonma/github_repos/freemocap_organization/freemocap_dot_org/httpdocs/dist/data",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\jonma\github_repos\freemocap_organization\freemocap_dot_org\httpdocs\dist\data" />
+      <recent name="C:\Users\jonma\github_repos\freemocap_organization\freemocap_dot_org\httpdocs\dist" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\jonma\github_repos\freemocap_organization\freemocap_dot_org\httpdocs\dist" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-PY-253.30387.127" />
+        <option value="bundled-python-sdk-3944b0c99280-6d6dccd035ac-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-253.30387.127" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -46,6 +116,9 @@
       <workItem from="1675820419168" duration="8000" />
       <workItem from="1675902852731" duration="594000" />
       <workItem from="1675903690543" duration="6000" />
+      <workItem from="1768159150370" duration="782000" />
+      <workItem from="1769951459338" duration="731000" />
+      <workItem from="1770082891081" duration="3398000" />
     </task>
     <servers />
   </component>
