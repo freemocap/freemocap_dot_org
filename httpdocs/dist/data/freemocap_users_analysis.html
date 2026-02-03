@@ -145,22 +145,6 @@
     </style>
 </head>
 <body>
-    <!-- Navigation banner for direct access -->
-    <div id="direct-nav" style="display:none; position:fixed; top:0; left:0; right:0; z-index:9999; background:linear-gradient(90deg,#667eea,#764ba2); padding:0.4rem 1rem; font-size:0.8rem;">
-        <a href="../freemocap-data-integration/data.html" style="color:#fff; text-decoration:none;">← Back to Dashboard Hub</a>
-        <span style="color:rgba(255,255,255,0.4); margin:0 0.5rem;">|</span>
-        <a href="freemocap_dashboard_animated.html" style="color:#feca57; text-decoration:none;">Growth Animation</a>
-        <span style="color:rgba(255,255,255,0.4); margin:0 0.5rem;">|</span>
-        <a href="freemocap_lifespan_analysis.html" style="color:#1dd1a1; text-decoration:none;">User Lifespan</a>
-    </div>
-    <script>
-        // Show nav banner only if not in iframe
-        if (window.self === window.top) {
-            document.getElementById('direct-nav').style.display = 'block';
-            document.body.style.paddingTop = '32px';
-        }
-    </script>
-
     <div class="header">
         <h1>FreeMoCap Usage Dashboard</h1>
         <p id="generated-date">Loading...</p>
@@ -564,9 +548,9 @@
             let lat = d.lat;
             let lon = d.lon;
             if (jitterDeg > 0) {
-                const ipHash = hashString(d.ip);
-                const angle = seededRandom(ipHash) * 2 * Math.PI;
-                const dist = seededRandom(ipHash + 1) * jitterDeg;
+                const userIndexHash = hashString(String(d.user_index));
+                const angle = seededRandom(userIndexHash) * 2 * Math.PI;
+                const dist = seededRandom(userIndexHash + 1) * jitterDeg;
                 lat += dist * Math.cos(angle);
                 lon += dist * Math.sin(angle) / Math.cos(d.lat * Math.PI / 180);
             }
@@ -687,12 +671,12 @@
             const randomOutline = document.getElementById('marker-random-outline').checked;
 
             globalMapData.forEach((d, idx) => {
-                const ipHash = hashString(d.ip);
+                const userIndexHash = hashString(String(d.user_index));
                 const pos = getJitteredPosition(d);
 
                 const size = scaleByCount ? Math.max(4, Math.min(15, 4 + Math.sqrt(d.count))) : 2;
-                const thisFill = randomFill ? randomColor(ipHash) : fillColor;
-                const thisOutline = randomOutline ? randomColor(ipHash + 100) : outlineColor;
+                const thisFill = randomFill ? randomColor(userIndexHash) : fillColor;
+                const thisOutline = randomOutline ? randomColor(userIndexHash + 100) : outlineColor;
 
                 const marker = L.circleMarker([pos.lat, pos.lon], {
                     radius: size,
@@ -705,7 +689,7 @@
                 });
                 marker.bindPopup(`
                     <strong>${d.city}, ${d.country}</strong><br>
-                    IP: ${d.ip}<br>
+                    UserIndex: ${d.user_index}<br>
                     Pings: ${d.count}<br>
                     ISP: ${d.isp}
                     ${jitterKm > 0 ? '<br><em style="color:#888; font-size:11px;">Location jittered ~' + jitterKm + 'km for privacy</em>' : ''}
