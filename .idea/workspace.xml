@@ -4,13 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="32a0ed93-e064-4292-aa4a-0270c27efa59" name="Changes" comment="jfc - dont touch it lol">
+    <list default="true" id="32a0ed93-e064-4292-aa4a-0270c27efa59" name="Changes" comment="good enough for nw, I think">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/httpdocs/dist/.htaccess" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/.htaccess" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/httpdocs/dist/community.html" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/community.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/httpdocs/dist/data.html" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/data.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_users_dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_users_dashboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/httpdocs/dist/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/header.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,7 +127,15 @@
       <option name="project" value="LOCAL" />
       <updated>1770142152191</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="good enough for nw, I think">
+      <option name="closed" value="true" />
+      <created>1770142812580</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1770142812580</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -151,7 +155,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="pretty nice!" />
     <MESSAGE value="jfc - dont touch it lol" />
-    <option name="LAST_COMMIT_MESSAGE" value="jfc - dont touch it lol" />
+    <MESSAGE value="good enough for nw, I think" />
+    <option name="LAST_COMMIT_MESSAGE" value="good enough for nw, I think" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -25,7 +25,20 @@
         .data-note a { color: #888; text-decoration: underline; }
         .data-note a:hover { color: #667eea; }
         .map-container { height: 500px; margin: 1rem; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: relative; }
-        .map-controls { position: absolute; top: 10px; right: 10px; z-index: 1000; background: white; padding: 12px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); min-width: 220px; font-size: 12px; max-height: 480px; overflow-y: auto; }
+        .map-controls { position: absolute; top: 10px; right: 10px; z-index: 1000; background: white; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); min-width: 220px; font-size: 12px; max-height: 480px; overflow: hidden; }
+        .map-controls-header { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid #eee; cursor: pointer; user-select: none; }
+        .map-controls-header:hover { background: #f9f9f9; }
+        .map-controls-title { font-weight: 600; font-size: 12px; color: #333; }
+        .map-controls-toggle { background: none; border: none; font-size: 14px; cursor: pointer; color: #666; padding: 0; line-height: 1; transition: transform 0.2s; }
+        .map-controls.collapsed .map-controls-toggle { transform: rotate(180deg); }
+        .map-controls-content { padding: 12px; overflow-y: auto; max-height: calc(480px - 40px); }
+        .map-controls.collapsed .map-controls-content { display: none; }
+        .map-controls.collapsed { max-height: none; }
+        .map-btn { display: block; width: 100%; padding: 6px 10px; margin-top: 8px; background: #667eea; color: white; border: none; border-radius: 4px; font-size: 11px; cursor: pointer; text-align: center; }
+        .map-btn:hover { background: #5a6fd6; }
+        .reset-zoom-btn { position: absolute; top: 80px; right: 10px; z-index: 1000; background: white; border: 2px solid rgba(0,0,0,0.2); border-radius: 4px; box-shadow: none; padding: 0; width: 30px; height: 30px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .reset-zoom-btn:hover { background: #f4f4f4; }
+        .reset-zoom-btn span { line-height: 1; }
         .map-controls label { display: block; margin: 4px 0; cursor: pointer; }
         .control-section { margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
         .control-section:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
@@ -40,49 +53,55 @@
         .charts-grid-3col { grid-template-columns: repeat(3, 1fr); }
         .charts-grid-engagement { grid-template-columns: 2fr 1fr; }
         @media (max-width: 1200px) { .charts-grid-3col { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 900px) { 
-            .charts-grid-2col { grid-template-columns: 1fr; } 
+        @media (max-width: 900px) {
+            .charts-grid-2col { grid-template-columns: 1fr; }
             .charts-grid-3col { grid-template-columns: 1fr; }
             .charts-grid-engagement { grid-template-columns: 1fr; }
             .charts-grid { min-width: 0; grid-template-columns: 1fr; }
             .map-container { height: 400px; margin: 0.5rem; }
-            .map-controls { 
-                position: relative; 
-                top: auto; 
-                right: auto; 
-                margin: 0.5rem;
-                max-height: none;
+            .map-controls {
+                top: 10px;
+                right: 10px;
+                left: auto;
+                max-width: 200px;
+            }
+            .map-controls.collapsed {
+                min-width: auto;
+            }
+            .reset-zoom-btn {
+                top: 80px;
+                right: 10px;
             }
         }
         .country-charts-row .chart { height: auto; min-height: 320px; }
-        .country-controls { 
-            max-width: 1400px; 
+        .country-controls {
+            max-width: 1400px;
             margin: 1rem auto 0;
             background: white;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .controls-inner { }
-        .control-row { 
-            display: flex; 
-            gap: 1.5rem; 
+        .control-row {
+            display: flex;
+            gap: 1.5rem;
             flex-wrap: wrap;
             margin-bottom: 0.75rem;
         }
         .control-row:last-child { margin-bottom: 0; }
         .filter-group { display: flex; align-items: center; gap: 0.5rem; }
         .filter-group label { font-size: 13px; color: #555; white-space: nowrap; }
-        .filter-group input[type="text"] { 
-            padding: 0.4rem 0.6rem; 
-            border: 1px solid #ddd; 
-            border-radius: 4px; 
+        .filter-group input[type="text"] {
+            padding: 0.4rem 0.6rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
             width: 160px;
             font-size: 13px;
         }
-        .filter-group input[type="number"] { 
-            padding: 0.4rem; 
-            border: 1px solid #ddd; 
-            border-radius: 4px; 
+        .filter-group input[type="number"] {
+            padding: 0.4rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
             width: 60px;
             font-size: 13px;
         }
@@ -108,9 +127,9 @@
             color: #888;
             margin-top: 0.5rem;
         }
-        .count-badge { 
-            font-size: 0.8rem; 
-            font-weight: normal; 
+        .count-badge {
+            font-size: 0.8rem;
+            font-weight: normal;
             color: #888;
         }
         .section { background: white; border-radius: 8px; padding: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
@@ -120,7 +139,7 @@
         #map { height: 100%; width: 100%; background: #e8e8e8; }
         .loading { text-align: center; padding: 4rem; color: #666; }
         .error { text-align: center; padding: 4rem; color: #e53e3e; }
-        
+
         /* Mobile optimizations */
         @media (max-width: 600px) {
             .header h1 { font-size: 1.4rem; }
@@ -133,8 +152,11 @@
             .chart-subtitle { font-size: 0.7rem; }
             .chart { height: 250px; }
             .map-container { height: 350px; }
-            .map-controls { padding: 0.5rem; font-size: 0.75rem; }
-            .control-heading { font-size: 0.8rem; }
+            .map-controls { max-width: 180px; }
+            .map-controls-content { padding: 8px; }
+            .map-controls-header { padding: 6px 10px; }
+            .map-controls-title { font-size: 11px; }
+            .control-heading { font-size: 10px; }
             .charts-grid { padding: 0.5rem; gap: 0.75rem; }
             .country-controls { margin: 0.5rem; padding: 0.5rem; }
             .country-controls summary { font-size: 0.9rem; }
@@ -180,88 +202,97 @@
     </div>
 
     <div class="map-container" style="position: relative;">
-        <div class="map-controls">
-            <div class="control-section">
-                <div class="control-heading">Layers</div>
-                <label><input type="checkbox" id="toggle-heatmap" checked> Heatmap</label>
-                <label><input type="checkbox" id="toggle-markers" checked> Markers</label>
-                <label><input type="checkbox" id="toggle-contours" checked> Contours</label>
+        <div class="map-controls" id="map-controls">
+            <div class="map-controls-header" onclick="toggleMapControls()">
+                <span class="map-controls-title">Map Controls</span>
+                <button class="map-controls-toggle" aria-label="Toggle controls">▼</button>
             </div>
-
-            <div class="control-section">
-                <div class="control-heading">Basemap</div>
-                <select id="basemap-select" style="width: 100%;">
-                    <option value="osm">OpenStreetMap</option>
-                    <option value="positron">Light (Positron)</option>
-                    <option value="darkmatter">Dark</option>
-                    <option value="toner">B&W Borders</option>
-                    <option value="none">None</option>
-                </select>
-            </div>
-
-            <div class="control-section">
-                <div class="control-heading">Markers</div>
-                <label><input type="checkbox" id="toggle-scale-markers"> Scale by count</label>
-                <div class="control-row">
-                    <span>Fill:</span>
-                    <input type="color" id="marker-color" value="#000000" class="color-picker">
-                    <label class="inline-label"><input type="checkbox" id="marker-random-fill"> Random</label>
+            <div class="map-controls-content">
+                <div class="control-section">
+                    <div class="control-heading">Layers</div>
+                    <label><input type="checkbox" id="toggle-heatmap" checked> Heatmap</label>
+                    <label><input type="checkbox" id="toggle-markers" checked> Markers</label>
+                    <label><input type="checkbox" id="toggle-contours" checked> Contours</label>
                 </div>
-                <div class="control-row">
-                    <label class="inline-label"><input type="checkbox" id="marker-outline"> Outline:</label>
-                    <input type="color" id="marker-outline-color" value="#ffffff" class="color-picker">
-                    <label class="inline-label"><input type="checkbox" id="marker-random-outline"> Random</label>
-                </div>
-                <div class="control-row">
-                    <span>Jitter (km):</span>
-                    <input type="number" id="marker-jitter" min="1" max="1000" value="10" class="num-input">
-                </div>
-            </div>
 
-            <div class="control-section">
-                <div class="control-heading">Heatmap</div>
-                <div class="control-row">
-                    <span>Colormap:</span>
-                    <select id="colormap-select" style="flex: 1;">
-                        <option value="plasma">Plasma</option>
-                        <option value="viridis">Viridis</option>
-                        <option value="inferno">Inferno</option>
-                        <option value="magma">Magma</option>
-                        <option value="thermal">Thermal (Jet)</option>
-                        <option value="cool">Cool</option>
-                        <option value="hot">Hot</option>
+                <div class="control-section">
+                    <div class="control-heading">Basemap</div>
+                    <select id="basemap-select" style="width: 100%;">
+                        <option value="osm">OpenStreetMap</option>
+                        <option value="positron">Light (Positron)</option>
+                        <option value="darkmatter">Dark</option>
+                        <option value="toner">B&W Borders</option>
+                        <option value="none">None</option>
                     </select>
                 </div>
-                <div class="control-row">
-                    <span>Opacity:</span>
-                    <input type="range" id="heatmap-opacity" min="0.1" max="1" step="0.1" value="0.6" style="flex: 1;">
-                </div>
-            </div>
 
-            <div class="control-section">
-                <div class="control-heading">Contours</div>
-                <div class="control-row">
-                    <span>Color:</span>
-                    <input type="color" id="contour-color" value="#eeeeee" class="color-picker">
+                <div class="control-section">
+                    <div class="control-heading">Markers</div>
+                    <label><input type="checkbox" id="toggle-scale-markers"> Scale by count</label>
+                    <div class="control-row">
+                        <span>Fill:</span>
+                        <input type="color" id="marker-color" value="#000000" class="color-picker">
+                        <label class="inline-label"><input type="checkbox" id="marker-random-fill"> Random</label>
+                    </div>
+                    <div class="control-row">
+                        <label class="inline-label"><input type="checkbox" id="marker-outline"> Outline:</label>
+                        <input type="color" id="marker-outline-color" value="#ffffff" class="color-picker">
+                        <label class="inline-label"><input type="checkbox" id="marker-random-outline"> Random</label>
+                    </div>
+                    <div class="control-row">
+                        <span>Jitter (km):</span>
+                        <input type="number" id="marker-jitter" min="1" max="1000" value="10" class="num-input">
+                    </div>
                 </div>
-                <div class="control-row">
-                    <span>Kernel (px):</span>
-                    <input type="number" id="contour-kernel" min="1" max="500" value="10" class="num-input">
+
+                <div class="control-section">
+                    <div class="control-heading">Heatmap</div>
+                    <div class="control-row">
+                        <span>Colormap:</span>
+                        <select id="colormap-select" style="flex: 1;">
+                            <option value="plasma">Plasma</option>
+                            <option value="viridis">Viridis</option>
+                            <option value="inferno">Inferno</option>
+                            <option value="magma">Magma</option>
+                            <option value="thermal">Thermal (Jet)</option>
+                            <option value="cool">Cool</option>
+                            <option value="hot">Hot</option>
+                        </select>
+                    </div>
+                    <div class="control-row">
+                        <span>Opacity:</span>
+                        <input type="range" id="heatmap-opacity" min="0.1" max="1" step="0.1" value="0.6" style="flex: 1;">
+                    </div>
                 </div>
-                <div class="control-row">
-                    <span>Min %:</span>
-                    <input type="number" id="contour-min" min="0" max="100" value="1" class="num-input">
-                </div>
-                <div class="control-row">
-                    <span>Max %:</span>
-                    <input type="number" id="contour-max" min="0" max="100" value="80" class="num-input">
-                </div>
-                <div class="control-row">
-                    <span>Levels:</span>
-                    <input type="number" id="contour-levels" min="1" max="20" value="10" class="num-input">
+
+                <div class="control-section">
+                    <div class="control-heading">Contours</div>
+                    <div class="control-row">
+                        <span>Color:</span>
+                        <input type="color" id="contour-color" value="#eeeeee" class="color-picker">
+                    </div>
+                    <div class="control-row">
+                        <span>Kernel (px):</span>
+                        <input type="number" id="contour-kernel" min="1" max="500" value="10" class="num-input">
+                    </div>
+                    <div class="control-row">
+                        <span>Min %:</span>
+                        <input type="number" id="contour-min" min="0" max="100" value="1" class="num-input">
+                    </div>
+                    <div class="control-row">
+                        <span>Max %:</span>
+                        <input type="number" id="contour-max" min="0" max="100" value="80" class="num-input">
+                    </div>
+                    <div class="control-row">
+                        <span>Levels:</span>
+                        <input type="number" id="contour-levels" min="1" max="20" value="10" class="num-input">
+                    </div>
                 </div>
             </div>
         </div>
+        <button class="reset-zoom-btn" onclick="resetMapZoom()" title="Reset map view">
+            <span>⟲</span>
+        </button>
         <div id="map"></div>
     </div>
     <div class="data-note">
@@ -418,6 +449,38 @@
         let currentBasemap;
         let globalMapData;
 
+        // Use lower zoom on mobile so whole world is visible
+        function getInitialMapView() {
+            const isMobile = window.innerWidth <= 900;
+            return {
+                center: [20, 0],
+                zoom: isMobile ? 1 : 2
+            };
+        }
+
+        // Toggle map controls collapse state
+        function toggleMapControls() {
+            const controls = document.getElementById('map-controls');
+            controls.classList.toggle('collapsed');
+        }
+
+        // Reset map to initial view
+        function resetMapZoom() {
+            if (map) {
+                const view = getInitialMapView();
+                map.setView(view.center, view.zoom);
+            }
+        }
+
+        // Check if mobile and set initial collapsed state
+        function initMapControlsState() {
+            const isMobile = window.innerWidth <= 900;
+            const controls = document.getElementById('map-controls');
+            if (isMobile && controls) {
+                controls.classList.add('collapsed');
+            }
+        }
+
         const basemaps = {};
         const colormaps = {
             plasma: {0.0: '#0d0887', 0.25: '#7e03a8', 0.5: '#cc4778', 0.75: '#f89540', 1: '#f0f921'},
@@ -431,18 +494,19 @@
 
         function initMap(mapData) {
             globalMapData = mapData;
+            const initialView = getInitialMapView();
 
             map = L.map('map', {
                 maxBounds: [[-90, -180], [90, 180]],
                 maxBoundsViscosity: 1.0,
-                minZoom: 2
-            }).setView([20, 0], 2);
+                minZoom: 1
+            }).setView(initialView.center, initialView.zoom);
 
             // Create custom panes to control layer ordering
             // Lower z-index = rendered first (below)
             map.createPane('markersPane');
             map.getPane('markersPane').style.zIndex = 450;
-            
+
             map.createPane('contoursPane');
             map.getPane('contoursPane').style.zIndex = 500;
 
@@ -774,8 +838,8 @@
                 paper_bgcolor: 'white',
                 plot_bgcolor: 'white',
                 font: { family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif', size: 11 },
-                xaxis: { 
-                    showgrid: true, 
+                xaxis: {
+                    showgrid: true,
                     gridcolor: '#eee',
                     tickformat: '%b %Y'
                 },
@@ -804,7 +868,7 @@
             });
 
             // === ROW 1: USERS ===
-            
+
             // 1a. Cumulative Users (area chart - fill represents total accumulated)
             Plotly.newPlot('chart-cumulative-users', [{
                 x: dates,
@@ -826,7 +890,7 @@
             const monthlyUsersUpper = [];
             const monthlyUsersLower = [];
             const monthlyUsersDates = [];
-            
+
             for (let i = 29; i < timeSeries.length; i++) {
                 const window = [];
                 for (let j = i - 29; j <= i; j++) {
@@ -835,7 +899,7 @@
                 const mean = window.reduce((a, b) => a + b, 0) / window.length;
                 const variance = window.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / window.length;
                 const sd = Math.sqrt(variance);
-                
+
                 monthlyUsersDates.push(timeSeries[i].date);
                 monthlyUsersMean.push(Math.round(mean * 10) / 10);
                 monthlyUsersUpper.push(Math.round((mean + sd) * 10) / 10);
@@ -847,7 +911,7 @@
             const weeklyUsersUpper = [];
             const weeklyUsersLower = [];
             const weeklyUsersDates = [];
-            
+
             for (let i = 6; i < timeSeries.length; i++) {
                 const window = [];
                 for (let j = i - 6; j <= i; j++) {
@@ -856,7 +920,7 @@
                 const mean = window.reduce((a, b) => a + b, 0) / window.length;
                 const variance = window.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / window.length;
                 const sd = Math.sqrt(variance);
-                
+
                 weeklyUsersDates.push(timeSeries[i].date);
                 weeklyUsersMean.push(Math.round(mean * 10) / 10);
                 weeklyUsersUpper.push(Math.round((mean + sd) * 10) / 10);
@@ -966,7 +1030,7 @@
             const monthlyPingsUpper = [];
             const monthlyPingsLower = [];
             const monthlyPingsDates = [];
-            
+
             for (let i = 29; i < timeSeries.length; i++) {
                 const window = [];
                 for (let j = i - 29; j <= i; j++) {
@@ -975,7 +1039,7 @@
                 const mean = window.reduce((a, b) => a + b, 0) / window.length;
                 const variance = window.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / window.length;
                 const sd = Math.sqrt(variance);
-                
+
                 monthlyPingsDates.push(timeSeries[i].date);
                 monthlyPingsMean.push(Math.round(mean * 10) / 10);
                 monthlyPingsUpper.push(Math.round((mean + sd) * 10) / 10);
@@ -987,7 +1051,7 @@
             const weeklyPingsUpper = [];
             const weeklyPingsLower = [];
             const weeklyPingsDates = [];
-            
+
             for (let i = 6; i < timeSeries.length; i++) {
                 const window = [];
                 for (let j = i - 6; j <= i; j++) {
@@ -996,7 +1060,7 @@
                 const mean = window.reduce((a, b) => a + b, 0) / window.length;
                 const variance = window.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / window.length;
                 const sd = Math.sqrt(variance);
-                
+
                 weeklyPingsDates.push(timeSeries[i].date);
                 weeklyPingsMean.push(Math.round(mean * 10) / 10);
                 weeklyPingsUpper.push(Math.round((mean + sd) * 10) / 10);
@@ -1115,7 +1179,7 @@
                 const filteredDistribution = pingsDistribution
                     .filter(d => d.pings > 1)
                     .sort((a, b) => a.pings - b.pings);
-                
+
                 if (filteredDistribution.length > 0) {
                     const colors = filteredDistribution.map(d => getTierColor(d.pings));
                     const tierNames = filteredDistribution.map(d => getTierName(d.pings));
@@ -1125,8 +1189,8 @@
                         y: filteredDistribution.map(d => d.users),
                         type: 'scatter',
                         mode: 'markers',
-                        marker: { 
-                            color: colors, 
+                        marker: {
+                            color: colors,
                             size: 10,
                             opacity: 0.8
                         },
@@ -1134,16 +1198,16 @@
                         hovertemplate: '<b>%{x} times</b><br>%{y} users<br>Category: %{text}<extra></extra>'
                     }], {
                         ...plotlyLayout,
-                        xaxis: { 
-                            type: 'log', 
+                        xaxis: {
+                            type: 'log',
                             title: 'Times Checked In',
                             showgrid: true,
                             gridcolor: '#eee',
                             tickvals: [2, 5, 10, 20, 50, 100, 200, 500, 1000],
                             ticktext: ['2', '5', '10', '20', '50', '100', '200', '500', '1000']
                         },
-                        yaxis: { 
-                            type: 'log', 
+                        yaxis: {
+                            type: 'log',
                             title: 'Number of Users',
                             showgrid: true,
                             gridcolor: '#eee',
@@ -1204,10 +1268,10 @@
                 mark: { type: 'arc', innerRadius: 60 },
                 encoding: {
                     theta: { field: 'users', type: 'quantitative', sort: { field: 'users', order: 'descending' } },
-                    color: { 
-                        field: 'tier', 
+                    color: {
+                        field: 'tier',
                         type: 'nominal',
-                        scale: { 
+                        scale: {
                             domain: tierData.map(t => t.tier),
                             range: tierData.map(t => t.color)
                         },
@@ -1353,19 +1417,19 @@
             const hasActiveSearch = searchTerm.length > 0;
 
             // Update count badges
-            document.getElementById('countries-count-absolute').textContent = 
+            document.getElementById('countries-count-absolute').textContent =
                 hasActiveSearch ? `(${highlightedAbsolute} highlighted)` : `(${byUsers.length})`;
-            document.getElementById('countries-count-percapita').textContent = 
-                hasActiveSearch 
-                    ? `(${highlightedPerCapita} highlighted of ${byPerCapitaWithHighlight.length})` 
+            document.getElementById('countries-count-percapita').textContent =
+                hasActiveSearch
+                    ? `(${highlightedPerCapita} highlighted of ${byPerCapitaWithHighlight.length})`
                     : `(${byPerCapitaWithHighlight.length})`;
-            document.getElementById('countries-count-density').textContent = 
-                hasActiveSearch 
-                    ? `(${highlightedDensity} highlighted of ${byDensityWithHighlight.length})` 
+            document.getElementById('countries-count-density').textContent =
+                hasActiveSearch
+                    ? `(${highlightedDensity} highlighted of ${byDensityWithHighlight.length})`
                     : `(${byDensityWithHighlight.length})`;
 
             // Update highlight summary
-            document.getElementById('highlight-summary').textContent = 
+            document.getElementById('highlight-summary').textContent =
                 searchTerm ? `Highlighting countries matching: "${searchTerm}"` : '';
 
             // Dynamic heights based on number of countries (18px per row)
@@ -1386,7 +1450,7 @@
             const dimColorGreen = '#c8e6c9';
             const highlightColorOrange = '#ed8936';
             const dimColorOrange = '#ffd4a8';
-            
+
             // Hover colors (brighter versions)
             const hoverColor = '#4c5bd4';
             const hoverColorGreen = '#38a169';
@@ -1472,11 +1536,11 @@
                     {
                         mark: { type: 'bar', cursor: 'pointer' },
                         encoding: {
-                            y: { 
-                                field: 'country', 
-                                type: 'nominal', 
+                            y: {
+                                field: 'country',
+                                type: 'nominal',
                                 sort: { field: 'users_per_million', order: 'descending' },
-                                title: null 
+                                title: null
                             },
                             x: { field: 'users_per_million', type: 'quantitative', title: 'Per Million' },
                             fill: {
@@ -1533,11 +1597,11 @@
                     {
                         mark: { type: 'bar', cursor: 'pointer' },
                         encoding: {
-                            y: { 
-                                field: 'country', 
-                                type: 'nominal', 
+                            y: {
+                                field: 'country',
+                                type: 'nominal',
                                 sort: { field: 'users_per_100k_km2', order: 'descending' },
-                                title: null 
+                                title: null
                             },
                             x: { field: 'users_per_100k_km2', type: 'quantitative', title: 'Per 100k km²' },
                             fill: {
@@ -1601,6 +1665,7 @@
         }
 
         // Initialize on page load
+        initMapControlsState();
         initDashboard();
     </script>
 </body>
