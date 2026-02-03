@@ -1,198 +1,254 @@
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <!-- Req Meta tags -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="description" content="The FreeMoCap Project lab leverages 
-    bleeding-edge markerless motion capture software to create a streamlined 
-    ‘one-click’ pipeline for 3D kinematic reconstruction." />
-  <meta name="author" content="Jon Matthis" />
+  <meta name="description" content="About the FreeMoCap Project - Research-grade markerless motion capture software for everyone, completely free." />
+  <meta name="author" content="The FreeMoCap Project" />
   <title>About Us | The FreeMoCap Project</title>
 
-  <!--SOCIAL MEDIA SHARE INFO: TWITTER-->
-  <!-- Title: A concise title for the related content. Maximum 70 characters.-->
-  <meta name="twitter:title" content="About Us | The FreeMoCap Project" />
-  <!-- Description: A description that concisely summarizes the content as appropriate for presentation within a Tweet. 
-        You should not re-use the title as the description or use this field to describe the general services 
-        provided by the website. Maximum 200 characters.-->
-  <meta name="twitter:description"
-    content="The Free Motion Capture Project (FreeMoCap) aims to provide research-grade markerless motion capture software to everyone for free." />
-  <!-- Image: A URL to a unique image representing the content of the page. Typically better to not 
-        use a generic image such as your website logo, author photo, or other image that spans multiple pages. 
-        Images for this Card should be at least 280px in width, and at least 150px in height. Image must be less 
-        than 1MB in size.-->
-  <meta name="twitter:image" content="" />
-  <!-- Tells Twitter how to format info. Leave alone.-->
-  <meta name="twitter:card" content="summary_large_image" />
+  <!-- Open Graph / Social Media -->
+  <meta property="og:title" content="About Us | The FreeMoCap Project" />
+  <meta property="og:description" content="Learn about the FreeMoCap Project and our mission to provide research-grade markerless motion capture software to everyone for free." />
+  <meta property="og:image" content="./assets/logos/fmc-logo-3-4-22.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://freemocap.org/about-us.html" />
 
-  <!-- Favicon-->
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="About Us | The FreeMoCap Project" />
+  <meta name="twitter:description" content="Learn about the FreeMoCap Project and our mission to provide research-grade markerless motion capture software to everyone for free." />
+  <meta name="twitter:image" content="./assets/logos/fmc-logo-3-4-22.png" />
+
+  <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="./assets/favicons/favicon-black.png" />
 
-  <!-- FORK Awesome icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css"
-    integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <!-- Bootstrap icons-->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-
-  <!-- Google fonts-->
-  <link rel="preconnect" href="https://fonts.gstatic.com" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Dosis:wght@200;300;400;500;600&family=Roboto:ital,wght@0,300;0,400;1,300;1,400&display=swap"
-    rel="stylesheet" />
-
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="./css/main.css" />
+  <link rel="stylesheet" href="./css/mainv2.css">
 </head>
 
-<!-- Page Content Begins-->
- 
+<body>
   <!-- Header -->
-  <div id="header"></div>
-
-  <!-- Compact Hero -->
-  <div id="compact-hero"></div>
-
-  <!-- Main Content --> 
-  <header class="masthead py-5 body-image" style="background-image: url(./assets/backgrounds/about-body.png)">
-    <div class="row m-3">
-      <div class="
-            col-xl-8 col-lg-10
-            p-5
-            mx-auto
-            semitrans-box
-            justify-content-center
-          ">
-        <h2 class="text-center text-white">About Us</h2>
-        <p class="text-white" style="text-align: justify; text-justify: inter-word">
-          This project is developed, maintained, and managed by the <a href="https://freemocapfoundation.org/">
-            FreeMoCap Foundation</a>, a 501c3 non-profit corporation in the State of Massachusetts.
-          <br />
-
-        <div class="py-4"></div>
-        <h2 class="text-center text-white">History</h2>
-        <p class="text-white" style="text-align: justify; text-justify: inter-word">
-          The FreeMoCap project began as a panicked attempt by <a href="https://jonmatthis.com/"> Jon Matthis</a> to
-          maintain productivity after his human subjects research plans collapsed in the early days of the Covid 19
-          pandemic.
-          <br />
-          <br />
-          The original plan was to create a tool that would make it possible to study the neural control of human
-          movement without access to the expensive, specialized motion capture equipment of his official research lab.
-          However, in the process of developing early proof-of-concept versions of this system it became clear that
-          there was a significant societal need for a high quality, minimum cost motion capture system. This (relatively
-          small scale) public need derives from a larger inequity - namely, the ever-growing gap between the general
-          population and the fruits of high science and technology.
-          <br />
-          <br />
-          From there, the focus of the project shifted from an effort to create a simple, in-lab research tool into the
-          large-scale public facing project that it is today. To learn more about the history and background of the
-          FreeMoCap project, please watch <a href="https://www.youtube.com/watch?v=DHpxTOq1d9g"> this presentation made
-            to The Gathering for Open Science Hardware (GOSH)</a>.
-          <br />
-          <br />
-          The FreeMoCap project is now and shall remain a long-term effort and a work in progress. Stay tuned!
-          <br />
-          <span id=donate></span>
-        </p>
-
-
-        <div class="py-4"></div>
-        <h2 class="text-center text-white">Support Us</h2>
-        <br />
-        <h5 class="text-center text-white">
-          FreeMoCap is a gift freely given. Usage carries no obligation.
-          <br />
-          <br />
-          <b> &#10024 The best way to support us is to use this tool to fulfill your own needs &#10024</b>
-          <br />
-
-          <br />
-          Please let us know if you do something cool with it! Attribution is deeply appreciated and will help secure
-          the support necessary to maintain
-          this project.
-        </h5>
-        <p class="text-white" style="text-align: justify; text-justify: inter-word">
-          <br />
-          If you would like to contibute financially, we provide links to a variey of donation services
-          below. If your preferred method is not listed please let us know via the Contact link.
-          <br />
-          <br />
-
-        </p>
-
-        <!-- DONATE BUTTONS-->
-        <div class="mx-auto">
-          <!--Three buttons per row, this is -->
-          <div class="row py-1">
-            <!--Paypal (Button 1)-->
-            <div class="col-sm-4 p-1">
-              <button type="button" class="primary-button btn-block" style="width: 100%; font-size: 1.15rem"
-                onclick="window.location.href='https://www.paypal.com/donate/?hosted_button_id=JTBVY428TSSAE';">
-                <i class="fa fa-paypal" aria-hidden="true"></i> Paypal
-              </button>
-            </div>
-            <!--Open Collective (Button 2)-->
-            <div class="col-sm-4 p-1">
-              <button type="button" class="primary-button btn-block" style="width: 100%; font-size: 1.15rem"
-                onclick="window.location.href='https://opencollective.com/freemocap-foundation';">
-                <i class="fa fa-open-collective" aria-hidden="true"></i> Open Collective
-              </button>
-            </div>
-            <!--Button 3-->
-            <div class="col-sm-4 p-1">
-              <button type="button" class="primary-button btn-block" style="width: 100%; font-size: 1.15rem"
-                onclick="window.location.href='./ethereum-wallet-page.html';">
-                <i class="fa fa-ethereum" aria-hidden="true"></i> Ethereum
-              </button>
-            </div>
-          </div>
-        </div>
-        <!--Three buttons per row-->
-        <div class="row py-1">
-
-          <!--Ko-Fi (Button 1)-->
-          <div class="col-sm-4 p-1">
-            <button type="button" class="primary-button btn-block" style="width: 100%; font-size: 1.15rem"
-              onclick="window.location.href='https://www.patreon.com/freemocap';">
-              <i class="fa fa-patreon" aria-hidden="true"></i> Patreon
-            </button>
-          </div>
-
-          <!--Button 2-->
-          <div class="col-sm-4 p-1">
-            <button type="button" class="primary-button btn-block" style="width: 100%; font-size: 1.15rem"
-              onclick="window.location.href='https://github.com/sponsors/freemocap';">
-              <i class="fa fa-github" aria-hidden="true"></i> Github Sponsors
-            </button>
-          </div>
-          <!--Ko-Fi (Button 1)-->
-          <div class="col-sm-4 p-1">
-            <button type="button" class="primary-button btn-block" style="width: 100%; font-size: 1.15rem"
-              onclick="window.location.href='https://ko-fi.com/freemocap';">
-              <i class="fa fa-coffee" aria-hidden="true"></i> Ko-Fi
-            </button>
-          </div>
-
-        </div>
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <a href="/" class="logo">
+          <img src="./assets/logos/fmc-logo-3-4-22.png" alt="FreeMoCap Logo" class="logo-img">
+          <span class="logo-text">The FreeMoCap Project</span>
+        </a>
+        
+        <button class="mobile-menu-toggle" aria-label="Toggle menu">
+          <i class="bi bi-list"></i>
+        </button>
+        
+        <nav class="nav-links">
+          <a href="/#services" class="nav-link">Services</a>
+          <a href="/#community" class="nav-link">Community</a>
+          <a href="/about-us.html" class="nav-link active">About Us</a>
+          <a href="#donate" class="nav-link">Donate</a>
+          <a href="/data.html" class="nav-link"><i class="bi bi-bar-chart"></i> User Data</a>
+          <a href="https://freemocap.github.io/documentation" target="_blank" class="nav-link">Documentation <i class="bi bi-arrow-up-right"></i></a>
+          <a href="https://github.com/freemocap/freemocap" target="_blank" class="nav-link">Code <i class="bi bi-arrow-up-right"></i></a>
+          <a href="https://freemocap.github.io/documentation/installation.html" target="_blank" class="cta-button">Get Started</a>
+        </nav>
       </div>
+    </div>
   </header>
 
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <video class="page-hero-video" autoplay muted loop playsinline>
+      <source src="./assets/video/home-header-short.mp4" type="video/mp4">
+    </video>
+    <div class="page-hero-overlay"></div>
+    <div class="container">
+      <h1 class="page-hero-title">About Us</h1>
+      <p class="page-hero-subtitle">
+        The story behind FreeMoCap and our mission to democratize motion capture technology
+      </p>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about-section">
+    <div class="container">
+      <div class="about-content">
+        <h2 class="section-title">Who We Are</h2>
+        <p class="about-text">
+          This project is developed, maintained, and managed by the <a href="https://freemocapfoundation.org/" target="_blank" class="text-link">FreeMoCap Foundation</a>, a 501c3 non-profit corporation in the State of Massachusetts.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- History Section -->
+  <section class="history-section">
+    <div class="container">
+      <div class="about-content">
+        <h2 class="section-title">History</h2>
+        <p class="about-text">
+          The FreeMoCap project began as a panicked attempt by <a href="https://jonmatthis.com/" target="_blank" class="text-link">Jon Matthis</a> to maintain productivity after his human subjects research plans collapsed in the early days of the Covid 19 pandemic.
+        </p>
+        <p class="about-text">
+          The original plan was to create a tool that would make it possible to study the neural control of human movement without access to the expensive, specialized motion capture equipment of his official research lab. However, in the process of developing early proof-of-concept versions of this system it became clear that there was a significant societal need for a high quality, minimum cost motion capture system. This (relatively small scale) public need derives from a larger inequity — namely, the ever-growing gap between the general population and the fruits of high science and technology.
+        </p>
+        <p class="about-text">
+          From there, the focus of the project shifted from an effort to create a simple, in-lab research tool into the large-scale public facing project that it is today. To learn more about the history and background of the FreeMoCap project, please watch <a href="https://www.youtube.com/watch?v=DHpxTOq1d9g" target="_blank" class="text-link">this presentation made to The Gathering for Open Science Hardware (GOSH)</a>.
+        </p>
+        <p class="about-text">
+          The FreeMoCap project is now and shall remain a long-term effort and a work in progress. Stay tuned!
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Donate Section -->
+  <section id="donate" class="donate-section">
+    <div class="container">
+      <div class="about-content">
+        <h2 class="section-title">Support Us</h2>
+        <p class="about-text text-center">
+          FreeMoCap is a gift freely given. Usage carries no obligation.
+        </p>
+        <p class="about-text text-center highlight-text">
+          <b>✨ The best way to support us is to use this tool to fulfill your own needs ✨</b>
+        </p>
+        <p class="about-text text-center">
+          Please let us know if you do something cool with it! Attribution is deeply appreciated and will help secure the support necessary to maintain this project.
+        </p>
+        <p class="about-text text-center">
+          If you would like to contribute financially, we provide links to a variety of donation services below. If your preferred method is not listed please let us know via Discord.
+        </p>
+
+        <div class="donate-grid">
+          <a href="https://www.paypal.com/donate/?hosted_button_id=JTBVY428TSSAE" target="_blank" class="donate-button">
+            <i class="bi bi-paypal"></i> PayPal
+          </a>
+          <a href="https://opencollective.com/freemocap-foundation" target="_blank" class="donate-button">
+            <i class="bi bi-globe"></i> Open Collective
+          </a>
+          <a href="./ethereum-wallet-page.html" class="donate-button">
+            <i class="bi bi-currency-exchange"></i> Ethereum
+          </a>
+          <a href="https://www.patreon.com/freemocap" target="_blank" class="donate-button">
+            <i class="bi bi-heart"></i> Patreon
+          </a>
+          <a href="https://github.com/sponsors/freemocap" target="_blank" class="donate-button">
+            <i class="bi bi-github"></i> GitHub Sponsors
+          </a>
+          <a href="https://ko-fi.com/freemocap" target="_blank" class="donate-button">
+            <i class="bi bi-cup-hot"></i> Ko-Fi
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Footer -->
-  <div id="footer"></div> 
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <a href="/" class="logo">
+            <img src="./assets/logos/fmc-logo-3-4-22.png" alt="FreeMoCap Logo" class="logo-img" style="height: 30px;">
+            <span class="logo-text">The FreeMoCap Project</span>
+          </a>
+          <p class="copyright" style="margin-top: 1rem;">
+            Free Motion Capture for Everyone
+          </p>
+          <div class="footer-social">
+            <a href="https://fosstodon.org/@freemocap" target="_blank" class="footer-social-link" title="Mastodon">
+              <i class="bi bi-mastodon"></i>
+            </a>
+            <a href="https://twitter.com/freemocap" target="_blank" class="footer-social-link" title="Twitter">
+              <i class="bi bi-twitter"></i>
+            </a>
+            <a href="https://github.com/freemocap/freemocap" target="_blank" class="footer-social-link" title="GitHub">
+              <i class="bi bi-github"></i>
+            </a>
+            <a href="https://discord.gg/SgdnzbHDTG" target="_blank" class="footer-social-link" title="Discord">
+              <i class="bi bi-discord"></i>
+            </a>
+            <a href="https://www.youtube.com/channel/UCOOQxlTCtUz9mr1NPWlJyYQ" target="_blank" class="footer-social-link" title="YouTube">
+              <i class="bi bi-youtube"></i>
+            </a>
+            <a href="https://www.twitch.tv/freemocap" target="_blank" class="footer-social-link" title="Twitch">
+              <i class="bi bi-twitch"></i>
+            </a>
+            <a href="https://bsky.app/profile/freemocap.bsky.social" target="_blank" class="footer-social-link" title="BlueSky">
+              <i class="bi bi-cloud"></i>
+            </a>
+            <a href="https://www.instagram.com/freemocap/" target="_blank" class="footer-social-link" title="Instagram">
+              <i class="bi bi-instagram"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div class="footer-links">
+          <a href="/#services" class="footer-link">Services</a>
+          <a href="/#community" class="footer-link">Community</a>
+          <a href="/about-us.html" class="footer-link">About Us</a>
+          <a href="#donate" class="footer-link">Donate</a>
+          <a href="/data.html" class="footer-link"><i class="bi bi-bar-chart"></i> User Data</a>
+          <a href="https://freemocap.github.io/documentation" target="_blank" class="footer-link">Documentation <i class="bi bi-arrow-up-right"></i></a>
+          <a href="https://github.com/freemocap/freemocap" target="_blank" class="footer-link">Code <i class="bi bi-arrow-up-right"></i></a>
+        </div>
 
-  <!-- Bootstrap core JS-->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Core theme JS-->
-  <script src="./js/scripts.js"></script>
-  <!-- Custom JS -->
-  <script src="./js/custom.js"></script>
+      </div>
+      <div class="footer-bottom">
+      <p class="copyright">
+        &copy; <script>document.write(new Date().getFullYear())</script> The FreeMoCap Project. All rights reserved.<br>
+        Made with ❤️ by the open source community.
+      </p>
+    </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    
+    mobileMenuToggle.addEventListener('click', function() {
+      navLinks.classList.toggle('active');
+      const icon = this.querySelector('i');
+      if (navLinks.classList.contains('active')) {
+        icon.classList.remove('bi-list');
+        icon.classList.add('bi-x');
+      } else {
+        icon.classList.remove('bi-x');
+        icon.classList.add('bi-list');
+      }
+    });
+
+    // Close mobile menu when clicking a link
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+        const icon = mobileMenuToggle.querySelector('i');
+        icon.classList.remove('bi-x');
+        icon.classList.add('bi-list');
+      });
+    });
+
+    // Add scroll effect to header
+    window.addEventListener('scroll', function() {
+      const header = document.querySelector('.header');
+      if (window.scrollY > 50) {
+        header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.3)';
+      } else {
+        header.style.boxShadow = 'none';
+      }
+    });
+  </script>
 </body>
-
 </html>
