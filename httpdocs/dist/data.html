@@ -293,16 +293,16 @@
     <div class="dashboard-tabs">
       <button class="tab-btn active" data-tab="analytics" onclick="switchTab('analytics')">
         <i class="fa fa-bar-chart"></i>
-        <span class="tab-text">FreeMoCap User Analytics</span>
+        <span class="tab-text">Usage Analytics</span>
       </button>
       <button class="tab-btn" data-tab="growth" onclick="switchTab('growth')">
         <i class="fa fa-line-chart"></i>
-        <span class="tab-text">FreeMoCap Growth Animation</span>
+        <span class="tab-text">Growth Animation</span>
       </button>
-<!--      <button class="tab-btn" data-tab="lifespan" onclick="switchTab('lifespan')">-->
-<!--        <i class="fa fa-clock-o"></i>-->
-<!--        <span class="tab-text">User Lifespan</span>-->
-<!--      </button>-->
+      <button class="tab-btn" data-tab="lifespan" onclick="switchTab('lifespan')">
+        <i class="fa fa-clock-o"></i>
+        <span class="tab-text">User Lifespan</span>
+      </button>
     </div>
 
     <!-- Dashboard Frames -->
@@ -316,23 +316,23 @@
       <iframe
         id="frame-analytics"
         class="dashboard-frame active"
-        data-src="./data/freemocap_users_dashboard.html"
+        data-src="./data/freemocap_users_analysis.html"
         onload="frameLoaded('analytics')"
       ></iframe>
 
       <iframe
         id="frame-growth"
         class="dashboard-frame"
-        data-src="./data/freemocap_growth_animation.html"
+        data-src="./data/freemocap_dashboard_animated.html"
         onload="frameLoaded('growth')"
       ></iframe>
 
-<!--      <iframe-->
-<!--        id="frame-lifespan"-->
-<!--        class="dashboard-frame"-->
-<!--        data-src="./data/freemocap_lifespan_analysis.html"-->
-<!--        onload="frameLoaded('lifespan')"-->
-<!--      ></iframe>-->
+      <iframe
+        id="frame-lifespan"
+        class="dashboard-frame"
+        data-src="./data/freemocap_lifespan_analysis.html"
+        onload="frameLoaded('lifespan')"
+      ></iframe>
     </div>
 
     <!-- Dark Footer -->

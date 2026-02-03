@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreeMoCap Growth Animation</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #1a1a2e;
+            color: #f0f0f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Compact Header */
+        .header {
+            text-align: center;
+            padding: 0.3rem;
+            background: linear-gradient(180deg, #252545 0%, #1a1a2e 100%);
+            border-bottom: 1px solid #3a3a5a;
+        }
+        .header h1 {
+            font-size: 1.1rem;
+            background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #1dd1a1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Compact Stats Row */
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 0.3rem 0.5rem;
+            background: #252545;
+        }
+        .stat-item {
+            display: flex;
+            align-items: baseline;
+            gap: 0.3rem;
+        }
+        .stat-value {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #a78bfa;
+        }
+        .stat-label { color: #8080a0; font-size: 0.65rem; }
+
+        /* Super Compact Controls */
+        .controls-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.25rem 0.5rem;
+            background: #1f1f35;
+            border-bottom: 1px solid #3a3a5a;
+            flex-wrap: wrap;
+        }
+        .play-btn {
+            padding: 0.2rem 0.6rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 0.7rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+        .play-btn:hover { filter: brightness(1.15); }
+        .slider-wrap {
+            flex: 1;
+            max-width: 300px;
+            min-width: 120px;
+        }
+        .range-slider {
+            width: 100%;
+            height: 4px;
+            -webkit-appearance: none;
+            background: #3a3a5a;
+            border-radius: 2px;
+        }
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 10px;
+            height: 10px;
+            background: #feca57;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .current-date {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #feca57;
+            min-width: 90px;
+            text-align: center;
+        }
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        .control-group label { color: #8080a0; font-size: 0.6rem; }
+        .control-group select, .control-group input {
+            padding: 0.1rem 0.2rem;
+            border: 1px solid #4a4a6a;
+            border-radius: 3px;
+            background: #2a2a4a;
+            color: #f0f0f5;
+            font-size: 0.6rem;
+        }
+
+        /* Main Content - Maximize Space */
+        .main-content {
+            flex: 1;
+            display: flex;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        /* Map Container - Reduced size for more chart space */
+        .map-section {
+            flex: 1.5;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            min-width: 0;
+        }
+        .map-container {
+            flex: 0.8;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #4a4a6a;
+            position: relative;
+            min-height: 220px;
+        }
+        #map { height: 100%; width: 100%; background: #2a2a4a; }
+        #marker-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 400;
+        }
+
+        /* Spirals Row - Below Map - Larger for more visibility */
+        .spirals-row {
+            display: flex;
+            gap: 0.5rem;
+            flex: 1.2;
+            min-height: 200px;
+        }
+        .spiral-panel {
+            flex: 1;
+            background: linear-gradient(135deg, #2a2a4a 0%, #1f1f3a 100%);
+            border: 1px solid #4a4a6a;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .spiral-header {
+            padding: 0.25rem;
+            text-align: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+            border-bottom: 2px solid;
+        }
+        .spiral-header.users { color: #c4b5fd; border-color: #a78bfa; background: linear-gradient(90deg, rgba(167,139,250,0.2), transparent); }
+        .spiral-header.pings { color: #6ee7b7; border-color: #34d399; background: linear-gradient(90deg, rgba(52,211,153,0.2), transparent); }
+        .spiral-charts {
+            flex: 1;
+            display: flex;
+            gap: 0.25rem;
+            padding: 0.25rem;
+        }
+        .spiral-chart-box {
+            flex: 1;
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
+            position: relative;
+        }
+        .spiral-chart-box canvas {
+            width: 100%;
+            height: 100%;
+        }
+        .spiral-label {
+            position: absolute;
+            top: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.55rem;
+            color: #8080a0;
+        }
+
+        /* Cumulative Sidebar - Wider for better visibility */
+        .cumulative-sidebar {
+            width: 220px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .cumulative-panel {
+            flex: 1;
+            background: linear-gradient(135deg, #252550 0%, #1f1f3a 100%);
+            border: 1px solid #4a4a6a;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .cumulative-header {
+            padding: 0.3rem;
+            text-align: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+            background: linear-gradient(90deg, rgba(100,126,234,0.3), transparent);
+            color: #a0b0ff;
+            border-bottom: 2px solid #667eea;
+        }
+        .cumulative-chart {
+            flex: 1;
+            padding: 0.25rem;
+            min-height: 0;
+        }
+        .cumulative-chart canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Color Scale */
+        .color-scale {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.15rem;
+            font-size: 0.55rem;
+            color: #8080a0;
+        }
+        .color-bar {
+            width: 80px;
+            height: 4px;
+            border-radius: 2px;
+            background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #1dd1a1);
+        }
+
+        @media (max-width: 900px) {
+            .main-content { flex-direction: column; }
+            .cumulative-sidebar { width: 100%; flex-direction: row; height: 150px; }
+            .spirals-row { min-height: 180px; flex: none; height: 180px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🦴 FreeMoCap Growth Animation</h1>
+    </div>
+
+    <div class="stats-row">
+        <div class="stat-item"><span class="stat-value" id="stat-pings">0</span><span class="stat-label">pings</span></div>
+        <div class="stat-item"><span class="stat-value" id="stat-users">0</span><span class="stat-label">users</span></div>
+        <div class="stat-item"><span class="stat-value" id="stat-countries">0</span><span class="stat-label">countries</span></div>
+    </div>
+
+    <div class="controls-bar">
+        <button class="play-btn" id="play-btn"><span id="play-icon">▶</span><span id="play-text">Play</span></button>
+        <div class="control-group">
+            <label>From</label>
+            <input type="date" id="start-date">
+        </div>
+        <div class="slider-wrap">
+            <input type="range" class="range-slider" id="date-slider" min="0" max="100" value="100">
+        </div>
+        <div class="current-date" id="current-date">-</div>
+        <div class="control-group">
+            <label>To</label>
+            <input type="date" id="end-date">
+        </div>
+        <div class="control-group">
+            <label>Speed</label>
+            <select id="speed-select">
+                <option value="10">10x</option>
+                <option value="5" selected>5x</option>
+                <option value="2">2x</option>
+                <option value="1">1x</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <label>Smooth</label>
+            <select id="smoothing-select">
+                <option value="1">Off</option>
+                <option value="7" selected>7d</option>
+                <option value="14">14d</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <label>Trail</label>
+            <select id="trail-length">
+                <option value="15">Short</option>
+                <option value="30" selected>Med</option>
+                <option value="60">Long</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="color-scale">
+        <span id="color-start">-</span>
+        <div class="color-bar"></div>
+        <span id="color-end">-</span>
+    </div>
+
+    <div class="main-content">
+        <div class="map-section">
+            <div class="map-container">
+                <div id="map"></div>
+                <canvas id="marker-canvas"></canvas>
+            </div>
+            <div class="spirals-row">
+                <div class="spiral-panel">
+                    <div class="spiral-header users">📈 New Users/Day</div>
+                    <div class="spiral-charts">
+                        <div class="spiral-chart-box">
+                            <span class="spiral-label">Yearly</span>
+                            <canvas id="users-yearly"></canvas>
+                        </div>
+                        <div class="spiral-chart-box">
+                            <span class="spiral-label">Monthly</span>
+                            <canvas id="users-monthly"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="spiral-panel">
+                    <div class="spiral-header pings">🔔 Daily Pings</div>
+                    <div class="spiral-charts">
+                        <div class="spiral-chart-box">
+                            <span class="spiral-label">Yearly</span>
+                            <canvas id="pings-yearly"></canvas>
+                        </div>
+                        <div class="spiral-chart-box">
+                            <span class="spiral-label">Monthly</span>
+                            <canvas id="pings-monthly"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cumulative-sidebar">
+            <div class="cumulative-panel">
+                <div class="cumulative-header">📊 Total Users</div>
+                <div class="cumulative-chart"><canvas id="cumulative-users"></canvas></div>
+            </div>
+            <div class="cumulative-panel">
+                <div class="cumulative-header">📊 Total Pings</div>
+                <div class="cumulative-chart"><canvas id="cumulative-pings"></canvas></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // GLOBAL STATE
+        // ============================================================
+        let globalData = null;
+        let isPlaying = false;
+        let animationFrame = null;
+        let currentIndex = 0;
+        let filteredIndices = [];
+        let cachedValues = { users: [], pings: [] };
+
+        // Pre-computed marker data for fast rendering
+        let markerData = [];
+        let markerDateIndex = new Map(); // date string -> first marker index visible
+
+        // Map and canvas
+        let map = null;
+        let markerCanvas = null;
+        let markerCtx = null;
+
+        // ============================================================
+        // UTILITY FUNCTIONS
+        // ============================================================
+        function formatDate(dateStr) {
+            const d = new Date(dateStr);
+            return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        function formatDateShort(dateStr) {
+            const d = new Date(dateStr);
+            return d.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+        }
+
+        // Color gradient: red -> orange -> yellow -> cyan -> green
+        function getColor(t) {
+            const colors = [
+                [255, 107, 107],
+                [255, 159, 67],
+                [254, 202, 87],
+                [72, 219, 251],
+                [29, 209, 161]
+            ];
+            const idx = Math.min(Math.floor(t * (colors.length - 1)), colors.length - 2);
+            const frac = (t * (colors.length - 1)) - idx;
+            return [
+                Math.round(colors[idx][0] + frac * (colors[idx + 1][0] - colors[idx][0])),
+                Math.round(colors[idx][1] + frac * (colors[idx + 1][1] - colors[idx][1])),
+                Math.round(colors[idx][2] + frac * (colors[idx + 1][2] - colors[idx][2]))
+            ];
+        }
+
+        function smoothData(values, windowSize) {
+            if (windowSize <= 1) return values.slice();
+            const smoothed = [];
+            for (let i = 0; i < values.length; i++) {
+                let sum = 0, count = 0;
+                for (let j = Math.max(0, i - windowSize + 1); j <= i; j++) {
+                    sum += values[j];
+                    count++;
+                }
+                smoothed.push(sum / count);
+            }
+            return smoothed;
+        }
+
+        function hashString(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = ((hash << 5) - hash) + str.charCodeAt(i);
+                hash = hash & hash;
+            }
+            return hash;
+        }
+
+        function seededRandom(seed) {
+            const x = Math.sin(seed) * 10000;
+            return x - Math.floor(x);
+        }
+
+        // ============================================================
+        // DATA LOADING & PREPROCESSING
+        // ============================================================
+        async function loadData() {
+            try {
+                const response = await fetch('freemocap_dashboard_data.json');
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                globalData = await response.json();
+                preprocessMarkers();
+                initializeAll();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.body.innerHTML = `<div style="padding:2rem;color:#ff6b6b;">Error: ${error.message}<br>Make sure freemocap_dashboard_data.json is in the same directory.</div>`;
+            }
+        }
+
+        function preprocessMarkers() {
+            // Pre-compute all marker properties for fast rendering
+            const userIndexToFirstPing = {};
+            for (const u of globalData.lifespan_data) {
+                userIndexToFirstPing[u.user_index] = u.first_ping;
+            }
+
+            const ts = globalData.time_series;
+            const startDate = new Date(ts[0].date);
+            const endDate = new Date(ts[ts.length - 1].date);
+            const totalMs = endDate - startDate;
+
+            markerData = globalData.map_data.map(m => {
+                const firstPing = userIndexToFirstPing[m.user_index] || ts[0].date;
+                const markerDate = new Date(firstPing);
+                const t = totalMs > 0 ? Math.max(0, Math.min(1, (markerDate - startDate) / totalMs)) : 0.5;
+                const [r, g, b] = getColor(t);
+
+                // Deterministic jitter
+                const hash = hashString(String(m.user_index));
+                const jitterLat = (seededRandom(hash) - 0.5) * 0.3;
+                const jitterLon = (seededRandom(hash + 1) - 0.5) * 0.3;
+
+                return {
+                    lat: m.lat + jitterLat,
+                    lon: m.lon + jitterLon,
+                    firstPing,
+                    firstPingMs: markerDate.getTime(),
+                    color: `rgb(${r},${g},${b})`,
+                    r, g, b,
+                    city: m.city,
+                    country: m.country,
+                    count: m.count
+                };
+            });
+
+            // Sort by first ping date for efficient filtering
+            markerData.sort((a, b) => a.firstPingMs - b.firstPingMs);
+
+            // Build index: for each date, what's the first marker that appears on or before it
+            let markerIdx = 0;
+            for (let i = 0; i < ts.length; i++) {
+                const dateMs = new Date(ts[i].date).getTime() + 86400000; // end of day
+                while (markerIdx < markerData.length && markerData[markerIdx].firstPingMs <= dateMs) {
+                    markerIdx++;
+                }
+                markerDateIndex.set(ts[i].date, markerIdx);
+            }
+        }
+
+        function initializeAll() {
+            initMap();
+            initControls();
+            computeCachedValues();
+            setupCanvases();
+            render();
+
+            window.addEventListener('resize', () => {
+                setupCanvases();
+                resizeMarkerCanvas();
+                render();
+            });
+        }
+
+        // ============================================================
+        // MAP INITIALIZATION (Leaflet base only, markers on canvas)
+        // ============================================================
+        function initMap() {
+            map = L.map('map', {
+                maxBounds: [[-90, -180], [90, 180]],
+                maxBoundsViscosity: 1.0,
+                minZoom: 2,
+                zoomControl: false
+            }).setView([20, 0], 2);
+
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '',
+                maxZoom: 19,
+                noWrap: true
+            }).addTo(map);
+
+            // Add zoom control to top-right
+            L.control.zoom({ position: 'topright' }).addTo(map);
+
+            // Setup marker canvas overlay
+            markerCanvas = document.getElementById('marker-canvas');
+            markerCtx = markerCanvas.getContext('2d');
+            resizeMarkerCanvas();
+
+            // Re-render markers when map moves
+            map.on('moveend zoomend', () => renderMarkers());
+        }
+
+        function resizeMarkerCanvas() {
+            const container = markerCanvas.parentElement;
+            const dpr = window.devicePixelRatio || 1;
+            const rect = container.getBoundingClientRect();
+            markerCanvas.width = rect.width * dpr;
+            markerCanvas.height = rect.height * dpr;
+            markerCanvas.style.width = rect.width + 'px';
+            markerCanvas.style.height = rect.height + 'px';
+            markerCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+
+        // ============================================================
+        // FAST CANVAS-BASED MARKER RENDERING
+        // ============================================================
+        function renderMarkers() {
+            if (!map || !markerCtx || filteredIndices.length === 0) return;
+
+            const width = markerCanvas.width / (window.devicePixelRatio || 1);
+            const height = markerCanvas.height / (window.devicePixelRatio || 1);
+            markerCtx.clearRect(0, 0, width, height);
+
+            const idx = filteredIndices[currentIndex];
+            const currentDate = globalData.time_series[idx].date;
+            const currentDateMs = new Date(currentDate).getTime() + 86400000;
+            
+            // Get number of visible markers efficiently
+            const visibleCount = markerDateIndex.get(currentDate) || 0;
+            if (visibleCount === 0) return;
+
+            const fadeWindowMs = 14 * 86400000; // 14 days
+
+            // Default and fresh sizes - smaller dots
+            const defaultSize = 2;
+            const freshSize = 6;
+            const defaultOpacity = 0.5;
+            const freshOpacity = 1.0;
+
+            // Draw all visible markers
+            for (let i = 0; i < visibleCount; i++) {
+                const m = markerData[i];
+                
+                // Convert lat/lon to pixel position
+                const point = map.latLngToContainerPoint([m.lat, m.lon]);
+                const x = point.x;
+                const y = point.y;
+
+                // Skip if off-screen
+                if (x < -20 || x > width + 20 || y < -20 || y > height + 20) continue;
+
+                // Calculate freshness
+                const ageMs = currentDateMs - m.firstPingMs;
+                const freshness = Math.max(0, 1 - (ageMs / fadeWindowMs));
+
+                const size = defaultSize + (freshSize - defaultSize) * freshness;
+                const opacity = defaultOpacity + (freshOpacity - defaultOpacity) * freshness;
+
+                // Draw glow for fresh markers
+                if (freshness > 0.3) {
+                    markerCtx.beginPath();
+                    markerCtx.arc(x, y, size + 3, 0, Math.PI * 2);
+                    markerCtx.fillStyle = `rgba(${m.r},${m.g},${m.b},${0.3 * freshness})`;
+                    markerCtx.fill();
+                }
+
+                // Draw marker
+                markerCtx.beginPath();
+                markerCtx.arc(x, y, size, 0, Math.PI * 2);
+                markerCtx.fillStyle = `rgba(${m.r},${m.g},${m.b},${opacity})`;
+                markerCtx.fill();
+
+                // White stroke for fresh markers
+                if (freshness > 0.2) {
+                    markerCtx.strokeStyle = `rgba(255,255,255,${0.6 * freshness})`;
+                    markerCtx.lineWidth = 0.5 + freshness * 0.5;
+                    markerCtx.stroke();
+                }
+            }
+        }
+
+        // ============================================================
+        // CONTROLS
+        // ============================================================
+        function initControls() {
+            const ts = globalData.time_series;
+            const startDate = ts[0].date;
+            const endDate = ts[ts.length - 1].date;
+
+            document.getElementById('start-date').value = startDate;
+            document.getElementById('end-date').value = endDate;
+            document.getElementById('start-date').min = startDate;
+            document.getElementById('start-date').max = endDate;
+            document.getElementById('end-date').min = startDate;
+            document.getElementById('end-date').max = endDate;
+
+            updateFilteredIndices();
+            currentIndex = filteredIndices.length - 1;
+            document.getElementById('date-slider').value = currentIndex;
+            updateDateLabels();
+
+            // Event listeners
+            document.getElementById('play-btn').addEventListener('click', togglePlay);
+            document.getElementById('date-slider').addEventListener('input', e => {
+                stopAnimation();
+                currentIndex = parseInt(e.target.value);
+                render();
+            });
+            document.getElementById('start-date').addEventListener('change', () => {
+                stopAnimation();
+                updateFilteredIndices();
+                render();
+            });
+            document.getElementById('end-date').addEventListener('change', () => {
+                stopAnimation();
+                updateFilteredIndices();
+                render();
+            });
+            document.getElementById('smoothing-select').addEventListener('change', () => {
+                computeCachedValues();
+                render();
+            });
+            document.getElementById('trail-length').addEventListener('change', () => render());
+        }
+
+        function updateFilteredIndices() {
+            const ts = globalData.time_series;
+            const startDate = document.getElementById('start-date').value;
+            const endDate = document.getElementById('end-date').value;
+
+            filteredIndices = [];
+            for (let i = 0; i < ts.length; i++) {
+                if (ts[i].date >= startDate && ts[i].date <= endDate) {
+                    filteredIndices.push(i);
+                }
+            }
+
+            document.getElementById('date-slider').max = filteredIndices.length - 1;
+            currentIndex = Math.min(currentIndex, filteredIndices.length - 1);
+            document.getElementById('date-slider').value = currentIndex;
+            updateDateLabels();
+        }
+
+        function updateDateLabels() {
+            const startDate = document.getElementById('start-date').value;
+            const endDate = document.getElementById('end-date').value;
+            document.getElementById('color-start').textContent = formatDateShort(startDate);
+            document.getElementById('color-end').textContent = formatDateShort(endDate);
+
+            if (filteredIndices.length > 0) {
+                const idx = filteredIndices[currentIndex];
+                document.getElementById('current-date').textContent = formatDate(globalData.time_series[idx].date);
+            }
+        }
+
+        function computeCachedValues() {
+            const smoothing = parseInt(document.getElementById('smoothing-select').value);
+            const ts = globalData.time_series;
+            cachedValues.users = smoothData(ts.map(d => d.new_users), smoothing);
+            cachedValues.pings = smoothData(ts.map(d => d.daily_records), smoothing);
+        }
+
+        // ============================================================
+        // ANIMATION
+        // ============================================================
+        let lastTime = 0;
+
+        function animate(timestamp) {
+            if (!isPlaying) return;
+
+            if (timestamp - lastTime >= 16) { // ~60fps
+                lastTime = timestamp;
+                const stepsPerFrame = parseInt(document.getElementById('speed-select').value);
+                currentIndex += stepsPerFrame;
+
+                if (currentIndex >= filteredIndices.length) {
+                    currentIndex = filteredIndices.length - 1;
+                    stopAnimation();
+                    return;
+                }
+
+                document.getElementById('date-slider').value = currentIndex;
+                render();
+            }
+
+            animationFrame = requestAnimationFrame(animate);
+        }
+
+        function startAnimation() {
+            isPlaying = true;
+            document.getElementById('play-icon').textContent = '⏸';
+            document.getElementById('play-text').textContent = 'Pause';
+
+            if (currentIndex >= filteredIndices.length - 1) {
+                currentIndex = 0;
+                document.getElementById('date-slider').value = 0;
+            }
+
+            lastTime = performance.now();
+            animationFrame = requestAnimationFrame(animate);
+        }
+
+        function stopAnimation() {
+            isPlaying = false;
+            document.getElementById('play-icon').textContent = '▶';
+            document.getElementById('play-text').textContent = 'Play';
+            if (animationFrame) {
+                cancelAnimationFrame(animationFrame);
+                animationFrame = null;
+            }
+        }
+
+        function togglePlay() {
+            if (isPlaying) stopAnimation();
+            else startAnimation();
+        }
+
+        // ============================================================
+        // UNIFIED RENDER FUNCTION
+        // ============================================================
+        function render() {
+            updateDateLabels();
+            updateStats();
+            renderMarkers();
+            renderSpirals();
+            renderCumulativeCharts();
+        }
+
+        function updateStats() {
+            if (filteredIndices.length === 0) return;
+            const idx = filteredIndices[currentIndex];
+            const currentDate = globalData.time_series[idx].date;
+            const tsPoint = globalData.time_series[idx];
+
+            document.getElementById('stat-pings').textContent = tsPoint.cumulative_records.toLocaleString();
+            document.getElementById('stat-users').textContent = tsPoint.cumulative_users.toLocaleString();
+
+            // Count countries
+            const visibleCount = markerDateIndex.get(currentDate) || 0;
+            const countries = new Set();
+            for (let i = 0; i < visibleCount; i++) {
+                countries.add(markerData[i].country);
+            }
+            document.getElementById('stat-countries').textContent = countries.size;
+        }
+
+        // ============================================================
+        // CANVAS SETUP
+        // ============================================================
+        const canvases = {};
+        const contexts = {};
+
+        function setupCanvases() {
+            const ids = ['users-yearly', 'users-monthly', 'pings-yearly', 'pings-monthly', 'cumulative-users', 'cumulative-pings'];
+            for (const id of ids) {
+                const canvas = document.getElementById(id);
+                if (!canvas) continue;
+                const container = canvas.parentElement;
+                const dpr = window.devicePixelRatio || 1;
+                const rect = container.getBoundingClientRect();
+                canvas.width = rect.width * dpr;
+                canvas.height = rect.height * dpr;
+                const ctx = canvas.getContext('2d');
+                ctx.scale(dpr, dpr);
+                canvases[id] = canvas;
+                contexts[id] = ctx;
+            }
+        }
+
+        // ============================================================
+        // SPIRAL RENDERING
+        // ============================================================
+        function getDayOfYear(date) {
+            const start = new Date(date.getFullYear(), 0, 0);
+            return Math.floor((date - start) / 86400000);
+        }
+
+        function getTheta(date, cycleType) {
+            if (cycleType === 'yearly') {
+                return (getDayOfYear(date) / 365) * Math.PI * 2 - Math.PI / 2;
+            } else {
+                const dom = date.getDate();
+                const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+                return ((dom - 1) / daysInMonth) * Math.PI * 2 - Math.PI / 2;
+            }
+        }
+
+        function renderSpirals() {
+            if (!globalData) return;
+            const filteredUsers = filteredIndices.map(i => cachedValues.users[i]);
+            const filteredPings = filteredIndices.map(i => cachedValues.pings[i]);
+            const maxUsers = Math.max(...filteredUsers);
+            const maxPings = Math.max(...filteredPings);
+
+            renderSpiral('users-yearly', cachedValues.users, 'yearly', maxUsers);
+            renderSpiral('users-monthly', cachedValues.users, 'monthly', maxUsers);
+            renderSpiral('pings-yearly', cachedValues.pings, 'yearly', maxPings);
+            renderSpiral('pings-monthly', cachedValues.pings, 'monthly', maxPings);
+        }
+
+        function renderSpiral(canvasId, values, cycleType, maxVal) {
+            const ctx = contexts[canvasId];
+            const canvas = canvases[canvasId];
+            if (!ctx || !canvas) return;
+
+            const dpr = window.devicePixelRatio || 1;
+            const width = canvas.width / dpr;
+            const height = canvas.height / dpr;
+            const cx = width / 2;
+            const cy = height / 2;
+            const radius = Math.min(width, height) / 2 - 15;
+            const scale = radius / (maxVal * 1.15);
+
+            const ts = globalData.time_series;
+            const trailLength = parseInt(document.getElementById('trail-length').value);
+            const totalLen = filteredIndices.length;
+
+            ctx.clearRect(0, 0, width, height);
+
+            // Background
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(30,30,50,0.5)';
+            ctx.fill();
+
+            // Grid
+            ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+            ctx.lineWidth = 1;
+            for (let i = 1; i <= 3; i++) {
+                ctx.beginPath();
+                ctx.arc(cx, cy, radius * i / 3, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            // Labels
+            const labels = cycleType === 'yearly' 
+                ? ['J','F','M','A','M','J','J','A','S','O','N','D']
+                : ['1','','10','','20','','30'];
+            const numLines = labels.length;
+
+            ctx.fillStyle = '#8090a0';
+            ctx.font = '8px system-ui';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            for (let i = 0; i < numLines; i++) {
+                const angle = (i / numLines) * Math.PI * 2 - Math.PI / 2;
+                ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(cx + radius * Math.cos(angle), cy + radius * Math.sin(angle));
+                ctx.stroke();
+
+                if (labels[i]) {
+                    const labelRadius = radius + 10;
+                    ctx.fillText(labels[i], cx + labelRadius * Math.cos(angle), cy + labelRadius * Math.sin(angle));
+                }
+            }
+
+            // Draw segments
+            const snakeStart = Math.max(0, currentIndex - trailLength);
+
+            function drawSeg(i1, i2, alpha, lw) {
+                const idx1 = filteredIndices[i1], idx2 = filteredIndices[i2];
+                const d1 = new Date(ts[idx1].date), d2 = new Date(ts[idx2].date);
+                const t1 = getTheta(d1, cycleType), t2 = getTheta(d2, cycleType);
+                const p1x = cx + values[idx1] * scale * Math.cos(t1);
+                const p1y = cy + values[idx1] * scale * Math.sin(t1);
+                const p2x = cx + values[idx2] * scale * Math.cos(t2);
+                const p2y = cy + values[idx2] * scale * Math.sin(t2);
+                const t = (i1 + 0.5) / Math.max(1, totalLen - 1);
+                const [r, g, b] = getColor(t);
+
+                ctx.beginPath();
+                ctx.moveTo(p1x, p1y);
+                ctx.lineTo(p2x, p2y);
+                ctx.strokeStyle = `rgba(${r},${g},${b},${alpha})`;
+                ctx.lineWidth = lw;
+                ctx.lineCap = 'round';
+                ctx.stroke();
+            }
+
+            // Future (faded)
+            for (let i = currentIndex + 1; i < totalLen - 1; i++) drawSeg(i, i + 1, 0.15, 1);
+            // Past trail
+            for (let i = 0; i < snakeStart - 1; i++) drawSeg(i, i + 1, 0.6, 2);
+            // Snake body
+            for (let i = snakeStart; i < currentIndex && i < totalLen - 1; i++) {
+                const snakePos = (i - snakeStart) / Math.max(1, currentIndex - snakeStart);
+                drawSeg(i, i + 1, 0.7 + snakePos * 0.3, 2 + snakePos * 2.5);
+            }
+
+            // Head
+            if (currentIndex >= 0 && currentIndex < totalLen) {
+                const idx = filteredIndices[currentIndex];
+                const d = new Date(ts[idx].date);
+                const theta = getTheta(d, cycleType);
+                const px = cx + values[idx] * scale * Math.cos(theta);
+                const py = cy + values[idx] * scale * Math.sin(theta);
+                const t = currentIndex / Math.max(1, totalLen - 1);
+                const [r, g, b] = getColor(t);
+
+                ctx.beginPath();
+                ctx.arc(px, py, 10, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${r},${g},${b},0.4)`;
+                ctx.fill();
+
+                ctx.beginPath();
+                ctx.arc(px, py, 6, 0, Math.PI * 2);
+                ctx.strokeStyle = 'white';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.arc(px, py, 4, 0, Math.PI * 2);
+                ctx.fillStyle = `rgb(${r},${g},${b})`;
+                ctx.fill();
+            }
+        }
+
+        // ============================================================
+        // CUMULATIVE CHARTS
+        // ============================================================
+        function renderCumulativeCharts() {
+            if (!globalData) return;
+            renderCumulativeChart('cumulative-users', d => d.cumulative_users, 'rgb(167,139,250)');
+            renderCumulativeChart('cumulative-pings', d => d.cumulative_records, 'rgb(52,211,153)');
+        }
+
+        function renderCumulativeChart(canvasId, getValue, color) {
+            const ctx = contexts[canvasId];
+            const canvas = canvases[canvasId];
+            if (!ctx || !canvas) return;
+
+            const dpr = window.devicePixelRatio || 1;
+            const width = canvas.width / dpr;
+            const height = canvas.height / dpr;
+
+            const ts = globalData.time_series;
+            const totalLen = filteredIndices.length;
+            const values = filteredIndices.map(i => getValue(ts[i]));
+            const maxVal = Math.max(...values);
+
+            const ml = 40, mr = 8, mt = 8, mb = 5;
+            const cw = width - ml - mr;
+            const ch = height - mt - mb;
+
+            ctx.clearRect(0, 0, width, height);
+            ctx.fillStyle = 'rgba(20,20,40,0.4)';
+            ctx.fillRect(ml, mt, cw, ch);
+
+            // Grid
+            ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i <= 3; i++) {
+                const y = mt + (ch * i / 3);
+                ctx.beginPath();
+                ctx.moveTo(ml, y);
+                ctx.lineTo(width - mr, y);
+                ctx.stroke();
+            }
+
+            // Y labels
+            ctx.fillStyle = '#8090a0';
+            ctx.font = '8px system-ui';
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'middle';
+            for (let i = 0; i <= 3; i++) {
+                const val = maxVal * (3 - i) / 3;
+                const y = mt + (ch * i / 3);
+                let label = val >= 1e6 ? (val/1e6).toFixed(1)+'M' : val >= 1e3 ? (val/1e3).toFixed(0)+'K' : Math.round(val).toString();
+                ctx.fillText(label, ml - 3, y);
+            }
+
+            if (currentIndex <= 0) return;
+
+            // Fill area
+            ctx.beginPath();
+            ctx.moveTo(ml, mt + ch);
+            for (let i = 0; i <= currentIndex; i++) {
+                const x = ml + (i / Math.max(1, totalLen - 1)) * cw;
+                const y = mt + ch - (values[i] / maxVal) * ch;
+                ctx.lineTo(x, y);
+            }
+            ctx.lineTo(ml + (currentIndex / Math.max(1, totalLen - 1)) * cw, mt + ch);
+            ctx.closePath();
+            const grad = ctx.createLinearGradient(0, mt, 0, mt + ch);
+            grad.addColorStop(0, color.replace('rgb', 'rgba').replace(')', ',0.5)'));
+            grad.addColorStop(1, color.replace('rgb', 'rgba').replace(')', ',0.1)'));
+            ctx.fillStyle = grad;
+            ctx.fill();
+
+            // Line
+            ctx.beginPath();
+            for (let i = 0; i <= currentIndex; i++) {
+                const x = ml + (i / Math.max(1, totalLen - 1)) * cw;
+                const y = mt + ch - (values[i] / maxVal) * ch;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Future (faded)
+            if (currentIndex < totalLen - 1) {
+                ctx.beginPath();
+                for (let i = currentIndex; i < totalLen; i++) {
+                    const x = ml + (i / Math.max(1, totalLen - 1)) * cw;
+                    const y = mt + ch - (values[i] / maxVal) * ch;
+                    if (i === currentIndex) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.strokeStyle = 'rgba(150,150,180,0.2)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+
+            // Current marker
+            const cx = ml + (currentIndex / Math.max(1, totalLen - 1)) * cw;
+            const cy = mt + ch - (values[currentIndex] / maxVal) * ch;
+            
+            ctx.beginPath();
+            ctx.arc(cx, cy, 6, 0, Math.PI * 2);
+            ctx.fillStyle = color.replace('rgb', 'rgba').replace(')', ',0.3)');
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.arc(cx, cy, 4, 0, Math.PI * 2);
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(cx, cy, 2.5, 0, Math.PI * 2);
+            ctx.fillStyle = color;
+            ctx.fill();
+
+            // Value label
+            const val = values[currentIndex];
+            const label = val >= 1e6 ? (val/1e6).toFixed(2)+'M' : val >= 1e3 ? (val/1e3).toFixed(1)+'K' : val.toLocaleString();
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 9px system-ui';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+            ctx.fillText(label, cx, cy - 8);
+        }
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        loadData();
+    </script>
+</body>
+</html>
