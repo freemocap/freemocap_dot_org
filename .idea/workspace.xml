@@ -5,11 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="32a0ed93-e064-4292-aa4a-0270c27efa59" name="Changes" comment="pretty nice!">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_dashboard_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_dashboard_data.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_lifespan_analysis.html" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_lifespan_analysis.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/httpdocs/dist/data.html" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/data.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_users_dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_users_dashboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/httpdocs/dist/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/header.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,7 +16,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="80e4ff8bbdfafb58bf74131e7c34c3f812310aa2" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
