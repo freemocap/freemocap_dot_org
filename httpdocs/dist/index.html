@@ -205,6 +205,126 @@
       </div>
     </div>
 
+    <!-- Global Impact Stats Section -->
+    <div class="container-fluid py-5" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);">
+      <div class="container">
+        <div class="row justify-content-center mb-4">
+          <div class="col-lg-8 text-center">
+            <h2 class="text-white mb-3" style="font-family: 'Dosis', sans-serif;">
+              <span style="background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #1dd1a1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                🌍 Global Impact
+              </span>
+            </h2>
+            <p class="text-white-50">FreeMoCap is being used by researchers, artists, and creators worldwide</p>
+          </div>
+        </div>
+        
+        <div class="row justify-content-center g-4 mb-4">
+          <!-- Users Stat -->
+          <div class="col-6 col-md-3">
+            <div class="text-center p-4" style="background: rgba(167, 139, 250, 0.1); border: 1px solid rgba(167, 139, 250, 0.3); border-radius: 12px;">
+              <div id="stat-users" style="font-family: 'Dosis', sans-serif; font-size: 2.5rem; font-weight: 600; color: #a78bfa;">--</div>
+              <div style="color: #a0a0c0; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Users</div>
+            </div>
+          </div>
+          
+          <!-- Pings Stat -->
+          <div class="col-6 col-md-3">
+            <div class="text-center p-4" style="background: rgba(52, 211, 153, 0.1); border: 1px solid rgba(52, 211, 153, 0.3); border-radius: 12px;">
+              <div id="stat-pings" style="font-family: 'Dosis', sans-serif; font-size: 2.5rem; font-weight: 600; color: #34d399;">--</div>
+              <div style="color: #a0a0c0; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Sessions</div>
+            </div>
+          </div>
+          
+          <!-- Countries Stat -->
+          <div class="col-6 col-md-3">
+            <div class="text-center p-4" style="background: rgba(254, 202, 87, 0.1); border: 1px solid rgba(254, 202, 87, 0.3); border-radius: 12px;">
+              <div id="stat-countries" style="font-family: 'Dosis', sans-serif; font-size: 2.5rem; font-weight: 600; color: #feca57;">--</div>
+              <div style="color: #a0a0c0; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Countries</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row justify-content-center">
+          <div class="col-auto">
+            <button type="button" class="primary-button" style="
+                box-shadow: 0 2px 5px 0 rgba(68, 15, 15, 0.15),
+                  0 6px 20px 0 rgba(0, 0, 0, 0.2);
+              " onclick="window.location.href='./data.html';">
+              <i class="fa fa-bar-chart me-2"></i>
+              Explore Full Dashboard
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <script>
+      // Load stats from JSON data
+      (async function loadHomeStats() {
+        try {
+          const response = await fetch('./data/freemocap_dashboard_data.json');
+          if (response.ok) {
+            const data = await response.json();
+            const latest = data.time_series[data.time_series.length - 1];
+            
+            // Animate count up effect
+            function animateValue(id, end, suffix = '') {
+              const el = document.getElementById(id);
+              if (!el) return;
+              
+              const duration = 1500;
+              const start = 0;
+              const startTime = performance.now();
+              
+              function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                const current = Math.floor(start + (end - start) * easeOut);
+                
+                if (end >= 1000000) {
+                  el.textContent = (current / 1000000).toFixed(1) + 'M' + suffix;
+                } else if (end >= 1000) {
+                  el.textContent = (current / 1000).toFixed(1) + 'K' + suffix;
+                } else {
+                  el.textContent = current.toLocaleString() + suffix;
+                }
+                
+                if (progress < 1) {
+                  requestAnimationFrame(update);
+                }
+              }
+              
+              requestAnimationFrame(update);
+            }
+            
+            // Count unique countries
+            const countries = new Set(data.map_data.map(m => m.country));
+            
+            // Trigger animations when section is visible
+            const observer = new IntersectionObserver((entries) => {
+              entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                  animateValue('stat-users', latest.cumulative_users);
+                  animateValue('stat-pings', latest.cumulative_records);
+                  animateValue('stat-countries', countries.size);
+                  observer.disconnect();
+                }
+              });
+            }, { threshold: 0.3 });
+            
+            const statsSection = document.getElementById('stat-users');
+            if (statsSection) {
+              observer.observe(statsSection.closest('.container-fluid'));
+            }
+          }
+        } catch (e) {
+          console.log('Stats data not available:', e);
+        }
+      })();
+    </script>
+
     <!-- Social Media Connections -->
     <div class="container-fluid px-5 py-5">
       <div class="row justify-content-center pt-5">
