@@ -8,365 +8,548 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
+        
+        html, body {
+            height: 100%;
+            overflow: hidden;
             font-family: system-ui, -apple-system, sans-serif;
             background: #1a1a2e;
             color: #f0f0f5;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
         }
 
-        /* Compact Header */
-        .header {
-            text-align: center;
-            padding: 0.3rem;
-            background: linear-gradient(180deg, #252545 0%, #1a1a2e 100%);
-            border-bottom: 1px solid #3a3a5a;
-        }
-        .header h1 {
-            font-size: 1.1rem;
-            background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #1dd1a1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        /* =====================================================
+           MAIN LAYOUT - Map-first, compact everything else
+           ===================================================== */
+        .dashboard {
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            height: 100%;
         }
 
-        /* Compact Stats Row */
-        .stats-row {
+        /* =====================================================
+           CONTROL BAR - Compact but readable
+           ===================================================== */
+        .control-bar {
             display: flex;
-            justify-content: center;
-            gap: 1rem;
-            padding: 0.3rem 0.5rem;
-            background: #252545;
-        }
-        .stat-item {
-            display: flex;
-            align-items: baseline;
-            gap: 0.3rem;
-        }
-        .stat-value {
-            font-size: 1rem;
-            font-weight: bold;
-            color: #a78bfa;
-        }
-        .stat-label { color: #8080a0; font-size: 0.65rem; }
-
-        /* Super Compact Controls */
-        .controls-bar {
-            display: flex;
-            justify-content: center;
             align-items: center;
-            gap: 0.6rem;
-            padding: 0.25rem 0.5rem;
-            background: #1f1f35;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(180deg, #252545 0%, #1f1f35 100%);
             border-bottom: 1px solid #3a3a5a;
             flex-wrap: wrap;
         }
+
         .play-btn {
-            padding: 0.2rem 0.6rem;
+            padding: 0.5rem 1.2rem;
             background: linear-gradient(135deg, #667eea, #764ba2);
-            border: none;
-            border-radius: 4px;
+            border: 2px solid #feca57;
+            border-radius: 6px;
             color: white;
-            font-size: 0.7rem;
+            font-size: 0.95rem;
+            font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 0.2rem;
+            gap: 0.3rem;
+            box-shadow: 0 0 12px rgba(254, 202, 87, 0.5), 0 0 24px rgba(254, 202, 87, 0.2);
+            animation: pulse-glow 2s ease-in-out infinite;
         }
-        .play-btn:hover { filter: brightness(1.15); }
+        .play-btn:hover { 
+            filter: brightness(1.15); 
+            box-shadow: 0 0 16px rgba(254, 202, 87, 0.7), 0 0 32px rgba(254, 202, 87, 0.3);
+        }
+        .play-btn.playing {
+            animation: none;
+            border-color: #34d399;
+            box-shadow: 0 0 12px rgba(52, 211, 153, 0.5);
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 12px rgba(254, 202, 87, 0.5), 0 0 24px rgba(254, 202, 87, 0.2); }
+            50% { box-shadow: 0 0 20px rgba(254, 202, 87, 0.8), 0 0 40px rgba(254, 202, 87, 0.4); }
+        }
+
+        .ctrl-group {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .ctrl-group label {
+            color: #a0a0c0;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .ctrl-group select,
+        .ctrl-group input[type="date"],
+        .ctrl-group input[type="text"] {
+            padding: 0.3rem 0.4rem;
+            border: 1px solid #4a4a6a;
+            border-radius: 4px;
+            background: #2a2a4a;
+            color: #f0f0f5;
+            font-size: 0.8rem;
+            width: 6.5em;
+        }
+
         .slider-wrap {
             flex: 1;
+            min-width: 150px;
             max-width: 300px;
-            min-width: 120px;
+            position: relative;
+            height: 20px;
         }
         .range-slider {
             width: 100%;
-            height: 4px;
+            height: 6px;
             -webkit-appearance: none;
-            background: #3a3a5a;
-            border-radius: 2px;
+            background: linear-gradient(90deg, #3a3a5a, #667eea);
+            border-radius: 3px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
         }
         .range-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 10px;
-            height: 10px;
+            width: 18px;
+            height: 18px;
             background: #feca57;
             border-radius: 50%;
             cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
         }
+        .range-slider::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: #feca57;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            border: none;
+        }
+
         .current-date {
-            font-size: 0.8rem;
-            font-weight: 600;
+            font-size: 1rem;
+            font-weight: 700;
             color: #feca57;
-            min-width: 90px;
+            min-width: 110px;
             text-align: center;
-        }
-        .control-group {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
-        .control-group label { color: #8080a0; font-size: 0.6rem; }
-        .control-group select, .control-group input {
-            padding: 0.1rem 0.2rem;
-            border: 1px solid #4a4a6a;
-            border-radius: 3px;
-            background: #2a2a4a;
-            color: #f0f0f5;
-            font-size: 0.6rem;
+            font-variant-numeric: tabular-nums;
         }
 
-        /* Main Content - Maximize Space */
-        .main-content {
-            flex: 1;
+        .stats-inline {
             display: flex;
-            gap: 0.5rem;
-            padding: 0.5rem;
-            min-height: 0;
-            overflow: hidden;
+            gap: 1rem;
+            font-size: 0.9rem;
+        }
+        .stats-inline .stat-val {
+            font-weight: 700;
+            color: #a78bfa;
+            font-variant-numeric: tabular-nums;
+            min-width: 3.5em;
+            display: inline-block;
+            text-align: right;
+        }
+        .stats-inline .stat-lbl {
+            color: #8080a0;
+            font-size: 0.75rem;
+            margin-left: 0.2rem;
         }
 
-        /* Map Container - Reduced size for more chart space */
+        /* Mobile: collapse advanced controls */
+        .ctrl-group.advanced { display: flex; }
+        
+        @media (max-width: 800px) {
+            .ctrl-group.advanced { display: none; }
+            .control-bar { gap: 0.5rem; padding: 0.4rem 0.5rem; }
+        }
+
+        /* =====================================================
+           MAP SECTION - Takes most vertical space
+           ===================================================== */
         .map-section {
-            flex: 1.5;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            min-width: 0;
-        }
-        .map-container {
-            flex: 0.8;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid #4a4a6a;
             position: relative;
-            min-height: 220px;
+            min-height: 250px;
         }
-        #map { height: 100%; width: 100%; background: #2a2a4a; }
+
+        .map-container {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            overflow: hidden;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+            background: #2a2a4a;
+        }
+
         #marker-canvas {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
             pointer-events: none;
             z-index: 400;
         }
 
-        /* Spirals Row - Below Map - Larger for more visibility */
-        .spirals-row {
+        .reset-view-btn {
+            position: absolute;
+            top: 80px;
+            right: 10px;
+            z-index: 500;
+            width: 30px;
+            height: 30px;
+            background: #fff;
+            border: 2px solid rgba(0,0,0,0.2);
+            border-radius: 4px;
+            font-size: 18px;
+            line-height: 1;
+            cursor: pointer;
+            color: #333;
             display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .reset-view-btn:hover {
+            background: #f4f4f4;
+        }
+
+        .leaflet-control-attribution { display: none !important; }
+
+        /* Color scale overlay */
+        .color-scale {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 500;
+            display: flex;
+            align-items: center;
             gap: 0.5rem;
-            flex: 1.2;
+            background: rgba(26, 26, 46, 0.95);
+            padding: 0.4rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: #a0a0c0;
+            font-weight: 500;
+        }
+        .color-bar {
+            width: 100px;
+            height: 6px;
+            border-radius: 3px;
+            background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #1dd1a1);
+        }
+
+        /* =====================================================
+           CHARTS ROW - Spirals + Cumulative side by side
+           ===================================================== */
+        .charts-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: #151528;
+            max-height: 240px;
             min-height: 200px;
         }
-        .spiral-panel {
-            flex: 1;
-            background: linear-gradient(135deg, #2a2a4a 0%, #1f1f3a 100%);
-            border: 1px solid #4a4a6a;
-            border-radius: 8px;
+
+        .chart-panel {
+            background: linear-gradient(135deg, #252550 0%, #1f1f3a 100%);
+            border: 1px solid #3a3a5a;
+            border-radius: 6px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
         }
-        .spiral-header {
-            padding: 0.25rem;
-            text-align: center;
-            font-size: 0.7rem;
+
+        .chart-header {
+            padding: 0.3rem 0.5rem;
+            font-size: 0.85rem;
             font-weight: 600;
+            text-align: center;
             border-bottom: 2px solid;
         }
-        .spiral-header.users { color: #c4b5fd; border-color: #a78bfa; background: linear-gradient(90deg, rgba(167,139,250,0.2), transparent); }
-        .spiral-header.pings { color: #6ee7b7; border-color: #34d399; background: linear-gradient(90deg, rgba(52,211,153,0.2), transparent); }
-        .spiral-charts {
+        .chart-header.users {
+            color: #c4b5fd;
+            border-color: #a78bfa;
+            background: linear-gradient(90deg, rgba(167,139,250,0.25), transparent);
+        }
+        .chart-header.pings {
+            color: #6ee7b7;
+            border-color: #34d399;
+            background: linear-gradient(90deg, rgba(52,211,153,0.25), transparent);
+        }
+        .chart-header.cumulative {
+            color: #93c5fd;
+            border-color: #60a5fa;
+            background: linear-gradient(90deg, rgba(96,165,250,0.25), transparent);
+        }
+
+        .chart-body {
             flex: 1;
             display: flex;
             gap: 0.25rem;
             padding: 0.25rem;
+            min-height: 0;
         }
-        .spiral-chart-box {
+
+        .spiral-box {
             flex: 1;
             background: rgba(0,0,0,0.2);
             border-radius: 4px;
             position: relative;
         }
-        .spiral-chart-box canvas {
-            width: 100%;
-            height: 100%;
-        }
+        .spiral-box canvas { width: 100%; height: 100%; }
         .spiral-label {
             position: absolute;
-            top: 2px;
+            top: 3px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 0.55rem;
+            font-size: 0.65rem;
             color: #8080a0;
+            font-weight: 500;
         }
 
-        /* Cumulative Sidebar - Wider for better visibility */
-        .cumulative-sidebar {
-            width: 220px;
-            flex-shrink: 0;
+        /* Cumulative panel - stacked charts */
+        .cumulative-body {
+            flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
-        }
-        .cumulative-panel {
-            flex: 1;
-            background: linear-gradient(135deg, #252550 0%, #1f1f3a 100%);
-            border: 1px solid #4a4a6a;
-            border-radius: 8px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-        .cumulative-header {
-            padding: 0.3rem;
-            text-align: center;
-            font-size: 0.7rem;
-            font-weight: 600;
-            background: linear-gradient(90deg, rgba(100,126,234,0.3), transparent);
-            color: #a0b0ff;
-            border-bottom: 2px solid #667eea;
-        }
-        .cumulative-chart {
-            flex: 1;
+            gap: 0.2rem;
             padding: 0.25rem;
             min-height: 0;
         }
-        .cumulative-chart canvas {
-            width: 100%;
-            height: 100%;
+        .cumulative-chart {
+            flex: 1;
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
+            position: relative;
+            min-height: 50px;
         }
-
-        /* Color Scale */
-        .color-scale {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 0.3rem;
-            padding: 0.15rem;
-            font-size: 0.55rem;
+        .cumulative-chart canvas { width: 100%; height: 100%; }
+        .cumulative-label {
+            position: absolute;
+            top: 2px;
+            right: 4px;
+            font-size: 0.6rem;
             color: #8080a0;
-        }
-        .color-bar {
-            width: 80px;
-            height: 4px;
-            border-radius: 2px;
-            background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #1dd1a1);
+            font-weight: 500;
         }
 
+        /* Responsive: stack on mobile */
         @media (max-width: 900px) {
-            .main-content { flex-direction: column; }
-            .cumulative-sidebar { width: 100%; flex-direction: row; height: 150px; }
-            .spirals-row { min-height: 180px; flex: none; height: 180px; }
+            .charts-row {
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: 1fr auto;
+                max-height: 280px;
+            }
+            .chart-panel:nth-child(3) {
+                grid-column: span 2;
+                max-height: 80px;
+            }
+            .cumulative-body { flex-direction: row; }
+        }
+
+        @media (max-width: 600px) {
+            /* Allow scrolling on mobile */
+            html, body {
+                height: auto;
+                overflow: auto;
+            }
+            
+            .dashboard {
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+                height: auto;
+            }
+            
+            /* Control bar: wrap nicely */
+            .control-bar {
+                flex-wrap: wrap;
+                gap: 0.4rem;
+                padding: 0.5rem;
+            }
+            
+            .slider-wrap {
+                order: 10;
+                flex-basis: 100%;
+                max-width: 100%;
+                margin: 0.25rem 0;
+            }
+            
+            .current-date {
+                order: 11;
+                flex-basis: 100%;
+                text-align: center;
+            }
+            
+            .stats-inline {
+                order: 12;
+                flex-basis: 100%;
+                justify-content: center;
+                margin-top: 0.25rem;
+            }
+            
+            /* Map: full width, fixed height */
+            .map-section {
+                min-height: 50vh;
+                height: 50vh;
+                flex: none;
+            }
+            
+            /* Charts: stack vertically with good height */
+            .charts-row {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto;
+                max-height: none;
+                min-height: auto;
+                gap: 0.5rem;
+                padding: 0.5rem;
+            }
+            
+            .chart-panel {
+                min-height: 150px;
+            }
+            
+            .chart-panel:nth-child(3) {
+                grid-column: span 1;
+                max-height: none;
+                min-height: 120px;
+            }
+            
+            .cumulative-body { 
+                flex-direction: column; 
+            }
+            
+            .cumulative-chart {
+                min-height: 50px;
+            }
+            
+            /* Hide color scale on mobile to save space */
+            .color-scale {
+                bottom: 8px;
+                padding: 0.3rem 0.5rem;
+                font-size: 0.65rem;
+            }
+        }
+        
+        /* Extra small screens */
+        @media (max-width: 400px) {
+            .ctrl-group label {
+                display: none;
+            }
+            
+            .play-btn {
+                padding: 0.4rem 0.75rem;
+            }
+            
+            .stats-inline {
+                gap: 0.5rem;
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>🦴 FreeMoCap Growth Animation</h1>
-    </div>
+    <div class="dashboard">
+        <!-- Control bar -->
+        <div class="control-bar">
+            <button class="play-btn" id="play-btn">
+                <span id="play-icon">▶</span>
+                <span id="play-text">Play</span>
+            </button>
 
-    <div class="stats-row">
-        <div class="stat-item"><span class="stat-value" id="stat-pings">0</span><span class="stat-label">pings</span></div>
-        <div class="stat-item"><span class="stat-value" id="stat-users">0</span><span class="stat-label">users</span></div>
-        <div class="stat-item"><span class="stat-value" id="stat-countries">0</span><span class="stat-label">countries</span></div>
-    </div>
+            <div class="slider-wrap">
+                <input type="range" class="range-slider" id="date-slider" min="0" max="100" value="100">
+            </div>
 
-    <div class="controls-bar">
-        <button class="play-btn" id="play-btn"><span id="play-icon">▶</span><span id="play-text">Play</span></button>
-        <div class="control-group">
-            <label>From</label>
-            <input type="date" id="start-date">
-        </div>
-        <div class="slider-wrap">
-            <input type="range" class="range-slider" id="date-slider" min="0" max="100" value="100">
-        </div>
-        <div class="current-date" id="current-date">-</div>
-        <div class="control-group">
-            <label>To</label>
-            <input type="date" id="end-date">
-        </div>
-        <div class="control-group">
-            <label>Speed</label>
-            <select id="speed-select">
-                <option value="10">10x</option>
-                <option value="5" selected>5x</option>
-                <option value="2">2x</option>
-                <option value="1">1x</option>
-            </select>
-        </div>
-        <div class="control-group">
-            <label>Smooth</label>
-            <select id="smoothing-select">
-                <option value="1">Off</option>
-                <option value="7" selected>7d</option>
-                <option value="14">14d</option>
-            </select>
-        </div>
-        <div class="control-group">
-            <label>Trail</label>
-            <select id="trail-length">
-                <option value="15">Short</option>
-                <option value="30" selected>Med</option>
-                <option value="60">Long</option>
-            </select>
-        </div>
-    </div>
+            <div class="current-date" id="current-date">-</div>
 
-    <div class="color-scale">
-        <span id="color-start">-</span>
-        <div class="color-bar"></div>
-        <span id="color-end">-</span>
-    </div>
+            <div class="ctrl-group">
+                <label>Speed</label>
+                <select id="speed-select">
+                    <option value="5">5×</option>
+                    <option value="2" selected>2×</option>
+                    <option value="1">1×</option>
+                </select>
+            </div>
 
-    <div class="main-content">
+            <div class="ctrl-group advanced">
+                <label>Smooth</label>
+                <select id="smoothing-select">
+                    <option value="1">Off</option>
+                    <option value="7">7d</option>
+                    <option value="14">14d</option>
+                    <option value="30" selected>30d</option>
+                </select>
+            </div>
+
+            <div class="stats-inline">
+                <span><span class="stat-val" id="stat-users">0</span><span class="stat-lbl">users</span></span>
+                <span><span class="stat-val" id="stat-pings">0</span><span class="stat-lbl">pings</span></span>
+                <span><span class="stat-val" id="stat-countries">0</span><span class="stat-lbl">countries</span></span>
+            </div>
+        </div>
+
+        <!-- Map section -->
         <div class="map-section">
             <div class="map-container">
                 <div id="map"></div>
                 <canvas id="marker-canvas"></canvas>
+                <button class="reset-view-btn" id="reset-view-btn" title="Reset View">⟲</button>
             </div>
-            <div class="spirals-row">
-                <div class="spiral-panel">
-                    <div class="spiral-header users">📈 New Users/Day</div>
-                    <div class="spiral-charts">
-                        <div class="spiral-chart-box">
-                            <span class="spiral-label">Yearly</span>
-                            <canvas id="users-yearly"></canvas>
-                        </div>
-                        <div class="spiral-chart-box">
-                            <span class="spiral-label">Monthly</span>
-                            <canvas id="users-monthly"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="spiral-panel">
-                    <div class="spiral-header pings">🔔 Daily Pings</div>
-                    <div class="spiral-charts">
-                        <div class="spiral-chart-box">
-                            <span class="spiral-label">Yearly</span>
-                            <canvas id="pings-yearly"></canvas>
-                        </div>
-                        <div class="spiral-chart-box">
-                            <span class="spiral-label">Monthly</span>
-                            <canvas id="pings-monthly"></canvas>
-                        </div>
-                    </div>
-                </div>
+            <div class="color-scale">
+                <span id="color-start">-</span>
+                <div class="color-bar"></div>
+                <span id="color-end">-</span>
             </div>
         </div>
 
-        <div class="cumulative-sidebar">
-            <div class="cumulative-panel">
-                <div class="cumulative-header">📊 Total Users</div>
-                <div class="cumulative-chart"><canvas id="cumulative-users"></canvas></div>
+        <!-- Charts row -->
+        <div class="charts-row">
+            <div class="chart-panel">
+                <div class="chart-header users">📈 New Users/Day</div>
+                <div class="chart-body">
+                    <div class="spiral-box">
+                        <span class="spiral-label">Yearly</span>
+                        <canvas id="users-yearly"></canvas>
+                    </div>
+                    <div class="spiral-box">
+                        <span class="spiral-label">Monthly</span>
+                        <canvas id="users-monthly"></canvas>
+                    </div>
+                </div>
             </div>
-            <div class="cumulative-panel">
-                <div class="cumulative-header">📊 Total Pings</div>
-                <div class="cumulative-chart"><canvas id="cumulative-pings"></canvas></div>
+
+            <div class="chart-panel">
+                <div class="chart-header pings">🔔 Daily Pings</div>
+                <div class="chart-body">
+                    <div class="spiral-box">
+                        <span class="spiral-label">Yearly</span>
+                        <canvas id="pings-yearly"></canvas>
+                    </div>
+                    <div class="spiral-box">
+                        <span class="spiral-label">Monthly</span>
+                        <canvas id="pings-monthly"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-panel">
+                <div class="chart-header cumulative">📊 Cumulative Totals</div>
+                <div class="cumulative-body">
+                    <div class="cumulative-chart">
+                        <span class="cumulative-label" style="color:#a78bfa;">Users</span>
+                        <canvas id="cumulative-users"></canvas>
+                    </div>
+                    <div class="cumulative-chart">
+                        <span class="cumulative-label" style="color:#34d399;">Pings</span>
+                        <canvas id="cumulative-pings"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -381,22 +564,19 @@
         let currentIndex = 0;
         let filteredIndices = [];
         let cachedValues = { users: [], pings: [] };
-
-        // Pre-computed marker data for fast rendering
         let markerData = [];
-        let markerDateIndex = new Map(); // date string -> first marker index visible
-
-        // Map and canvas
+        let markerDateIndex = new Map();
         let map = null;
         let markerCanvas = null;
         let markerCtx = null;
+        const canvases = {};
+        const contexts = {};
 
         // ============================================================
-        // UTILITY FUNCTIONS
+        // UTILITIES
         // ============================================================
         function formatDate(dateStr) {
-            const d = new Date(dateStr);
-            return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            return dateStr; // Already in ISO8601 YYYY-MM-DD format
         }
 
         function formatDateShort(dateStr) {
@@ -404,36 +584,27 @@
             return d.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
         }
 
-        // Color gradient: red -> orange -> yellow -> cyan -> green
         function getColor(t) {
-            const colors = [
-                [255, 107, 107],
-                [255, 159, 67],
-                [254, 202, 87],
-                [72, 219, 251],
-                [29, 209, 161]
-            ];
+            const colors = [[255,107,107],[255,159,67],[254,202,87],[72,219,251],[29,209,161]];
             const idx = Math.min(Math.floor(t * (colors.length - 1)), colors.length - 2);
             const frac = (t * (colors.length - 1)) - idx;
             return [
-                Math.round(colors[idx][0] + frac * (colors[idx + 1][0] - colors[idx][0])),
-                Math.round(colors[idx][1] + frac * (colors[idx + 1][1] - colors[idx][1])),
-                Math.round(colors[idx][2] + frac * (colors[idx + 1][2] - colors[idx][2]))
+                Math.round(colors[idx][0] + frac * (colors[idx+1][0] - colors[idx][0])),
+                Math.round(colors[idx][1] + frac * (colors[idx+1][1] - colors[idx][1])),
+                Math.round(colors[idx][2] + frac * (colors[idx+1][2] - colors[idx][2]))
             ];
         }
 
         function smoothData(values, windowSize) {
             if (windowSize <= 1) return values.slice();
-            const smoothed = [];
-            for (let i = 0; i < values.length; i++) {
+            return values.map((_, i, arr) => {
                 let sum = 0, count = 0;
                 for (let j = Math.max(0, i - windowSize + 1); j <= i; j++) {
-                    sum += values[j];
+                    sum += arr[j];
                     count++;
                 }
-                smoothed.push(sum / count);
-            }
-            return smoothed;
+                return sum / count;
+            });
         }
 
         function hashString(str) {
@@ -451,7 +622,7 @@
         }
 
         // ============================================================
-        // DATA LOADING & PREPROCESSING
+        // DATA LOADING & PREPROCESSING (from working original)
         // ============================================================
         async function loadData() {
             try {
@@ -462,7 +633,7 @@
                 initializeAll();
             } catch (error) {
                 console.error('Error loading data:', error);
-                document.body.innerHTML = `<div style="padding:2rem;color:#ff6b6b;">Error: ${error.message}<br>Make sure freemocap_dashboard_data.json is in the same directory.</div>`;
+                document.body.innerHTML = `<div style="padding:2rem;color:#ff6b6b;font-size:1.2rem;">Error: ${error.message}<br>Make sure freemocap_dashboard_data.json is in the same directory.</div>`;
             }
         }
 
@@ -485,7 +656,7 @@
                 const [r, g, b] = getColor(t);
 
                 // Deterministic jitter
-                const hash = hashString(String(m.user_index));
+                const hash = hashString(m.user_index);
                 const jitterLat = (seededRandom(hash) - 0.5) * 0.3;
                 const jitterLon = (seededRandom(hash + 1) - 0.5) * 0.3;
 
@@ -502,18 +673,21 @@
                 };
             });
 
-            // Sort by first ping date for efficient filtering
+            // Sort by first ping date
             markerData.sort((a, b) => a.firstPingMs - b.firstPingMs);
 
-            // Build index: for each date, what's the first marker that appears on or before it
+            // Build index: for each date, count of visible markers
             let markerIdx = 0;
             for (let i = 0; i < ts.length; i++) {
-                const dateMs = new Date(ts[i].date).getTime() + 86400000; // end of day
+                const dateMs = new Date(ts[i].date).getTime() + 86400000;
                 while (markerIdx < markerData.length && markerData[markerIdx].firstPingMs <= dateMs) {
                     markerIdx++;
                 }
                 markerDateIndex.set(ts[i].date, markerIdx);
             }
+            
+            // Pre-compute country counts for performance
+            precomputeCountryCounts();
         }
 
         function initializeAll() {
@@ -523,23 +697,46 @@
             setupCanvases();
             render();
 
-            window.addEventListener('resize', () => {
-                setupCanvases();
-                resizeMarkerCanvas();
-                render();
+            // Debounced resize handler for performance
+            let resizeTimeout;
+            const handleResize = () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    setupCanvases();
+                    resizeMarkerCanvas();
+                    if (map) {
+                        map.invalidateSize();
+                    }
+                    render();
+                }, 100);
+            };
+            
+            window.addEventListener('resize', handleResize);
+            window.addEventListener('orientationchange', () => {
+                // Delay slightly for orientation to complete
+                setTimeout(() => {
+                    handleResize();
+                    // Reset view after orientation change
+                    setTimeout(resetMapView, 150);
+                }, 150);
             });
         }
 
         // ============================================================
-        // MAP INITIALIZATION (Leaflet base only, markers on canvas)
+        // MAP (from working original)
         // ============================================================
         function initMap() {
+            const isMobile = window.innerWidth <= 600;
+            
             map = L.map('map', {
-                maxBounds: [[-90, -180], [90, 180]],
+                maxBounds: [[-60, -180], [72, 180]],
                 maxBoundsViscosity: 1.0,
-                minZoom: 2,
+                minZoom: 1,
                 zoomControl: false
-            }).setView([20, 0], 2);
+            });
+            
+            // Fit world view based on container size
+            resetMapView();
 
             L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
                 attribution: '',
@@ -547,16 +744,24 @@
                 noWrap: true
             }).addTo(map);
 
-            // Add zoom control to top-right
             L.control.zoom({ position: 'topright' }).addTo(map);
+            
+            // Reset view button
+            document.getElementById('reset-view-btn').addEventListener('click', resetMapView);
 
-            // Setup marker canvas overlay
             markerCanvas = document.getElementById('marker-canvas');
             markerCtx = markerCanvas.getContext('2d');
             resizeMarkerCanvas();
 
-            // Re-render markers when map moves
             map.on('moveend zoomend', () => renderMarkers());
+        }
+        
+        function resetMapView() {
+            if (!map) return;
+            // Fit to inhabited world (Tórshavn at 62°N is our northernmost user)
+            map.fitBounds([[-55, -170], [70, 180]], { padding: [10, 10] });
+            // Re-render markers after view change
+            setTimeout(renderMarkers, 100);
         }
 
         function resizeMarkerCanvas() {
@@ -571,68 +776,98 @@
         }
 
         // ============================================================
-        // FAST CANVAS-BASED MARKER RENDERING
+        // MARKER RENDERING - Optimized with batching
         // ============================================================
+        let offscreenCanvas = null;
+        let offscreenCtx = null;
+        let lastRenderedIndex = -1;
+        let lastMapBounds = null;
+        
+        function initOffscreenCanvas() {
+            offscreenCanvas = document.createElement('canvas');
+            offscreenCtx = offscreenCanvas.getContext('2d');
+        }
+        
         function renderMarkers() {
             if (!map || !markerCtx || filteredIndices.length === 0) return;
 
-            const width = markerCanvas.width / (window.devicePixelRatio || 1);
-            const height = markerCanvas.height / (window.devicePixelRatio || 1);
+            const dpr = window.devicePixelRatio || 1;
+            const width = markerCanvas.width / dpr;
+            const height = markerCanvas.height / dpr;
             markerCtx.clearRect(0, 0, width, height);
 
             const idx = filteredIndices[currentIndex];
             const currentDate = globalData.time_series[idx].date;
             const currentDateMs = new Date(currentDate).getTime() + 86400000;
-            
-            // Get number of visible markers efficiently
+
             const visibleCount = markerDateIndex.get(currentDate) || 0;
             if (visibleCount === 0) return;
 
-            const fadeWindowMs = 14 * 86400000; // 14 days
-
-            // Default and fresh sizes - smaller dots
-            const defaultSize = 2;
-            const freshSize = 6;
-            const defaultOpacity = 0.5;
-            const freshOpacity = 1.0;
-
-            // Draw all visible markers
-            for (let i = 0; i < visibleCount; i++) {
+            const fadeWindowMs = 14 * 86400000;
+            const freshThresholdMs = currentDateMs - fadeWindowMs;
+            
+            // Find the split point between old and fresh markers
+            let freshStartIdx = visibleCount;
+            for (let i = visibleCount - 1; i >= 0; i--) {
+                if (markerData[i].firstPingMs < freshThresholdMs) {
+                    freshStartIdx = i + 1;
+                    break;
+                }
+                if (i === 0) freshStartIdx = 0;
+            }
+            
+            // Draw old markers (simplified - just dots, no glow)
+            markerCtx.globalAlpha = 0.5;
+            for (let i = 0; i < freshStartIdx; i++) {
                 const m = markerData[i];
+                const point = map.latLngToContainerPoint([m.lat, m.lon]);
+                const x = point.x;
+                const y = point.y;
                 
-                // Convert lat/lon to pixel position
+                if (x < -10 || x > width + 10 || y < -10 || y > height + 10) continue;
+                
+                markerCtx.fillStyle = m.color;
+                markerCtx.beginPath();
+                markerCtx.arc(x, y, 3, 0, Math.PI * 2);
+                markerCtx.fill();
+            }
+            markerCtx.globalAlpha = 1.0;
+            
+            // Draw fresh markers (full effect with glow)
+            const defaultSize = 3;
+            const freshSize = 8;
+            
+            for (let i = freshStartIdx; i < visibleCount; i++) {
+                const m = markerData[i];
                 const point = map.latLngToContainerPoint([m.lat, m.lon]);
                 const x = point.x;
                 const y = point.y;
 
-                // Skip if off-screen
                 if (x < -20 || x > width + 20 || y < -20 || y > height + 20) continue;
 
-                // Calculate freshness
                 const ageMs = currentDateMs - m.firstPingMs;
                 const freshness = Math.max(0, 1 - (ageMs / fadeWindowMs));
-
                 const size = defaultSize + (freshSize - defaultSize) * freshness;
-                const opacity = defaultOpacity + (freshOpacity - defaultOpacity) * freshness;
+                const opacity = 0.5 + 0.5 * freshness;
 
-                // Draw glow for fresh markers
+                // Glow
                 if (freshness > 0.3) {
                     markerCtx.beginPath();
-                    markerCtx.arc(x, y, size + 3, 0, Math.PI * 2);
+                    markerCtx.arc(x, y, size + 4, 0, Math.PI * 2);
                     markerCtx.fillStyle = `rgba(${m.r},${m.g},${m.b},${0.3 * freshness})`;
                     markerCtx.fill();
                 }
 
-                // Draw marker
+                // Main dot
                 markerCtx.beginPath();
                 markerCtx.arc(x, y, size, 0, Math.PI * 2);
                 markerCtx.fillStyle = `rgba(${m.r},${m.g},${m.b},${opacity})`;
                 markerCtx.fill();
 
-                // White stroke for fresh markers
+                // White ring
                 if (freshness > 0.2) {
                     markerCtx.strokeStyle = `rgba(255,255,255,${0.6 * freshness})`;
-                    markerCtx.lineWidth = 0.5 + freshness * 0.5;
+                    markerCtx.lineWidth = 0.5 + freshness;
                     markerCtx.stroke();
                 }
             }
@@ -646,218 +881,161 @@
             const startDate = ts[0].date;
             const endDate = ts[ts.length - 1].date;
 
-            document.getElementById('start-date').value = startDate;
-            document.getElementById('end-date').value = endDate;
-            document.getElementById('start-date').min = startDate;
-            document.getElementById('start-date').max = endDate;
-            document.getElementById('end-date').min = startDate;
-            document.getElementById('end-date').max = endDate;
+            document.getElementById('color-start').textContent = formatDateShort(startDate);
+            document.getElementById('color-end').textContent = formatDateShort(endDate);
 
-            updateFilteredIndices();
-            currentIndex = filteredIndices.length - 1;
-            document.getElementById('date-slider').value = currentIndex;
-            updateDateLabels();
-
-            // Event listeners
             document.getElementById('play-btn').addEventListener('click', togglePlay);
-            document.getElementById('date-slider').addEventListener('input', e => {
-                stopAnimation();
-                currentIndex = parseInt(e.target.value);
-                render();
-            });
-            document.getElementById('start-date').addEventListener('change', () => {
-                stopAnimation();
-                updateFilteredIndices();
-                render();
-            });
-            document.getElementById('end-date').addEventListener('change', () => {
-                stopAnimation();
-                updateFilteredIndices();
-                render();
-            });
+            document.getElementById('date-slider').addEventListener('input', onSliderChange);
+            
             document.getElementById('smoothing-select').addEventListener('change', () => {
                 computeCachedValues();
                 render();
             });
-            document.getElementById('trail-length').addEventListener('change', () => render());
-        }
-
-        function updateFilteredIndices() {
-            const ts = globalData.time_series;
-            const startDate = document.getElementById('start-date').value;
-            const endDate = document.getElementById('end-date').value;
-
-            filteredIndices = [];
-            for (let i = 0; i < ts.length; i++) {
-                if (ts[i].date >= startDate && ts[i].date <= endDate) {
-                    filteredIndices.push(i);
-                }
-            }
-
-            document.getElementById('date-slider').max = filteredIndices.length - 1;
-            currentIndex = Math.min(currentIndex, filteredIndices.length - 1);
-            document.getElementById('date-slider').value = currentIndex;
-            updateDateLabels();
-        }
-
-        function updateDateLabels() {
-            const startDate = document.getElementById('start-date').value;
-            const endDate = document.getElementById('end-date').value;
-            document.getElementById('color-start').textContent = formatDateShort(startDate);
-            document.getElementById('color-end').textContent = formatDateShort(endDate);
-
-            if (filteredIndices.length > 0) {
-                const idx = filteredIndices[currentIndex];
-                document.getElementById('current-date').textContent = formatDate(globalData.time_series[idx].date);
-            }
         }
 
         function computeCachedValues() {
-            const smoothing = parseInt(document.getElementById('smoothing-select').value);
             const ts = globalData.time_series;
-            cachedValues.users = smoothData(ts.map(d => d.new_users), smoothing);
-            cachedValues.pings = smoothData(ts.map(d => d.daily_records), smoothing);
+            const smoothing = parseInt(document.getElementById('smoothing-select').value);
+
+            // Use full timeline
+            filteredIndices = ts.map((_, i) => i);
+
+            const rawUsers = ts.map(d => d.new_users || 0);
+            const rawPings = ts.map(d => d.daily_records || 0);
+            cachedValues.users = smoothData(rawUsers, smoothing);
+            cachedValues.pings = smoothData(rawPings, smoothing);
+            
+            // Cache cumulative values too (used by cumulative charts)
+            cachedValues.cumulativeUsers = ts.map(d => d.cumulative_users);
+            cachedValues.cumulativePings = ts.map(d => d.cumulative_records);
+            cachedValues.maxCumulativeUsers = Math.max(...cachedValues.cumulativeUsers);
+            cachedValues.maxCumulativePings = Math.max(...cachedValues.cumulativePings);
+
+            currentIndex = Math.min(currentIndex, filteredIndices.length - 1);
+            if (currentIndex < 0) currentIndex = filteredIndices.length - 1;
         }
 
-        // ============================================================
-        // ANIMATION
-        // ============================================================
-        let lastTime = 0;
+        let lastAnimationTime = 0;
+        const BASE_FRAME_INTERVAL = 50; // ms per frame at 1x speed
+        
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            const btn = document.getElementById('play-btn');
+            document.getElementById('play-icon').textContent = isPlaying ? '⏸' : '▶';
+            document.getElementById('play-text').textContent = isPlaying ? 'Pause' : 'Play';
+            btn.classList.toggle('playing', isPlaying);
+            if (isPlaying) {
+                if (currentIndex >= filteredIndices.length - 1) currentIndex = 0;
+                lastAnimationTime = performance.now();
+                animationFrame = requestAnimationFrame(animate);
+            }
+        }
 
         function animate(timestamp) {
             if (!isPlaying) return;
-
-            if (timestamp - lastTime >= 16) { // ~60fps
-                lastTime = timestamp;
-                const stepsPerFrame = parseInt(document.getElementById('speed-select').value);
-                currentIndex += stepsPerFrame;
-
-                if (currentIndex >= filteredIndices.length) {
-                    currentIndex = filteredIndices.length - 1;
-                    stopAnimation();
-                    return;
-                }
-
-                document.getElementById('date-slider').value = currentIndex;
+            
+            const speed = parseInt(document.getElementById('speed-select').value);
+            const elapsed = timestamp - lastAnimationTime;
+            const targetInterval = BASE_FRAME_INTERVAL / speed;
+            
+            if (elapsed >= targetInterval) {
+                const framesToAdvance = Math.floor(elapsed / targetInterval);
+                currentIndex = Math.min(currentIndex + framesToAdvance, filteredIndices.length - 1);
+                lastAnimationTime = timestamp - (elapsed % targetInterval);
+                
+                // Sync slider
+                document.getElementById('date-slider').value = (currentIndex / (filteredIndices.length - 1)) * 100;
                 render();
             }
-
-            animationFrame = requestAnimationFrame(animate);
-        }
-
-        function startAnimation() {
-            isPlaying = true;
-            document.getElementById('play-icon').textContent = '⏸';
-            document.getElementById('play-text').textContent = 'Pause';
-
+            
             if (currentIndex >= filteredIndices.length - 1) {
-                currentIndex = 0;
-                document.getElementById('date-slider').value = 0;
-            }
-
-            lastTime = performance.now();
-            animationFrame = requestAnimationFrame(animate);
-        }
-
-        function stopAnimation() {
-            isPlaying = false;
-            document.getElementById('play-icon').textContent = '▶';
-            document.getElementById('play-text').textContent = 'Play';
-            if (animationFrame) {
-                cancelAnimationFrame(animationFrame);
-                animationFrame = null;
+                isPlaying = false;
+                document.getElementById('play-icon').textContent = '▶';
+                document.getElementById('play-text').textContent = 'Play';
+                document.getElementById('play-btn').classList.remove('playing');
+            } else {
+                animationFrame = requestAnimationFrame(animate);
             }
         }
 
-        function togglePlay() {
-            if (isPlaying) stopAnimation();
-            else startAnimation();
-        }
-
-        // ============================================================
-        // UNIFIED RENDER FUNCTION
-        // ============================================================
-        function render() {
-            updateDateLabels();
-            updateStats();
-            renderMarkers();
-            renderSpirals();
-            renderCumulativeCharts();
-        }
-
-        function updateStats() {
-            if (filteredIndices.length === 0) return;
-            const idx = filteredIndices[currentIndex];
-            const currentDate = globalData.time_series[idx].date;
-            const tsPoint = globalData.time_series[idx];
-
-            document.getElementById('stat-pings').textContent = tsPoint.cumulative_records.toLocaleString();
-            document.getElementById('stat-users').textContent = tsPoint.cumulative_users.toLocaleString();
-
-            // Count countries
-            const visibleCount = markerDateIndex.get(currentDate) || 0;
-            const countries = new Set();
-            for (let i = 0; i < visibleCount; i++) {
-                countries.add(markerData[i].country);
-            }
-            document.getElementById('stat-countries').textContent = countries.size;
+        function onSliderChange() {
+            const pct = parseFloat(document.getElementById('date-slider').value) / 100;
+            currentIndex = Math.round(pct * (filteredIndices.length - 1));
+            render();
         }
 
         // ============================================================
         // CANVAS SETUP
         // ============================================================
-        const canvases = {};
-        const contexts = {};
-
         function setupCanvases() {
             const ids = ['users-yearly', 'users-monthly', 'pings-yearly', 'pings-monthly', 'cumulative-users', 'cumulative-pings'];
-            for (const id of ids) {
+            ids.forEach(id => {
                 const canvas = document.getElementById(id);
-                if (!canvas) continue;
-                const container = canvas.parentElement;
-                const dpr = window.devicePixelRatio || 1;
-                const rect = container.getBoundingClientRect();
-                canvas.width = rect.width * dpr;
-                canvas.height = rect.height * dpr;
-                const ctx = canvas.getContext('2d');
-                ctx.scale(dpr, dpr);
-                canvases[id] = canvas;
-                contexts[id] = ctx;
-            }
+                if (canvas) {
+                    const rect = canvas.parentElement.getBoundingClientRect();
+                    const dpr = window.devicePixelRatio || 1;
+                    canvas.width = rect.width * dpr;
+                    canvas.height = rect.height * dpr;
+                    canvases[id] = canvas;
+                    contexts[id] = canvas.getContext('2d');
+                    contexts[id].setTransform(dpr, 0, 0, dpr, 0, 0);
+                }
+            });
         }
 
         // ============================================================
-        // SPIRAL RENDERING
+        // RENDER
         // ============================================================
-        function getDayOfYear(date) {
-            const start = new Date(date.getFullYear(), 0, 0);
-            return Math.floor((date - start) / 86400000);
-        }
-
-        function getTheta(date, cycleType) {
-            if (cycleType === 'yearly') {
-                return (getDayOfYear(date) / 365) * Math.PI * 2 - Math.PI / 2;
-            } else {
-                const dom = date.getDate();
-                const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-                return ((dom - 1) / daysInMonth) * Math.PI * 2 - Math.PI / 2;
-            }
-        }
-
-        function renderSpirals() {
+        let cachedCountryCount = [];
+        
+        function precomputeCountryCounts() {
             if (!globalData) return;
-            const filteredUsers = filteredIndices.map(i => cachedValues.users[i]);
-            const filteredPings = filteredIndices.map(i => cachedValues.pings[i]);
-            const maxUsers = Math.max(...filteredUsers);
-            const maxPings = Math.max(...filteredPings);
+            const ts = globalData.time_series;
+            cachedCountryCount = new Array(ts.length);
+            const seenCountries = new Set();
+            let markerIdx = 0;
+            
+            for (let i = 0; i < ts.length; i++) {
+                const dateMs = new Date(ts[i].date).getTime() + 86400000;
+                while (markerIdx < markerData.length && markerData[markerIdx].firstPingMs <= dateMs) {
+                    seenCountries.add(markerData[markerIdx].country);
+                    markerIdx++;
+                }
+                cachedCountryCount[i] = seenCountries.size;
+            }
+        }
+        
+        function render() {
+            if (!globalData || filteredIndices.length === 0) return;
 
-            renderSpiral('users-yearly', cachedValues.users, 'yearly', maxUsers);
-            renderSpiral('users-monthly', cachedValues.users, 'monthly', maxUsers);
-            renderSpiral('pings-yearly', cachedValues.pings, 'yearly', maxPings);
-            renderSpiral('pings-monthly', cachedValues.pings, 'monthly', maxPings);
+            const ts = globalData.time_series;
+            const idx = filteredIndices[currentIndex];
+            const d = ts[idx];
+
+            document.getElementById('current-date').textContent = formatDate(d.date);
+
+            const fmt = n => n >= 1e6 ? (n/1e6).toFixed(1)+'M' : n >= 1e3 ? (n/1e3).toFixed(1)+'K' : n.toString();
+            document.getElementById('stat-pings').textContent = fmt(d.cumulative_records);
+            document.getElementById('stat-users').textContent = fmt(d.cumulative_users);
+            document.getElementById('stat-countries').textContent = cachedCountryCount[idx] || 0;
+
+            renderMarkers();
+            renderSpiralCharts();
+            renderCumulativeCharts();
         }
 
-        function renderSpiral(canvasId, values, cycleType, maxVal) {
+        // ============================================================
+        // SPIRAL CHARTS
+        // ============================================================
+        function renderSpiralCharts() {
+            if (!globalData) return;
+            renderSpiral('users-yearly', cachedValues.users, 'year', [167, 139, 250]);
+            renderSpiral('users-monthly', cachedValues.users, 'month', [167, 139, 250]);
+            renderSpiral('pings-yearly', cachedValues.pings, 'year', [52, 211, 153]);
+            renderSpiral('pings-monthly', cachedValues.pings, 'month', [52, 211, 153]);
+        }
+
+        function renderSpiral(canvasId, values, cycleType, baseColor) {
             const ctx = contexts[canvasId];
             const canvas = canvases[canvasId];
             if (!ctx || !canvas) return;
@@ -865,68 +1043,63 @@
             const dpr = window.devicePixelRatio || 1;
             const width = canvas.width / dpr;
             const height = canvas.height / dpr;
-            const cx = width / 2;
-            const cy = height / 2;
-            const radius = Math.min(width, height) / 2 - 15;
-            const scale = radius / (maxVal * 1.15);
-
             const ts = globalData.time_series;
-            const trailLength = parseInt(document.getElementById('trail-length').value);
-            const totalLen = filteredIndices.length;
+            
+            // Trail length = one full cycle
+            const trailLength = cycleType === 'year' ? 365 : 30;
 
             ctx.clearRect(0, 0, width, height);
 
-            // Background
-            ctx.beginPath();
-            ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(30,30,50,0.5)';
-            ctx.fill();
+            const cx = width / 2;
+            const cy = height / 2;
+            const radius = Math.min(width, height) / 2 - 14;
+            const maxVal = Math.max(...values, 1);
+            const scale = radius / maxVal;
+            const totalLen = filteredIndices.length;
 
-            // Grid
-            ctx.strokeStyle = 'rgba(255,255,255,0.1)';
-            ctx.lineWidth = 1;
-            for (let i = 1; i <= 3; i++) {
-                ctx.beginPath();
-                ctx.arc(cx, cy, radius * i / 3, 0, Math.PI * 2);
-                ctx.stroke();
+            function getTheta(date, type) {
+                if (type === 'year') {
+                    const startOfYear = new Date(date.getFullYear(), 0, 1);
+                    const dayOfYear = Math.floor((date - startOfYear) / 86400000);
+                    return (dayOfYear / 365) * Math.PI * 2 - Math.PI / 2;
+                } else {
+                    const dayOfMonth = date.getDate();
+                    const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+                    return (dayOfMonth / daysInMonth) * Math.PI * 2 - Math.PI / 2;
+                }
             }
 
-            // Labels
-            const labels = cycleType === 'yearly' 
-                ? ['J','F','M','A','M','J','J','A','S','O','N','D']
-                : ['1','','10','','20','','30'];
-            const numLines = labels.length;
-
+            // Draw guides
+            const labels = cycleType === 'year' ? ['J','F','M','A','M','J','J','A','S','O','N','D'] : ['1','','10','','20','','30'];
             ctx.fillStyle = '#8090a0';
-            ctx.font = '8px system-ui';
+            ctx.font = '9px system-ui';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
 
-            for (let i = 0; i < numLines; i++) {
-                const angle = (i / numLines) * Math.PI * 2 - Math.PI / 2;
+            for (let i = 0; i < labels.length; i++) {
+                const angle = (i / labels.length) * Math.PI * 2 - Math.PI / 2;
                 ctx.strokeStyle = 'rgba(255,255,255,0.08)';
                 ctx.beginPath();
                 ctx.moveTo(cx, cy);
                 ctx.lineTo(cx + radius * Math.cos(angle), cy + radius * Math.sin(angle));
                 ctx.stroke();
-
                 if (labels[i]) {
-                    const labelRadius = radius + 10;
-                    ctx.fillText(labels[i], cx + labelRadius * Math.cos(angle), cy + labelRadius * Math.sin(angle));
+                    const lr = radius + 10;
+                    ctx.fillText(labels[i], cx + lr * Math.cos(angle), cy + lr * Math.sin(angle));
                 }
             }
 
-            // Draw segments
             const snakeStart = Math.max(0, currentIndex - trailLength);
 
+            // Draw non-highlighted segments using colormap
             function drawSeg(i1, i2, alpha, lw) {
                 const idx1 = filteredIndices[i1], idx2 = filteredIndices[i2];
                 const d1 = new Date(ts[idx1].date), d2 = new Date(ts[idx2].date);
                 const t1 = getTheta(d1, cycleType), t2 = getTheta(d2, cycleType);
-                const p1x = cx + values[idx1] * scale * Math.cos(t1);
-                const p1y = cy + values[idx1] * scale * Math.sin(t1);
-                const p2x = cx + values[idx2] * scale * Math.cos(t2);
-                const p2y = cy + values[idx2] * scale * Math.sin(t2);
+                const p1x = cx + values[i1] * scale * Math.cos(t1);
+                const p1y = cy + values[i1] * scale * Math.sin(t1);
+                const p2x = cx + values[i2] * scale * Math.cos(t2);
+                const p2y = cy + values[i2] * scale * Math.sin(t2);
                 const t = (i1 + 0.5) / Math.max(1, totalLen - 1);
                 const [r, g, b] = getColor(t);
 
@@ -938,69 +1111,89 @@
                 ctx.lineCap = 'round';
                 ctx.stroke();
             }
+            
+            // Draw highlighted tail segments (current cycle) in white/bright
+            function drawTailSeg(i1, i2, progress) {
+                const idx1 = filteredIndices[i1], idx2 = filteredIndices[i2];
+                const d1 = new Date(ts[idx1].date), d2 = new Date(ts[idx2].date);
+                const t1 = getTheta(d1, cycleType), t2 = getTheta(d2, cycleType);
+                const p1x = cx + values[i1] * scale * Math.cos(t1);
+                const p1y = cy + values[i1] * scale * Math.sin(t1);
+                const p2x = cx + values[i2] * scale * Math.cos(t2);
+                const p2y = cy + values[i2] * scale * Math.sin(t2);
+                
+                // Highlight color: white fading to the base color
+                const alpha = 0.4 + progress * 0.6;
+                const lw = 1.5 + progress * 3;
 
-            // Future (faded)
-            for (let i = currentIndex + 1; i < totalLen - 1; i++) drawSeg(i, i + 1, 0.15, 1);
-            // Past trail
-            for (let i = 0; i < snakeStart - 1; i++) drawSeg(i, i + 1, 0.6, 2);
-            // Snake body
-            for (let i = snakeStart; i < currentIndex && i < totalLen - 1; i++) {
-                const snakePos = (i - snakeStart) / Math.max(1, currentIndex - snakeStart);
-                drawSeg(i, i + 1, 0.7 + snakePos * 0.3, 2 + snakePos * 2.5);
+                ctx.beginPath();
+                ctx.moveTo(p1x, p1y);
+                ctx.lineTo(p2x, p2y);
+                ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+                ctx.lineWidth = lw;
+                ctx.lineCap = 'round';
+                ctx.stroke();
             }
 
-            // Head
+            // Future segments (faded)
+            for (let i = currentIndex + 1; i < totalLen - 1; i++) drawSeg(i, i + 1, 0.15, 1);
+            // Past segments (before current cycle)
+            for (let i = 0; i < snakeStart - 1; i++) drawSeg(i, i + 1, 0.5, 1.5);
+            // Current cycle tail (highlighted in white)
+            for (let i = snakeStart; i < currentIndex && i < totalLen - 1; i++) {
+                const progress = (i - snakeStart) / Math.max(1, currentIndex - snakeStart);
+                drawTailSeg(i, i + 1, progress);
+            }
+
+            // Current position marker
             if (currentIndex >= 0 && currentIndex < totalLen) {
                 const idx = filteredIndices[currentIndex];
                 const d = new Date(ts[idx].date);
                 const theta = getTheta(d, cycleType);
-                const px = cx + values[idx] * scale * Math.cos(theta);
-                const py = cy + values[idx] * scale * Math.sin(theta);
-                const t = currentIndex / Math.max(1, totalLen - 1);
-                const [r, g, b] = getColor(t);
+                const px = cx + values[currentIndex] * scale * Math.cos(theta);
+                const py = cy + values[currentIndex] * scale * Math.sin(theta);
 
+                // Glow
                 ctx.beginPath();
                 ctx.arc(px, py, 10, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(${r},${g},${b},0.4)`;
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
                 ctx.fill();
 
+                // White ring
                 ctx.beginPath();
                 ctx.arc(px, py, 6, 0, Math.PI * 2);
                 ctx.strokeStyle = 'white';
                 ctx.lineWidth = 2;
                 ctx.stroke();
 
+                // Center dot
                 ctx.beginPath();
                 ctx.arc(px, py, 4, 0, Math.PI * 2);
-                ctx.fillStyle = `rgb(${r},${g},${b})`;
+                ctx.fillStyle = '#feca57';
                 ctx.fill();
             }
         }
 
         // ============================================================
-        // CUMULATIVE CHARTS
+        // CUMULATIVE CHARTS - Using cached values
         // ============================================================
         function renderCumulativeCharts() {
             if (!globalData) return;
-            renderCumulativeChart('cumulative-users', d => d.cumulative_users, 'rgb(167,139,250)');
-            renderCumulativeChart('cumulative-pings', d => d.cumulative_records, 'rgb(52,211,153)');
+            renderCumulativeChart('cumulative-users', cachedValues.cumulativeUsers, cachedValues.maxCumulativeUsers, 'rgb(167,139,250)');
+            renderCumulativeChart('cumulative-pings', cachedValues.cumulativePings, cachedValues.maxCumulativePings, 'rgb(52,211,153)');
         }
 
-        function renderCumulativeChart(canvasId, getValue, color) {
+        function renderCumulativeChart(canvasId, values, maxVal, color) {
             const ctx = contexts[canvasId];
             const canvas = canvases[canvasId];
-            if (!ctx || !canvas) return;
+            if (!ctx || !canvas || !values) return;
 
             const dpr = window.devicePixelRatio || 1;
             const width = canvas.width / dpr;
             const height = canvas.height / dpr;
-
-            const ts = globalData.time_series;
             const totalLen = filteredIndices.length;
-            const values = filteredIndices.map(i => getValue(ts[i]));
-            const maxVal = Math.max(...values);
 
-            const ml = 40, mr = 8, mt = 8, mb = 5;
+            const ml = 32, mr = 6, mt = 4, mb = 4;
             const cw = width - ml - mr;
             const ch = height - mt - mb;
 
@@ -1008,40 +1201,36 @@
             ctx.fillStyle = 'rgba(20,20,40,0.4)';
             ctx.fillRect(ml, mt, cw, ch);
 
-            // Grid
-            ctx.strokeStyle = 'rgba(255,255,255,0.1)';
-            ctx.lineWidth = 1;
-            for (let i = 0; i <= 3; i++) {
-                const y = mt + (ch * i / 3);
-                ctx.beginPath();
-                ctx.moveTo(ml, y);
-                ctx.lineTo(width - mr, y);
-                ctx.stroke();
-            }
-
             // Y labels
             ctx.fillStyle = '#8090a0';
-            ctx.font = '8px system-ui';
+            ctx.font = '9px system-ui';
             ctx.textAlign = 'right';
             ctx.textBaseline = 'middle';
-            for (let i = 0; i <= 3; i++) {
-                const val = maxVal * (3 - i) / 3;
-                const y = mt + (ch * i / 3);
-                let label = val >= 1e6 ? (val/1e6).toFixed(1)+'M' : val >= 1e3 ? (val/1e3).toFixed(0)+'K' : Math.round(val).toString();
-                ctx.fillText(label, ml - 3, y);
-            }
+            const topLabel = maxVal >= 1e6 ? (maxVal/1e6).toFixed(1)+'M' : maxVal >= 1e3 ? (maxVal/1e3).toFixed(0)+'K' : Math.round(maxVal).toString();
+            ctx.fillText(topLabel, ml - 3, mt + 6);
+            ctx.fillText('0', ml - 3, mt + ch - 2);
 
-            if (currentIndex <= 0) return;
+            if (currentIndex <= 0 || totalLen <= 1) return;
 
+            // Sample points if too many (target ~150 points max for smooth rendering)
+            const maxPoints = 150;
+            const step = currentIndex > maxPoints ? Math.floor(currentIndex / maxPoints) : 1;
+            
             // Fill area
             ctx.beginPath();
             ctx.moveTo(ml, mt + ch);
-            for (let i = 0; i <= currentIndex; i++) {
-                const x = ml + (i / Math.max(1, totalLen - 1)) * cw;
+            for (let i = 0; i <= currentIndex; i += step) {
+                const x = ml + (i / (totalLen - 1)) * cw;
                 const y = mt + ch - (values[i] / maxVal) * ch;
                 ctx.lineTo(x, y);
             }
-            ctx.lineTo(ml + (currentIndex / Math.max(1, totalLen - 1)) * cw, mt + ch);
+            // Always include the current point
+            if (currentIndex % step !== 0) {
+                const x = ml + (currentIndex / (totalLen - 1)) * cw;
+                const y = mt + ch - (values[currentIndex] / maxVal) * ch;
+                ctx.lineTo(x, y);
+            }
+            ctx.lineTo(ml + (currentIndex / (totalLen - 1)) * cw, mt + ch);
             ctx.closePath();
             const grad = ctx.createLinearGradient(0, mt, 0, mt + ch);
             grad.addColorStop(0, color.replace('rgb', 'rgba').replace(')', ',0.5)'));
@@ -1051,24 +1240,36 @@
 
             // Line
             ctx.beginPath();
-            for (let i = 0; i <= currentIndex; i++) {
-                const x = ml + (i / Math.max(1, totalLen - 1)) * cw;
+            for (let i = 0; i <= currentIndex; i += step) {
+                const x = ml + (i / (totalLen - 1)) * cw;
                 const y = mt + ch - (values[i] / maxVal) * ch;
-                if (i === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
+                if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            // Always include the current point
+            if (currentIndex % step !== 0) {
+                const x = ml + (currentIndex / (totalLen - 1)) * cw;
+                const y = mt + ch - (values[currentIndex] / maxVal) * ch;
+                ctx.lineTo(x, y);
             }
             ctx.strokeStyle = color;
             ctx.lineWidth = 2;
             ctx.stroke();
 
-            // Future (faded)
+            // Future faded (also sampled)
             if (currentIndex < totalLen - 1) {
+                const futureLen = totalLen - currentIndex;
+                const futureStep = futureLen > maxPoints ? Math.floor(futureLen / maxPoints) : 1;
                 ctx.beginPath();
-                for (let i = currentIndex; i < totalLen; i++) {
-                    const x = ml + (i / Math.max(1, totalLen - 1)) * cw;
+                for (let i = currentIndex; i < totalLen; i += futureStep) {
+                    const x = ml + (i / (totalLen - 1)) * cw;
                     const y = mt + ch - (values[i] / maxVal) * ch;
-                    if (i === currentIndex) ctx.moveTo(x, y);
-                    else ctx.lineTo(x, y);
+                    if (i === currentIndex) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+                }
+                // Always include last point
+                if ((totalLen - 1 - currentIndex) % futureStep !== 0) {
+                    const x = ml + ((totalLen - 1) / (totalLen - 1)) * cw;
+                    const y = mt + ch - (values[totalLen - 1] / maxVal) * ch;
+                    ctx.lineTo(x, y);
                 }
                 ctx.strokeStyle = 'rgba(150,150,180,0.2)';
                 ctx.lineWidth = 1;
@@ -1076,22 +1277,22 @@
             }
 
             // Current marker
-            const cx = ml + (currentIndex / Math.max(1, totalLen - 1)) * cw;
+            const cx = ml + (currentIndex / (totalLen - 1)) * cw;
             const cy = mt + ch - (values[currentIndex] / maxVal) * ch;
-            
+
             ctx.beginPath();
-            ctx.arc(cx, cy, 6, 0, Math.PI * 2);
+            ctx.arc(cx, cy, 5, 0, Math.PI * 2);
             ctx.fillStyle = color.replace('rgb', 'rgba').replace(')', ',0.3)');
             ctx.fill();
 
             ctx.beginPath();
-            ctx.arc(cx, cy, 4, 0, Math.PI * 2);
+            ctx.arc(cx, cy, 3, 0, Math.PI * 2);
             ctx.strokeStyle = 'white';
             ctx.lineWidth = 1.5;
             ctx.stroke();
 
             ctx.beginPath();
-            ctx.arc(cx, cy, 2.5, 0, Math.PI * 2);
+            ctx.arc(cx, cy, 2, 0, Math.PI * 2);
             ctx.fillStyle = color;
             ctx.fill();
 
@@ -1099,10 +1300,10 @@
             const val = values[currentIndex];
             const label = val >= 1e6 ? (val/1e6).toFixed(2)+'M' : val >= 1e3 ? (val/1e3).toFixed(1)+'K' : val.toLocaleString();
             ctx.fillStyle = 'white';
-            ctx.font = 'bold 9px system-ui';
+            ctx.font = 'bold 10px system-ui';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'bottom';
-            ctx.fillText(label, cx, cy - 8);
+            ctx.fillText(label, cx, cy - 6);
         }
 
         // ============================================================

@@ -132,44 +132,36 @@
     .dashboard-frame-container {
       position: relative;
       width: 100%;
+      height: calc(100vh - 200px);
+      min-height: 600px;
     }
 
     .dashboard-frame {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
+      height: 100%;
       border: none;
-      display: none;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
     }
 
     .dashboard-frame.active {
-      display: block;
-    }
-
-    /* Fixed height for growth animation to prevent growing */
-    #frame-growth {
-      height: calc(100vh - 250px);
-      min-height: 500px;
-    }
-
-    /* Auto height for scrollable content */
-    #frame-analytics,
-    #frame-lifespan {
-      min-height: calc(100vh - 250px);
+      opacity: 1;
+      pointer-events: auto;
     }
 
     /* Loading state */
     .frame-loading {
       position: absolute;
-      top: 200px;
+      top: 50%;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translate(-50%, -50%);
       color: #a0a0c0;
       font-family: 'Dosis', sans-serif;
       text-align: center;
-      z-index: 10;
-    }
-
-    .frame-loading.hidden {
-      display: none;
     }
 
     .frame-loading .spinner {
@@ -221,9 +213,9 @@
         display: none;
       }
 
-      #frame-growth {
-        height: calc(100vh - 200px);
-        min-height: 400px;
+      .dashboard-frame-container {
+        height: calc(100vh - 180px);
+        min-height: 500px;
       }
     }
 
@@ -289,15 +281,15 @@
       </div>
     </div>
 
-    <!-- Tab Navigation - Analytics is first and default -->
+    <!-- Tab Navigation -->
     <div class="dashboard-tabs">
-      <button class="tab-btn active" data-tab="analytics" onclick="switchTab('analytics')">
-        <i class="fa fa-bar-chart"></i>
-        <span class="tab-text">Usage Analytics</span>
-      </button>
-      <button class="tab-btn" data-tab="growth" onclick="switchTab('growth')">
+      <button class="tab-btn active" data-tab="growth" onclick="switchTab('growth')">
         <i class="fa fa-line-chart"></i>
         <span class="tab-text">Growth Animation</span>
+      </button>
+      <button class="tab-btn" data-tab="analytics" onclick="switchTab('analytics')">
+        <i class="fa fa-bar-chart"></i>
+        <span class="tab-text">Usage Analytics</span>
       </button>
       <button class="tab-btn" data-tab="lifespan" onclick="switchTab('lifespan')">
         <i class="fa fa-clock-o"></i>
@@ -312,25 +304,24 @@
         <p>Loading dashboard...</p>
       </div>
 
-      <!-- Analytics is first and active by default, lazy loaded -->
-      <iframe
-        id="frame-analytics"
-        class="dashboard-frame active"
-        data-src="./data/freemocap_users_analysis.html"
-        onload="frameLoaded('analytics')"
-      ></iframe>
-
-      <iframe
-        id="frame-growth"
-        class="dashboard-frame"
-        data-src="./data/freemocap_dashboard_animated.html"
+      <iframe 
+        id="frame-growth" 
+        class="dashboard-frame active" 
+        src="./data/freemocap_dashboard_animated.html"
         onload="frameLoaded('growth')"
       ></iframe>
 
-      <iframe
-        id="frame-lifespan"
-        class="dashboard-frame"
-        data-src="./data/freemocap_lifespan_analysis.html"
+      <iframe 
+        id="frame-analytics" 
+        class="dashboard-frame" 
+        src="./data/freemocap_users_analysis.html"
+        onload="frameLoaded('analytics')"
+      ></iframe>
+
+      <iframe 
+        id="frame-lifespan" 
+        class="dashboard-frame" 
+        src="./data/freemocap_lifespan_analysis.html"
         onload="frameLoaded('lifespan')"
       ></iframe>
     </div>
@@ -343,7 +334,7 @@
         <a href="./about-us.html#donate">Donate <i class="fa fa-heart" style="color: #d95157;"></i></a>
       </p>
       <p style="font-size: 0.75rem; margin-top: 0.5rem;">
-        Data collected via anonymous telemetry pings •
+        Data collected via anonymous telemetry pings • 
         <a href="https://github.com/freemocap/freemocap" target="_blank">View on GitHub</a>
       </p>
     </footer>
@@ -357,17 +348,9 @@
   <script src="./js/custom.js"></script>
 
   <script>
-    // Track which frames have been loaded
-    const loadedFrames = new Set();
-    let currentTab = 'analytics';
-
-    // Load an iframe's content (lazy loading)
-    function loadFrame(tabName) {
-      const frame = document.getElementById(`frame-${tabName}`);
-      if (frame && !frame.src && frame.dataset.src) {
-        frame.src = frame.dataset.src;
-      }
-    }
+    // Tab switching logic
+    let loadedFrames = new Set();
+    let currentTab = 'growth';
 
     function switchTab(tabName) {
       // Update buttons
@@ -383,56 +366,30 @@
       const targetFrame = document.getElementById(`frame-${tabName}`);
       if (targetFrame) {
         targetFrame.classList.add('active');
-        loadFrame(tabName);
       }
 
       // Show loading if not yet loaded
       const loadingIndicator = document.getElementById('loading-indicator');
       if (!loadedFrames.has(tabName)) {
-        loadingIndicator.classList.remove('hidden');
+        loadingIndicator.style.display = 'block';
       } else {
-        loadingIndicator.classList.add('hidden');
+        loadingIndicator.style.display = 'none';
       }
 
       currentTab = tabName;
-
-      // Set height for non-growth frames
-      if (tabName !== 'growth') {
-        setFrameHeight(tabName);
-      }
     }
 
     function frameLoaded(tabName) {
       loadedFrames.add(tabName);
-
+      
+      // Hide loading indicator if this is the current tab
       if (currentTab === tabName) {
-        document.getElementById('loading-indicator').classList.add('hidden');
+        document.getElementById('loading-indicator').style.display = 'none';
       }
 
-      // Set height for scrollable frames (not growth)
-      if (tabName !== 'growth') {
-        setFrameHeight(tabName);
-      }
-
-      if (tabName === 'analytics' || tabName === 'growth') {
+      // Try to get stats from the growth frame
+      if (tabName === 'growth') {
         loadQuickStats();
-      }
-    }
-
-    // Set frame height based on content (only for analytics and lifespan)
-    function setFrameHeight(tabName) {
-      if (tabName === 'growth') return; // Growth has fixed CSS height
-
-      const frame = document.getElementById(`frame-${tabName}`);
-      if (frame && frame.contentWindow) {
-        try {
-          const contentHeight = frame.contentWindow.document.body.scrollHeight;
-          if (contentHeight > 100) {
-            frame.style.height = contentHeight + 'px';
-          }
-        } catch (e) {
-          frame.style.height = '3000px';
-        }
       }
     }
 
@@ -442,21 +399,23 @@
         const response = await fetch('./data/freemocap_dashboard_data.json');
         if (response.ok) {
           const data = await response.json();
-
+          
+          // Get latest stats
           const latest = data.time_series[data.time_series.length - 1];
-
-          document.getElementById('qs-users').textContent =
-            latest.cumulative_users >= 1000
+          
+          document.getElementById('qs-users').textContent = 
+            latest.cumulative_users >= 1000 
               ? (latest.cumulative_users / 1000).toFixed(1) + 'K'
               : latest.cumulative_users.toLocaleString();
-
-          document.getElementById('qs-pings').textContent =
+          
+          document.getElementById('qs-pings').textContent = 
             latest.cumulative_records >= 1000000
               ? (latest.cumulative_records / 1000000).toFixed(1) + 'M'
               : latest.cumulative_records >= 1000
                 ? (latest.cumulative_records / 1000).toFixed(0) + 'K'
                 : latest.cumulative_records.toLocaleString();
-
+          
+          // Count unique countries
           const countries = new Set(data.map_data.map(m => m.country));
           document.getElementById('qs-countries').textContent = countries.size;
         }
@@ -467,7 +426,6 @@
 
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
-      loadFrame('analytics');
       loadQuickStats();
     });
   </script>
