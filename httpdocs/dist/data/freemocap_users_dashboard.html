@@ -171,11 +171,11 @@
         </div>
         <div class="stat-card">
             <div class="stat-value" id="stat-mean-per-user">-</div>
-            <div class="stat-label">Avg. per User</div>
+            <div class="stat-label">Mean Pings per User</div>
         </div>
         <div class="stat-card">
             <div class="stat-value" id="stat-median-per-user">-</div>
-            <div class="stat-label">Typical User</div>
+            <div class="stat-label">Median Pings per User</div>
         </div>
     </div>
 
@@ -265,11 +265,12 @@
         <div id="map"></div>
     </div>
     <div class="data-note">
-        <strong>What is this data?</strong> Each point on the map is someone who used FreeMoCap and chose to share anonymous usage data.
-        We use their IP address to estimate their location (via <a href="http://ip-api.com" target="_blank">ip-api.com</a>).
-        <br><br>
-        <strong>Important notes:</strong> This undercounts actual users—people who turned off sharing aren't included, and multiple people at universities or offices often share one IP address.
-        VPNs can also make locations inaccurate.
+        Each point represents a unique IP address collected via the "Share anonymous usage data" option since March 2023.
+        Locations are approximate, based on <a href="http://ip-api.com" target="_blank">ip-api.com</a> geolocation.
+        <br/>
+        <br/>
+        This is a known undercount: users who disabled the option aren't included, and multiple users at universities, labs, or offices often share a single IP.
+        Data may also include noise from VPNs, proxies, and other IP obfuscations that we make no effort detect.
     </div>
 
     <!-- Row 1: Users - Total over time + Daily growth -->
