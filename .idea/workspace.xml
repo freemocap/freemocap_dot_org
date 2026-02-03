@@ -4,12 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="32a0ed93-e064-4292-aa4a-0270c27efa59" name="Changes" comment="">
+    <list default="true" id="32a0ed93-e064-4292-aa4a-0270c27efa59" name="Changes" comment="pretty nice!">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/httpdocs/dist/data.html" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/data.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_dashboard_animated.html" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_growth_animation.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_dashboard_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_dashboard_data.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_lifespan_analysis.html" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_lifespan_analysis.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_users_analysis.html" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_users_dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_users_dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/data/freemocap_users_dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/httpdocs/dist/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/httpdocs/dist/header.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,26 +58,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "ai.playground.ignore.import.keys.banner.in.settings": "true",
-    "git-widget-placeholder": "jon/data",
-    "ignore.virus.scanning.warn.message": "true",
-    "javascript.preferred.runtime.type.id": "node",
-    "last_opened_file_path": "C:/Users/jonma/github_repos/freemocap_organization/freemocap_dot_org/httpdocs/dist/data",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;ai.playground.ignore.import.keys.banner.in.settings&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;jon/data&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/jonma/github_repos/freemocap_organization/freemocap_dot_org/httpdocs/dist/data&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\jonma\github_repos\freemocap_organization\freemocap_dot_org\httpdocs\dist\data" />
@@ -90,8 +90,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-PY-253.30387.127" />
-        <option value="bundled-python-sdk-3944b0c99280-6d6dccd035ac-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-253.30387.127" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-PY-253.30387.173" />
+        <option value="bundled-python-sdk-4762d8aabb82-6d6dccd035ac-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-253.30387.173" />
       </set>
     </attachedChunks>
   </component>
@@ -109,8 +109,20 @@
       <workItem from="1768159150370" duration="782000" />
       <workItem from="1769951459338" duration="731000" />
       <workItem from="1770082891081" duration="3398000" />
-      <workItem from="1770119225619" duration="3724000" />
+      <workItem from="1770119225619" duration="4470000" />
+      <workItem from="1770133538228" duration="476000" />
+      <workItem from="1770135866886" duration="384000" />
+      <workItem from="1770136866115" duration="1776000" />
     </task>
+    <task id="LOCAL-00001" summary="pretty nice!">
+      <option name="closed" value="true" />
+      <created>1770132716907</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1770132716907</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -126,6 +138,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="pretty nice!" />
+    <option name="LAST_COMMIT_MESSAGE" value="pretty nice!" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

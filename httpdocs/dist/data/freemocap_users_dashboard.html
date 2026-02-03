@@ -1468,18 +1468,12 @@
         window.countryChartViews = {};
 
         function initCountryCharts(countryData) {
-            if (!countryData || countryData.length === 0) return;
+            if (!countryData || !countryData.by_users || countryData.by_users.length === 0) return;
 
-            // Sort by absolute users
-            const byAbsolute = [...countryData].sort((a, b) => b.users - a.users);
-            const byPerCapita = [...countryData]
-                .filter(d => d.population_millions > 0)
-                .map(d => ({ ...d, users_per_million: d.users / d.population_millions }))
-                .sort((a, b) => b.users_per_million - a.users_per_million);
-            const byDensity = [...countryData]
-                .filter(d => d.area_km2 > 0)
-                .map(d => ({ ...d, users_per_100k_km2: (d.users / d.area_km2) * 100000 }))
-                .sort((a, b) => b.users_per_100k_km2 - a.users_per_100k_km2);
+            // Use pre-computed sorted arrays from Python
+            const byAbsolute = countryData.by_users;
+            const byPerCapita = countryData.by_per_capita || [];
+            const byDensity = countryData.by_density || [];
 
             // Filter controls
             const searchInput = document.getElementById('country-search');
@@ -1511,7 +1505,7 @@
                 // Determine highlighting
                 const hasActiveSearch = searchTerm.length > 0;
                 const matchingCountries = hasActiveSearch
-                    ? new Set(countryData.filter(d => d.country.toLowerCase().includes(searchTerm)).map(d => d.country))
+                    ? new Set(countryData.by_users.filter(d => d.country.toLowerCase().includes(searchTerm)).map(d => d.country))
                     : new Set();
 
                 // Update highlight summary
