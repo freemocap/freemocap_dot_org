@@ -1,229 +1,298 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Req Meta tags -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <!--Page desciption below goes after content=-->
-  <meta
-    name="description"
-    content="The Free Motion Capture Project (FreeMoCap) aims to provide research-grade markerless motion capture software to everyone for free."
-  />
-  <meta name="author" content="Jonathan Samir Matthis" />
-  <!--Page Title in browser tab-->
-  <title>
-    Portfolio | The FreeMoCap Project
-  </title>
-  <!--SOCIAL MEDIA SHARE INFO: TWITTER-->
-  <!-- Title: A concise title for the related content. Maximum 70 characters.-->
-  <meta name="twitter:title" content="The FreeMoCap Project" />
-  <!-- Description: A description that concisely summarizes the content as appropriate for presentation within a Tweet. 
-      You should not re-use the title as the description or use this field to describe the general services 
-      provided by the website. Maximum 200 characters.-->
-  <meta
-    name="twitter:description"
-    content="The Free Motion Capture Project (FreeMoCap) aims to provide research-grade markerless motion capture software to everyone for free."
-  />
-  <!-- Image: A URL to a unique image representing the content of the page. Typically better to not 
-      use a generic image such as your website logo, author photo, or other image that spans multiple pages. 
-      Images for this Card should be at least 280px in width, and at least 150px in height. Image must be less 
-      than 1MB in size.-->
-  <meta name="twitter:image" content="" />
-  <!-- Tells Twitter how to format info. Leave alone.-->
+  <meta name="description" content="FreeMoCap Community Showcase - User portfolio, tutorials, and reviews from around the world." />
+  <meta name="author" content="The FreeMoCap Project" />
+  <title>Community Showcase | The FreeMoCap Project</title>
+
+  <!-- Open Graph / Social Media -->
+  <meta property="og:title" content="Community Showcase | The FreeMoCap Project" />
+  <meta property="og:description" content="See what the FreeMoCap community is creating - user portfolio, tutorials, and reviews from around the world." />
+  <meta property="og:image" content="./assets/logos/fmc-logo-3-4-22.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://freemocap.org/community.html" />
+
+  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Community Showcase | The FreeMoCap Project" />
+  <meta name="twitter:description" content="See what the FreeMoCap community is creating - user portfolio, tutorials, and reviews from around the world." />
+  <meta name="twitter:image" content="./assets/logos/fmc-logo-3-4-22.png" />
 
-  <!-- Favicon-->
-  <link
-    rel="icon"
-    type="image/x-icon"
-    href="./assets/favicons/favicon-black.png"
-  />
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="./assets/favicons/favicon-black.png" />
 
-  <!-- FORK Awesome icons -->
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css"
-    integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY="
-    crossorigin="anonymous"
-  />
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <!-- Bootstrap icons-->
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
-    rel="stylesheet"
-  />
-
-  <!-- Google fonts-->
-  <link rel="preconnect" href="https://fonts.gstatic.com" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Dosis:wght@200;300;400;500;600&family=Roboto:ital,wght@0,300;0,400;1,300;1,400&display=swap"
-    rel="stylesheet"
-  />
-
-  <!-- Bootstrap CSS -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-    crossorigin="anonymous"
-  />
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="./css/main.css" />
-  
-  <style>
-    .video-container {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    
-    .video-container iframe {
-      max-width: 100%;
-    }
-    
-    .example-item {
-      margin-bottom: 30px;
-      text-align: center;
-    }
-    
-    .example-item img {
-      max-width: 100%;
-      height: auto;
-      display: block;
-      margin: 0 auto 10px auto;
-    }
-    
-    .example-item a {
-      word-break: break-all;
-    }
-  </style>
+  <link rel="stylesheet" href="./css/mainv2.css">
 </head>
 
-<!-- Page Content Begins-->
-
-<body id="page-top" style="overflow-x: hidden">
+<body>
   <!-- Header -->
-  <div id="header"></div>
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <a href="/" class="logo">
+          <img src="./assets/logos/fmc-logo-3-4-22.png" alt="FreeMoCap Logo" class="logo-img">
+          <span class="logo-text">The FreeMoCap Project</span>
+        </a>
+        
+        <button class="mobile-menu-toggle" aria-label="Toggle menu">
+          <i class="bi bi-list"></i>
+        </button>
+        
+        <nav class="nav-links">
+          <a href="about-us.html" class="nav-link">About Us</a>
+          <a href="services.html" class="nav-link">Services</a>
+          <a href="community.html" class="nav-link active">Community</a>
+          <a href="about-us.html#donate" class="nav-link">Donate</a>
+          <a href="data.html" class="nav-link"><i class="bi bi-bar-chart"></i> User Data</a>
+          <a href="https://freemocap.github.io/documentation" target="_blank" class="nav-link">Documentation <i class="bi bi-arrow-up-right"></i></a>
+          <a href="https://github.com/freemocap/freemocap" target="_blank" class="nav-link">Code <i class="bi bi-arrow-up-right"></i></a>
+          <a href="https://freemocap.github.io/documentation/installation.html" target="_blank" class="cta-button">Get Started</a>
+        </nav>
+      </div>
+    </div>
+  </header>
 
-  <!-- Compact Hero -->
-  <div id="compact-hero"></div>
-
-  <!-- Main Content-->
-  <main>
-    <div class="container px-5 py-3" id="about">
-      <div class="row justify-content-center">
-        <div class="col-lg-8 pb-1">
-          <p style="text-align: left; text-justify: inter-word">
-            <h1>User Portfolio, Tutorials, Reviews</h1>
-            <h2>FreeMoCap in the wild!</h2>
-          </p>
-
-      <!-- Page Description -->
-      <p>Here we've shared examples of FreeMoCap user output around the world, including art or research projects as well as tutorials. If you have something you'd like to share, <a href="https://discord.gg/SgdnzbHDTG" target="_blank">join the Discord</a> and submit! </p>
-      <br>
-      
-      <!-- Section List -->
-      <h2>Portfolio</h2>
-      <p>Community-submitted renders from around the world!</p>
-      <div class="video-container">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/yoCuuig6adI?si=vPYjdWg14BxXVnfO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      </div>
-      <div class="video-container">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/CpKzTAr4O5k?si=vSOTFLC0RQLIvLph" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      </div>
-      <div class="video-container">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/sxJcudCZl94?si=be3pxA_NiEcUOs1Q" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      </div>
-      <div class="video-container">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/RZFIdYlsSQA?si=6TCMB8csVFEUmjcS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      </div>
-      <div class="video-container">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/uVoRZyPbrqA?si=yk9UAyn9mcUjxio2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      </div>
-      <div class="video-container">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/VlqhM7QyymM?si=uRuTMA6zvw3sj6tX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      </div>
-      <div class="video-container">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/zY1W3FBYGZI?si=lVX7NCkxvoRrDw8D" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      </div>
-      
-      <h3>More examples:</h3>
-      <div class="row">
-        <div class="col-md-6 example-item">
-          <a href="https://youtu.be/FX7c7XmNJcU" target="_blank">
-            <img src="https://img.youtube.com/vi/FX7c7XmNJcU/maxresdefault.jpg" alt="Motion capture recorded from webcams using Freemocap.org by Vandlo">
-            https://youtu.be/FX7c7XmNJcU
-          </a>
-        </div>
-        <div class="col-md-6 example-item">
-          <a href="https://youtu.be/EvAs_GJGADI" target="_blank">
-            <img src="https://img.youtube.com/vi/EvAs_GJGADI/maxresdefault.jpg" alt="A Fan-made Music Video: Kamp! - Enter Galactic (Live) by Backspace-esque">
-            https://youtu.be/EvAs_GJGADI
-          </a>
-        </div>
-        <div class="col-md-6 example-item">
-          <a href="https://youtu.be/TPnvu4cUz3U" target="_blank">
-            <img src="https://img.youtube.com/vi/TPnvu4cUz3U/maxresdefault.jpg" alt="Baby Lasagna - DMNS & MOSQUITOES Arena Tour Concept by Tales of the Critterverse">
-            https://youtu.be/TPnvu4cUz3U
-          </a>
-        </div>
-        <div class="col-md-6 example-item">
-          <a href="https://youtu.be/2lEtU2A2CtQ" target="_blank">
-            <img src="https://img.youtube.com/vi/2lEtU2A2CtQ/maxresdefault.jpg" alt="Ð¿ÐµÑ€ÑˆÐ° Ð°Ð²Ñ‚Ñ–Ð²ÐºÐ° by ÑÑŒÐ¾Ð³Ð¾Ð´ÐµÐ½Ð½Ñ">
-            https://youtu.be/2lEtU2A2CtQ
-          </a>
-        </div>
-      </div>
-
-      <br>
-      
-      <h2>Tutorials</h2>
-      <p>Tips, tricks, and how-tos from our users.</p>
-      <div class="video-container">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/Szg56TVHBIs?si=fNiGzc3_7JuMi9zI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      </div>
-      <div class="video-container">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/ezeMpNFrZ4c?si=pvT7-OPooE7f4AW1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      </div>
-      <div class="video-container">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/bTMxTiZKyys?si=wLXr8OHjcj3JPlg8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      </div>
-      <div class="video-container">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/6uMnf5haVVY?si=SAXSp2WEPAoMR-XA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      </div>
-
-      <br>
-
-      <h2>Reviews</h2>
-      <p>What the FreeMoCap community is saying about our software.</p>
-      <div class="video-container">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/-NB3Lty84T8?si=grhvwkQXhT0f3DCh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      </div>
-      <br>
-
-      <br>
-      <p style="text-align: center; text-justify: inter-word">
-        <b>Everyone has a reason to record human movement
-          <br />
-          We want to help them do it</b>
-
-        <br />
-        &#10024;&#128128;&#10024;
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <video class="page-hero-video" autoplay muted loop playsinline>
+      <source src="./assets/video/home-header-short.mp4" type="video/mp4">
+    </video>
+    <div class="page-hero-overlay"></div>
+    <div class="container">
+      <h1 class="page-hero-title">Community Showcase</h1>
+      <p class="page-hero-subtitle">
+        FreeMoCap in the wild! User renders, tutorials, and reviews from around the world.
       </p>
-    </div>  
-  </main>
+    </div>
+  </section>
 
+  <!-- Intro Section -->
+  <section class="showcase-intro-section">
+    <div class="container">
+      <div class="about-content">
+        <p class="about-text text-center">
+          These are examples of FreeMoCap user output from around the world, including art projects, research, and tutorials. If you have something you'd like to share, <a href="https://discord.gg/SgdnzbHDTG" target="_blank" class="text-link">join the Discord</a> and submit!
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portfolio Section -->
+  <section class="showcase-section">
+    <div class="container">
+      <h2 class="section-title"><i class="bi bi-collection-play"></i> Animation</h2>
+      <p class="about-text text-center">Community-submitted renders from around the world!</p>
+      
+      <div class="showcase-video-grid">
+        <div class="showcase-video">
+          <iframe src="https://www.youtube.com/embed/yoCuuig6adI?si=vPYjdWg14BxXVnfO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <div class="showcase-video">
+          <iframe src="https://www.youtube.com/embed/CpKzTAr4O5k?si=vSOTFLC0RQLIvLph" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <div class="showcase-video">
+          <iframe src="https://www.youtube.com/embed/sxJcudCZl94?si=be3pxA_NiEcUOs1Q" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <div class="showcase-video">
+          <iframe src="https://www.youtube.com/embed/RZFIdYlsSQA?si=6TCMB8csVFEUmjcS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <div class="showcase-video">
+          <iframe src="https://www.youtube.com/embed/uVoRZyPbrqA?si=yk9UAyn9mcUjxio2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <div class="showcase-video">
+          <iframe src="https://www.youtube.com/embed/VlqhM7QyymM?si=uRuTMA6zvw3sj6tX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <div class="showcase-video">
+          <iframe src="https://www.youtube.com/embed/zY1W3FBYGZI?si=lVX7NCkxvoRrDw8D" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+      </div>
+
+      <h3 class="subsection-title">More examples</h3>
+      <div class="showcase-thumbnail-grid">
+        <a href="https://youtu.be/FX7c7XmNJcU" target="_blank" class="showcase-thumbnail">
+          <img src="https://img.youtube.com/vi/FX7c7XmNJcU/maxresdefault.jpg" alt="Motion capture recorded from webcams using Freemocap.org by Vandlo">
+          <span class="thumbnail-overlay"><i class="bi bi-play-circle"></i></span>
+        </a>
+        <a href="https://youtu.be/EvAs_GJGADI" target="_blank" class="showcase-thumbnail">
+          <img src="https://img.youtube.com/vi/EvAs_GJGADI/maxresdefault.jpg" alt="A Fan-made Music Video: Kamp! - Enter Galactic (Live) by Backspace-esque">
+          <span class="thumbnail-overlay"><i class="bi bi-play-circle"></i></span>
+        </a>
+        <a href="https://youtu.be/TPnvu4cUz3U" target="_blank" class="showcase-thumbnail">
+          <img src="https://img.youtube.com/vi/TPnvu4cUz3U/maxresdefault.jpg" alt="Baby Lasagna - DMNS & MOSQUITOES Arena Tour Concept by Tales of the Critterverse">
+          <span class="thumbnail-overlay"><i class="bi bi-play-circle"></i></span>
+        </a>
+        <a href="https://youtu.be/2lEtU2A2CtQ" target="_blank" class="showcase-thumbnail">
+          <img src="https://img.youtube.com/vi/2lEtU2A2CtQ/maxresdefault.jpg" alt="Community submission">
+          <span class="thumbnail-overlay"><i class="bi bi-play-circle"></i></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tutorials Section -->
+  <section class="showcase-section alt-bg">
+    <div class="container">
+      <h2 class="section-title"><i class="bi bi-mortarboard"></i> Tutorials</h2>
+      <p class="about-text text-center">Tips, tricks, and how-tos from our users.</p>
+      
+      <div class="showcase-video-grid">
+        <div class="showcase-video">
+          <iframe src="https://www.youtube.com/embed/Szg56TVHBIs?si=fNiGzc3_7JuMi9zI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <div class="showcase-video">
+          <iframe src="https://www.youtube.com/embed/ezeMpNFrZ4c?si=pvT7-OPooE7f4AW1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <div class="showcase-video">
+          <iframe src="https://www.youtube.com/embed/bTMxTiZKyys?si=wLXr8OHjcj3JPlg8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <div class="showcase-video">
+          <iframe src="https://www.youtube.com/embed/6uMnf5haVVY?si=SAXSp2WEPAoMR-XA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reviews Section -->
+  <section class="showcase-section">
+    <div class="container">
+      <h2 class="section-title"><i class="bi bi-chat-quote"></i> Reviews</h2>
+      <p class="about-text text-center">What the FreeMoCap community is saying about our software.</p>
+      
+      <div class="showcase-video-grid single">
+        <div class="showcase-video">
+          <iframe src="https://www.youtube.com/embed/-NB3Lty84T8?si=grhvwkQXhT0f3DCh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="showcase-cta-section">
+    <div class="container">
+      <div class="about-content">
+        <p class="about-text text-center">
+          <b>Everyone has a reason to record human movement.<br>We want to help them do it.</b>
+        </p>
+        <p class="about-text text-center">
+          ✨💀✨
+        </p>
+        <div class="cta-container">
+          <a href="https://discord.gg/SgdnzbHDTG" target="_blank" class="cta-button">
+            <i class="bi bi-discord"></i> Join the Discord to Submit Yours!
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- Footer -->
-  <div id="footer"></div>
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <a href="/" class="logo">
+            <img src="./assets/logos/fmc-logo-3-4-22.png" alt="FreeMoCap Logo" class="logo-img" style="height: 30px;">
+            <span class="logo-text">The FreeMoCap Project</span>
+          </a>
+          <p class="copyright" style="margin-top: 1rem;">
+            Free Motion Capture for Everyone
+          </p>
+          <div class="footer-social">
+            <a href="https://fosstodon.org/@freemocap" target="_blank" class="footer-social-link" title="Mastodon">
+              <i class="bi bi-mastodon"></i>
+            </a>
+            <a href="https://twitter.com/freemocap" target="_blank" class="footer-social-link" title="Twitter">
+              <i class="bi bi-twitter"></i>
+            </a>
+            <a href="https://github.com/freemocap/freemocap" target="_blank" class="footer-social-link" title="GitHub">
+              <i class="bi bi-github"></i>
+            </a>
+            <a href="https://discord.gg/SgdnzbHDTG" target="_blank" class="footer-social-link" title="Discord">
+              <i class="bi bi-discord"></i>
+            </a>
+            <a href="https://www.youtube.com/channel/UCOOQxlTCtUz9mr1NPWlJyYQ" target="_blank" class="footer-social-link" title="YouTube">
+              <i class="bi bi-youtube"></i>
+            </a>
+            <a href="https://www.twitch.tv/freemocap" target="_blank" class="footer-social-link" title="Twitch">
+              <i class="bi bi-twitch"></i>
+            </a>
+            <a href="https://bsky.app/profile/freemocap.bsky.social" target="_blank" class="footer-social-link" title="BlueSky">
+              <i class="bi bi-cloud"></i>
+            </a>
+            <a href="https://www.instagram.com/freemocap/" target="_blank" class="footer-social-link" title="Instagram">
+              <i class="bi bi-instagram"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div class="footer-links">
+          <a href="about-us.html" class="footer-link">About Us</a>
+          <a href="services.html" class="footer-link">Services</a>
+          <a href="community.html" class="footer-link">Community</a>
+          <a href="about-us.html#donate" class="footer-link">Donate</a>
+          <a href="data.html" class="footer-link"><i class="bi bi-bar-chart"></i> User Data</a>
+          <a href="https://freemocap.github.io/documentation" target="_blank" class="footer-link">Documentation <i class="bi bi-arrow-up-right"></i></a>
+          <a href="https://github.com/freemocap/freemocap" target="_blank" class="footer-link">Code <i class="bi bi-arrow-up-right"></i></a>
+        </div>
 
-  <!-- Bootstrap core JS-->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Core theme JS-->
-  <script src="./js/scripts.js"></script>
-  <!-- Custom JS -->
-  <script src="./js/custom.js"></script>
+      </div>
+      <div class="footer-bottom">
+        <p class="copyright">
+          &copy; <script>document.write(new Date().getFullYear())</script> The FreeMoCap Project. All rights reserved.<br>
+          Made with ❤️ by the open source community.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    
+    mobileMenuToggle.addEventListener('click', function() {
+      navLinks.classList.toggle('active');
+      const icon = this.querySelector('i');
+      if (navLinks.classList.contains('active')) {
+        icon.classList.remove('bi-list');
+        icon.classList.add('bi-x');
+      } else {
+        icon.classList.remove('bi-x');
+        icon.classList.add('bi-list');
+      }
+    });
+
+    // Close mobile menu when clicking a link
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+        const icon = mobileMenuToggle.querySelector('i');
+        icon.classList.remove('bi-x');
+        icon.classList.add('bi-list');
+      });
+    });
+
+    // Add scroll effect to header
+    window.addEventListener('scroll', function() {
+      const header = document.querySelector('.header');
+      if (window.scrollY > 50) {
+        header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.3)';
+      } else {
+        header.style.boxShadow = 'none';
+      }
+    });
+  </script>
 </body>
-
 </html>
