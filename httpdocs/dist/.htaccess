@@ -2,5 +2,9 @@ RewriteEngine On
 
 # Redirect /foo and /foo/ to /foo.html
 RewriteRule ^services/?$ services.html [L,R=301]
-RewriteRule ^community/?$ community.html [L,R=301]
+RewriteRule ^showcase/?$ showcase.html [L,R=301]
+RewriteRule ^resources/?$ resources.html [L,R=301]
 RewriteRule ^about-us/?$ about-us.html [L,R=301]
+
+# Redirect old community URL to showcase
+RewriteRule ^community/?$ showcase.html [L,R=301]

@@ -37,32 +37,8 @@
 </head>
 
 <body>
-  <!-- Header -->
-  <header class="header">
-    <div class="container">
-      <div class="header-content">
-        <a href="/" class="logo">
-          <img src="./assets/logos/fmc-logo-3-4-22.png" alt="FreeMoCap Logo" class="logo-img">
-          <span class="logo-text">The FreeMoCap Project</span>
-        </a>
-        
-        <button class="mobile-menu-toggle" aria-label="Toggle menu">
-          <i class="bi bi-list"></i>
-        </button>
-        
-        <nav class="nav-links">
-          <a href="about-us.html" class="nav-link active">About Us</a>
-          <a href="./#services" class="nav-link">Services</a>
-          <a href="./#community" class="nav-link">Community</a>
-          <a href="#donate" class="nav-link">Donate</a>
-          <a href="data.html" class="nav-link"><i class="bi bi-bar-chart"></i> User Data</a>
-          <a href="https://freemocap.github.io/documentation" target="_blank" class="nav-link">Documentation <i class="bi bi-arrow-up-right"></i></a>
-          <a href="https://github.com/freemocap/freemocap" target="_blank" class="nav-link">Code <i class="bi bi-arrow-up-right"></i></a>
-          <a href="https://freemocap.github.io/documentation/installation.html" target="_blank" class="cta-button">Get Started</a>
-        </nav>
-      </div>
-    </div>
-  </header>
+  <!-- Header (loaded by nav.js) -->
+  <div id="site-header"></div>
 
   <!-- Page Hero -->
   <section class="page-hero">
@@ -153,102 +129,10 @@
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-brand">
-          <a href="/" class="logo">
-            <img src="./assets/logos/fmc-logo-3-4-22.png" alt="FreeMoCap Logo" class="logo-img" style="height: 30px;">
-            <span class="logo-text">The FreeMoCap Project</span>
-          </a>
-          <p class="copyright" style="margin-top: 1rem;">
-            Free Motion Capture for Everyone
-          </p>
-          <div class="footer-social">
-            <a href="https://fosstodon.org/@freemocap" target="_blank" class="footer-social-link" title="Mastodon">
-              <i class="bi bi-mastodon"></i>
-            </a>
-            <a href="https://twitter.com/freemocap" target="_blank" class="footer-social-link" title="Twitter">
-              <i class="bi bi-twitter"></i>
-            </a>
-            <a href="https://github.com/freemocap/freemocap" target="_blank" class="footer-social-link" title="GitHub">
-              <i class="bi bi-github"></i>
-            </a>
-            <a href="https://discord.gg/SgdnzbHDTG" target="_blank" class="footer-social-link" title="Discord">
-              <i class="bi bi-discord"></i>
-            </a>
-            <a href="https://www.youtube.com/channel/UCOOQxlTCtUz9mr1NPWlJyYQ" target="_blank" class="footer-social-link" title="YouTube">
-              <i class="bi bi-youtube"></i>
-            </a>
-            <a href="https://www.twitch.tv/freemocap" target="_blank" class="footer-social-link" title="Twitch">
-              <i class="bi bi-twitch"></i>
-            </a>
-            <a href="https://bsky.app/profile/freemocap.bsky.social" target="_blank" class="footer-social-link" title="BlueSky">
-              <i class="bi bi-cloud"></i>
-            </a>
-            <a href="https://www.instagram.com/freemocap/" target="_blank" class="footer-social-link" title="Instagram">
-              <i class="bi bi-instagram"></i>
-            </a>
-          </div>
-        </div>
-        
-        <div class="footer-links">
-          <a href="about-us.html" class="footer-link">About Us</a>
-          <a href="./#services" class="footer-link">Services</a>
-          <a href="./#community" class="footer-link">Community</a>
-          <a href="#donate" class="footer-link">Donate</a>
-          <a href="data.html" class="footer-link"><i class="bi bi-bar-chart"></i> User Data</a>
-          <a href="https://freemocap.github.io/documentation" target="_blank" class="footer-link">Documentation <i class="bi bi-arrow-up-right"></i></a>
-          <a href="https://github.com/freemocap/freemocap" target="_blank" class="footer-link">Code <i class="bi bi-arrow-up-right"></i></a>
-        </div>
+  <!-- Footer (loaded by nav.js) -->
+  <div id="site-footer"></div>
 
-      </div>
-      <div class="footer-bottom">
-      <p class="copyright">
-        &copy; <script>document.write(new Date().getFullYear())</script> The FreeMoCap Project. All rights reserved.<br>
-        Made with ❤️ by the open source community.
-      </p>
-    </div>
-    </div>
-  </footer>
-
-  <script>
-    // Mobile menu toggle
-    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    
-    mobileMenuToggle.addEventListener('click', function() {
-      navLinks.classList.toggle('active');
-      const icon = this.querySelector('i');
-      if (navLinks.classList.contains('active')) {
-        icon.classList.remove('bi-list');
-        icon.classList.add('bi-x');
-      } else {
-        icon.classList.remove('bi-x');
-        icon.classList.add('bi-list');
-      }
-    });
-
-    // Close mobile menu when clicking a link
-    navLinks.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('active');
-        const icon = mobileMenuToggle.querySelector('i');
-        icon.classList.remove('bi-x');
-        icon.classList.add('bi-list');
-      });
-    });
-
-    // Add scroll effect to header
-    window.addEventListener('scroll', function() {
-      const header = document.querySelector('.header');
-      if (window.scrollY > 50) {
-        header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.3)';
-      } else {
-        header.style.boxShadow = 'none';
-      }
-    });
-  </script>
+  <!-- Shared nav loader -->
+  <script src="./js/nav.js"></script>
 </body>
 </html>
