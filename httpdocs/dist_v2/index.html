@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="description" content="FreeMoCap - Research-grade markerless motion capture software for everyone, completely free." />
+  <meta name="author" content="The FreeMoCap Project" />
+  <title>FreeMoCap - Free Motion Capture for Everyone</title>
+
+  <!-- Open Graph / Social Media -->
+  <meta property="og:title" content="FreeMoCap - Free Motion Capture for Everyone" />
+  <meta property="og:description" content="Research-grade markerless motion capture software for everyone, completely free." />
+  <meta property="og:image" content="./assets/logos/fmc-logo-3-4-22.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://freemocap.org" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="FreeMoCap - Free Motion Capture for Everyone" />
+  <meta name="twitter:description" content="Research-grade markerless motion capture software for everyone, completely free." />
+  <meta name="twitter:image" content="./assets/logos/fmc-logo-3-4-22.png" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="./assets/favicons/favicon-black.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="./css/main.css">
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <a href="#" class="logo">
+          <img src="./assets/logos/fmc-logo-3-4-22.png" alt="FreeMoCap Logo" class="logo-img">
+          <span class="logo-text">The FreeMoCap Project</span>
+        </a>
+        
+        <nav class="nav-links">
+          <a href="#about-us" class="nav-link">About Us</a>
+          <a href="#community" class="nav-link">Community</a>
+          <a href="#services" class="nav-link">Services</a>
+          <a href="#documentation" class="nav-link">Documentation</a>
+          <a href="#donate" class="nav-link">Donate</a>
+          <a href="https://github.com/freemocap/freemocap" target="_blank" class="nav-link">Code</a>
+          <a href="https://github.com/freemocap/freemocap" target="_blank" class="cta-button">Get Started</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">Free Motion Capture for Everyone</h1>
+        <p class="hero-subtitle">
+          Research-grade markerless motion capture software that's completely free and open source.<br/> 
+          Built for researchers, animators, athletes, and creators worldwide.
+        </p>
+        
+        <div class="hero-buttons">
+          <a href="https://github.com/freemocap/freemocap" target="_blank" class="cta-button">
+            <i class="bi bi-download"></i> Try FreeMoCap
+          </a>
+        </div>
+
+        <div class="hero-video-container">
+            <video class="hero-background-video" autoplay muted loop controls>
+                <source src="./assets/video/home-header.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section id="how-it-works" class="how-it-works">
+    <div class="container">
+      <h2 class="section-title">How does it work?</h2>
+      
+      <div class="pipeline">
+        <div class="pipeline-item">
+          <div class="pipeline-number">
+            <span>1</span>
+          </div>
+          <div class="pipeline-card">
+            <div class="card-media">
+              <video 
+                autoplay 
+                loop 
+                muted 
+                playsinline 
+                class="video-fluid">
+                <source src="./assets/video/camera_setup.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="card-text">
+              <h3>Setup 2+ Cameras</h3>
+              <p>Position two or more standard webcams, GoPros, or smartphones around your space. Our universal design ensures high-quality results using everyday devices, requiring no expensive or specialized motion capture hardware.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pipeline-item">
+          <div class="pipeline-number">
+            <span>2</span>
+          </div>
+          <div class="pipeline-card">
+            <div class="card-media">
+              <video 
+                autoplay 
+                loop 
+                muted 
+                playsinline 
+                class="video-fluid">
+                <source src="./assets/video/charuco_waving.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="card-text">
+              <h3>Calibrate the Space</h3>
+              <p>Wave a printed Charuco board within view of all cameras. This process automatically synchronizes the feeds and defines the 3D coordinate system required for accurate spatial reconstruction and tracking.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pipeline-item">
+          <div class="pipeline-number">
+            <span>3</span>
+          </div>
+          <div class="pipeline-card">
+            <div class="card-media">
+              <video 
+                autoplay 
+                loop 
+                muted 
+                playsinline 
+                class="video-fluid">
+                <source src="./assets/video/motion_capture.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="card-text">
+              <h3>Record the Motion</h3>
+              <p>Perform your movements naturally while recording synchronized footage directly through the FreeMoCap interface, or simply record offline on your mobile devices to import the video files for later processing.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pipeline-item">
+          <div class="pipeline-number">
+            <span>4</span>
+          </div>
+          <div class="pipeline-card">
+            <div class="card-media">
+              <video 
+                autoplay 
+                loop 
+                muted 
+                playsinline 
+                class="video-fluid">
+                <source src="./assets/video/processing.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="card-text">
+              <h3>Process & Reconstruct</h3>
+              <p>The local processing engine transforms video into 3D data. Access your results in multiple formats, including CSV for analysis or FBX and .blend files among others for professional animation and research pipelines.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Features Section -->
+  <section id="features" class="features">
+    <div class="container">
+      <h2 class="section-title">Why Choose FreeMoCap?</h2>
+      <div class="features-grid">
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="bi bi-webcam"></i>
+          </div>
+          <h3 class="feature-title">Markerless Tracking</h3>
+          <p class="feature-description">
+            Capture full-body 3D movement using advanced computer vision algorithms without physical markers.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="bi bi-unlock"></i>
+          </div>
+          <h3 class="feature-title">Completely Free</h3>
+          <p class="feature-description">
+            No subscriptions, no licenses, no hidden fees. FreeMoCap is and will always be 100% free and open source.
+          </p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="bi bi-cpu"></i>
+          </div>
+          <h3 class="feature-title">Research-Grade</h3>
+          <p class="feature-description">
+            Built on cutting-edge computer vision and machine learning technologies used in academic research.
+          </p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="bi bi-people"></i>
+          </div>
+          <h3 class="feature-title">Accessible to All</h3>
+          <p class="feature-description">
+            Designed to run on CPU to be used by everyone from professional researchers to beginners with no technical training.
+          </p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="bi bi-code-slash"></i>
+          </div>
+          <h3 class="feature-title">Open Source</h3>
+          <p class="feature-description">
+            Full transparency and community-driven development. Contribute, modify, and extend to fit your needs.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="bi bi-shield-check"></i>
+          </div>
+          <h3 class="feature-title">Local & Private</h3>
+          <p class="feature-description">
+            Your video data never leaves your machine. All processing happens locally, ensuring total privacy for your sensitive research data.
+          </p>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission Section -->
+  <section id="mission" class="mission">
+    <div class="container">
+      <div class="mission-content">
+        <h2 class="section-title">Our Mission</h2>
+        <p class="mission-text">
+          The Free Motion Capture Project (FreeMoCap) aims to provide research-grade markerless motion capture software to <span class="highlight">everyone</span> for <span class="highlight">free</span>.
+        </p>
+        <p class="mission-text">
+          We're building a <span class="highlight">user-friendly</span> framework that connects cutting-edge <span class="highlight">open-source</span> tools from the computer vision and machine learning communities to accurately record full-body 3D movement of humans, animals, robots, and other objects.
+        </p>
+        <p class="mission-text">
+          Following a "Universal Design" philosophy, we create systems that serve professional researchers while remaining <span class="highlight">intuitive to beginners</span> with no technical training.
+        </p>
+        <p class="mission-text"><span class="highlight"></span>
+          <b>Everyone has a reason to record human movement.<br>We want to help them do it.</b>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+<section id="services" class="services">
+  <div class="container">
+    <div class="services-content">
+
+      <!-- Skelly Image -->
+      <div class="services-image">
+        <img src="assets/pictures/skelly_services_pointing.png" alt="Skelly, the FreeMoCap mascot" />
+      </div>
+
+      <!-- Services Text -->
+      <div class="services-text">
+        <h2 class="section-title">Services</h2>
+        <p class="services-copy">
+          <span class="highlight">Knowledge is free.</span> Labor is expensive.
+        </p>
+        <p class="services-copy">
+          FreeMoCap is built on the belief that anything that can be infinitely and losslessly duplicated—code, documentation, videos—should be available to everyone, for free.
+        </p>
+        <p class="services-copy">
+          When you need hands-on help, dedicated support, or custom solutions, our team offers professional services to help you get up and running faster and with confidence.
+        </p>
+        <p class="services-copy">
+          <b>Let us help you get on your two feet.<br>Or four, if it’s rodents.</b>
+        </p>
+        <a href="/services" class="services-button">
+          Explore Services
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+  <!-- Community Section -->
+  <section id="community" class="community">
+    <div class="container">
+      <h2 class="section-title">Join Our Community</h2>
+      <div class="community-grid">
+        <div class="community-card">
+          <div class="community-icon">
+            <i class="bi bi-github"></i>
+          </div>
+          <h3 class="community-title">Code & Development</h3>
+          <p>Contribute to the project, report issues, or explore the codebase.</p>
+          <a href="https://github.com/freemocap/freemocap" target="_blank" class="community-link">
+            GitHub <i class="bi bi-arrow-up-right"></i>
+          </a>
+        </div>
+        
+        <div class="community-card">
+          <div class="community-icon">
+            <i class="bi bi-chat-dots"></i>
+          </div>
+          <h3 class="community-title">Community Chat</h3
+          <p>Join our Discord community to chat with developers and users.</p>
+          <a href="https://discord.gg/SgdnzbHDTG" target="_blank" class="community-link">
+            Discord <i class="bi bi-arrow-up-right"></i>
+          </a>
+        </div>
+        
+        <div class="community-card">
+          <div class="community-icon">
+            <i class="bi bi-camera-video"></i>
+          </div>
+          <h3 class="community-title">Videos & Streams</h3>
+          <p>Watch in-depth tutorials, technical demos, and regular dev-streams on YouTube and Twitch.</p>
+          <div class="community-links-multi">
+            <a href="https://www.youtube.com/channel/UCOOQxlTCtUz9mr1NPWlJyYQ" target="_blank" class="community-link">
+              YouTube <i class="bi bi-arrow-up-right"></i>
+            </a>
+            <a href="https://www.twitch.tv/freemocap" target="_blank" class="community-link">
+              Twitch <i class="bi bi-arrow-up-right"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div class="community-card">
+          <div class="community-icon">
+            <i class="bi bi-megaphone"></i>
+          </div>
+          <h3 class="community-title">Updates & News</h3>
+          <p>Follow us on social media for the latest updates and announcements.</p>
+          <div class="social-links">
+            <a href="https://fosstodon.org/@freemocap" target="_blank" class="social-link" title="Mastodon">
+              <i class="bi bi-mastodon"></i>
+            </a>
+            <a href="https://twitter.com/freemocap" target="_blank" class="social-link" title="Twitter">
+              <i class="bi bi-twitter"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <a href="#" class="logo">
+            <img src="./assets/logos/fmc-logo-3-4-22.png" alt="FreeMoCap Logo" class="logo-img" style="height: 30px;">
+            <span class="logo-text">The FreeMoCap Project</span>
+          </a>
+          <p class="copyright" style="margin-top: 1rem;">
+            Free Motion Capture for Everyone
+          </p>
+        </div>
+        
+        <div class="footer-links">
+          <a href="#about-us" class="footer-link">About Us</a>
+          <a href="#community" class="footer-link">Community</a>
+          <a href="#services" class="footer-link">Services</a>
+          <a href="#documentation" class="footer-link">Documentation</a>
+          <a href="#donate" class="footer-link">Donate</a>
+          <a href="https://github.com/freemocap/freemocap" target="_blank" class="footer-link">Code</a>
+        </div>
+
+      </div>
+      <div class="footer-bottom">
+      <p class="copyright">
+        &copy; 2025 The FreeMoCap Project. All rights reserved.<br>
+        Made with ❤️ by the open source community.
+      </p>
+    </div>
+    </div>
+  </footer>
+
+  <!-- Smooth scroll for anchor links -->
+  <script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 80,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // Add scroll effect to header
+    window.addEventListener('scroll', function() {
+      const header = document.querySelector('.header');
+      if (window.scrollY > 50) {
+        header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.3)';
+      } else {
+        header.style.boxShadow = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
