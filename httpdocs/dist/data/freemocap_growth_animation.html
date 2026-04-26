@@ -568,6 +568,8 @@
         let globalData = null;
         let isPlaying = false;
         let animationFrame = null;
+        let drainAnimFrame = null;
+        let drainOffsetMs = 0;
         let currentIndex = 0;
         let filteredIndices = [];
         let cachedValues = { users: [], pings: [] };
@@ -702,7 +704,13 @@
             initControls();
             computeCachedValues();
             setupCanvases();
+
+            // Default to the final frame so the map shows current data on load
+            currentIndex = filteredIndices.length - 1;
+            document.getElementById('date-slider').value = 100;
+
             render();
+            startDrain();
 
             // Debounced resize handler for performance
             let resizeTimeout;
@@ -796,12 +804,12 @@
 
             const idx = filteredIndices[currentIndex];
             const currentDate = globalData.time_series[idx].date;
-            const currentDateMs = new Date(currentDate).getTime() + 86400000;
+            const currentDateMs = new Date(currentDate).getTime() + 86400000 + drainOffsetMs;
 
             const visibleCount = markerDateIndex.get(currentDate) || 0;
             if (visibleCount === 0) return;
 
-            const fadeWindowMs = 14 * 86400000;
+            const fadeWindowMs = FADE_WINDOW_MS;
             const freshThresholdMs = currentDateMs - fadeWindowMs;
 
             // Find the split point between old and fresh markers using binary search
@@ -934,7 +942,35 @@
         let lastAnimationTime = 0;
         const BASE_FRAME_INTERVAL = 50; // ms per frame at 1x speed
 
+        const FADE_WINDOW_MS = 14 * 86400000;
+        const DRAIN_DURATION_MS = 2000;
+
+        function cancelDrain() {
+            if (drainAnimFrame !== null) {
+                cancelAnimationFrame(drainAnimFrame);
+                drainAnimFrame = null;
+            }
+            drainOffsetMs = 0;
+        }
+
+        function startDrain() {
+            cancelDrain();
+            const startTime = performance.now();
+            function drainStep(now) {
+                const elapsed = now - startTime;
+                drainOffsetMs = Math.min(elapsed / DRAIN_DURATION_MS, 1) * FADE_WINDOW_MS;
+                renderMarkers();
+                if (elapsed < DRAIN_DURATION_MS) {
+                    drainAnimFrame = requestAnimationFrame(drainStep);
+                } else {
+                    drainAnimFrame = null;
+                }
+            }
+            drainAnimFrame = requestAnimationFrame(drainStep);
+        }
+
         function togglePlay() {
+            cancelDrain();
             isPlaying = !isPlaying;
             const btn = document.getElementById('play-btn');
             document.getElementById('play-icon').textContent = isPlaying ? '⏸' : '▶';
@@ -974,6 +1010,7 @@
                     document.getElementById('play-icon').textContent = '▶';
                     document.getElementById('play-text').textContent = 'Play';
                     document.getElementById('play-btn').classList.remove('playing');
+                    startDrain();
                 }
             } else {
                 animationFrame = requestAnimationFrame(animate);
@@ -981,6 +1018,7 @@
         }
 
         function onSliderChange() {
+            cancelDrain();
             const pct = parseFloat(document.getElementById('date-slider').value) / 100;
             currentIndex = Math.round(pct * (filteredIndices.length - 1));
             render();
