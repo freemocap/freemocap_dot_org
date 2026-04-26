@@ -443,7 +443,7 @@
     // Load stats from JSON data
     (async function loadHomeStats() {
       try {
-        const response = await fetch('./data/freemocap_dashboard_data.json');
+        const response = await fetch('./data/freemocap_dashboard_data.json', { cache: 'no-cache' });
         if (response.ok) {
           const data = await response.json();
           const latest = data.time_series[data.time_series.length - 1];
