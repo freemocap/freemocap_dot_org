@@ -1172,7 +1172,7 @@
                 if (pings <= 3) return 'Casual';
                 if (pings <= 10) return 'Regular';
                 if (pings <= 50) return 'Power User';
-                return 'Super Fan';
+                return 'Super User';
             }
 
             if (pingsDistribution && pingsDistribution.length > 0) {
@@ -1259,7 +1259,7 @@
                 { tier: '👋 Came Back (2-3×)', users: tierCounts.casual, color: '#68d391', pct: (tierCounts.casual / totalTierUsers * 100).toFixed(1) + '%' },
                 { tier: '⭐ Regular (4-10×)', users: tierCounts.regular, color: '#4299e1', pct: (tierCounts.regular / totalTierUsers * 100).toFixed(1) + '%' },
                 { tier: '🔥 Power User (11-50×)', users: tierCounts.power, color: '#ed8936', pct: (tierCounts.power / totalTierUsers * 100).toFixed(1) + '%' },
-                { tier: '🏆 Super Fan (50+×)', users: tierCounts.superfan, color: '#e53e3e', pct: (tierCounts.superfan / totalTierUsers * 100).toFixed(1) + '%' }
+                { tier: '🏆 Super User (50+×)', users: tierCounts.superfan, color: '#e53e3e', pct: (tierCounts.superfan / totalTierUsers * 100).toFixed(1) + '%' }
             ].sort((a, b) => b.users - a.users);
 
             vegaEmbed('#chart-engagement-tiers', {
