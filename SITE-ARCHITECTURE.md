@@ -188,11 +188,11 @@ Columns mirror the top nav, and the column headings reuse the existing top-nav
 labels verbatim, so no new copy is written:
 
 ```
-Resources          Community          About              Get FreeMoCap
-Documentation ↗    Showcase           About Us           Download
-Installation ↗     Community          Donate             Services
-Source Code ↗      Shop ↗             User Data
-Resources
+Get Started        Resources          Community          About
+Download           Documentation ↗    Showcase           About Us
+Services           Installation ↗     Community          Donate
+                   Source Code ↗      Shop ↗             User Data
+                   Resources
 ```
 
 Two details worth noting:
@@ -200,9 +200,9 @@ Two details worth noting:
 - **No Home column.** Anchors live in the nav only, so a footer Home column
   would either duplicate anchors or contain a single link to `/`. Neither is
   worth a column.
-- **The fourth column heading is the one exception** to reusing existing
-  labels. There is no current top-nav label covering Download and Services
-  together, so that heading is new copy. Placeholder above, Paul's call.
+- **"Get Started" is the one new label.** The other three column headings reuse
+  existing top-nav labels verbatim. Download and Services had no shared nav
+  label to inherit, so Paul chose this one.
 
 ---
 
@@ -274,11 +274,12 @@ Resolved by Paul.
 | Index `#services` section keeping its own button to `/services` | Stays as is. Placing it under the Home menu is expected to make the relationship clear. |
 | Unlinked file retirement | Safe to remove, but hold until all other work is done. |
 
-The `#video` section had no `<h2>`. Paul supplied "This Is FreeMoCap", which is
-now the section heading and its `Home ▾` label.
+Both previously open items are now resolved:
 
-**Still open:**
+| Question | Decision |
+|---|---|
+| `#video` had no heading to reuse as a menu label | Paul supplied "This Is FreeMoCap". Added to the section and the menu. |
+| Fourth footer column heading | "Get Started". |
 
-- The fourth footer column groups Download and Services and has no existing
-  top-nav label to reuse. Awaiting Paul's wording.
+No open content questions remain. Phase 1 and Phase 2 are fully specified.
 
