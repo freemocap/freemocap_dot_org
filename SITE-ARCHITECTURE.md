@@ -1,4 +1,4 @@
-# freemocap.org — Proposed Site Architecture
+# freemocap.org: Proposed Site Architecture
 
 Working document. Not a spec, not final. Edit freely.
 
@@ -47,9 +47,9 @@ that owns it. No index section duplicates a page.
 
 Three audiences drive the nav shape:
 
-1. **Run it** — Download, Documentation, Installation, Cheatsheet
-2. **Evaluate it** — How It Works, Showcase, User Data
-3. **Fund or hire you** — Services, Donate, About
+1. **Run it**: Download, Documentation, Installation, Cheatsheet
+2. **Evaluate it**: How It Works, Showcase, User Data
+3. **Fund or hire you**: Services, Donate, About
 
 ---
 
@@ -57,7 +57,7 @@ Three audiences drive the nav shape:
 
 ```mermaid
 flowchart TD
-    Home["/ — index<br/>funnel only"]
+    Home["/ index<br/>funnel only"]
 
     subgraph nav["Top nav"]
         R["Resources ▾"]
@@ -75,7 +75,7 @@ flowchart TD
     R --> Sheet["Cheatsheet<br/>/resources"]
     R --> Code["Source Code ↗<br/>github"]
 
-    C --> Comm["/community<br/>NEW — channels hub"]
+    C --> Comm["/community<br/>NEW, channels hub"]
     C --> Show["/showcase<br/>community work"]
     Comm --> Discord["Discord ↗"]
     Comm --> Video["YouTube / Twitch ↗"]
@@ -106,7 +106,7 @@ flowchart TD
 | Download | off-site, via `/download` | Becomes a local page after v2 |
 | Learning material | `/resources` | Docs, Installation, Cheatsheet, Code |
 | Cheatsheet | `/resources` | Moves off the index; index keeps a teaser or drops it |
-| Community channels | `/community` — **new page** | Discord, YouTube, Twitch, socials |
+| Community channels | `/community` (**new page**) | Discord, YouTube, Twitch, socials |
 | Community work | `/showcase` | Unchanged |
 | Usage stats | `/data` | Unchanged |
 | Paid offerings | `/services` | Unchanged |
@@ -145,10 +145,10 @@ Changes from today:
 | Section | Action |
 |---|---|
 | Hero | Keep |
-| `#how-it-works` | Keep — canonical |
-| `#impact` (User Data) | Keep — already a proper teaser linking to `/data` |
+| `#how-it-works` | Keep, canonical |
+| `#impact` (User Data) | Keep, already a proper teaser linking to `/data` |
 | `#mission` | Shrink to a teaser; canonical text moves to `/about-us` |
-| `#features` | Keep — canonical |
+| `#features` | Keep, canonical |
 | `#video` | Keep |
 | `#cheatsheet` | Move canonical to `/resources`; keep a teaser or drop |
 | `#services` | Shrink to a teaser linking to `/services` |
@@ -165,9 +165,9 @@ The footer currently mixes page links and index anchors, and disagrees with the
 nav about where Services and Community live. It should point only at pages, in
 three labelled groups:
 
-- **Get started** — Download, Documentation ↗, Resources, Cheatsheet
-- **Community** — Showcase, Community, Discord ↗, Shop ↗
-- **Project** — About Us, Donate, User Data, Source Code ↗
+- **Get started**: Download, Documentation ↗, Resources, Cheatsheet
+- **Community**: Showcase, Community, Discord ↗, Shop ↗
+- **Project**: About Us, Donate, User Data, Source Code ↗
 
 ---
 
@@ -199,7 +199,7 @@ to `docs.freemocap.org`. These should agree.
 
 ## Suggested phasing
 
-**Phase 1 — safe now, no dependency on v2 or the docs rewrite**
+**Phase 1: safe now, no dependency on v2 or the docs rewrite**
 
 1. Retire the orphaned files
 2. Rework the footer to pages-only, three groups
@@ -208,14 +208,14 @@ to `docs.freemocap.org`. These should agree.
 5. Align the Resources dropdown with the Resources page
 6. Normalise the `freemocap.github.io` URLs
 
-**Phase 2 — needs content decisions**
+**Phase 2: needs content decisions**
 
 7. Remove the `/community` redirect rule
 8. Build `/community` as the channels hub
 9. Move Discord, YouTube, Twitch off `/resources` onto `/community`
 10. Move the Cheatsheet onto `/resources`
 
-**Phase 3 — blocked on v2 and the docs rewrite**
+**Phase 3: blocked on v2 and the docs rewrite**
 
 11. Build a local `/download` page, retire the 301
 12. Redraw the boundary between what `/resources` carries and what the docs
