@@ -17,5 +17,5 @@ RewriteCond %{DOCUMENT_ROOT}/$1.html -f
 RewriteRule ^(.+?)/?$ /$1.html [NC,L,R=301]
 </IfModule>
 
-# Custom 404 page (create 404.html before uncommenting)
-# ErrorDocument 404 /404.html
+# Custom 404 page
+ErrorDocument 404 /404.html
