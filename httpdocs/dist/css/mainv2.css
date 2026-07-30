@@ -215,12 +215,13 @@ body {
 }
 
 /* Split nav CTA: Services | Download. Outer corners stay rounded, the
-   two inner corners are square, and a hairline gap separates the halves.
+   two inner corners are square, and a small gap separates the halves.
+   Each half keeps the standard .cta-button hover lift.
    Nav-only - not related to .cta-button-lg/-xl. */
 .nav-cta-group {
   display: inline-flex;
   align-items: stretch;
-  gap: 2px;
+  gap: 6px;
 }
 
 .nav-cta-group .cta-button {
@@ -228,12 +229,8 @@ body {
   align-items: center;
   justify-content: center;
   border-radius: 0;
-}
-
-/* The halves must stay aligned, so neither one lifts on hover the way a
-   standalone .cta-button does. Colour change carries the hover state. */
-.nav-cta-group .cta-button:hover {
-  transform: none;
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
 }
 
 .nav-cta-group .cta-button:first-child {
