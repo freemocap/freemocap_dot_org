@@ -221,7 +221,7 @@ body {
 .nav-cta-group {
   display: inline-flex;
   align-items: stretch;
-  gap: 6px;
+  gap: 4px;
 }
 
 .nav-cta-group .cta-button {
