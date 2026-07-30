@@ -76,11 +76,11 @@ flowchart TD
     end
 
     Home --> H1["How does it work?<br/>#how-it-works"]
-    Home --> H2["User Data<br/>#impact"]
+    Home --> H2["User Data (Highlights)<br/>#impact"]
     Home --> H3["Our Mission<br/>#mission"]
     Home --> H4["Why Choose FreeMoCap?<br/>#features"]
     Home --> HV["This Is FreeMoCap<br/>#video"]
-    Home --> H5["Download Our Cheatsheet<br/>#cheatsheet"]
+    Home --> H5["Cheatsheet<br/>#cheatsheet"]
     Home --> H6["Services<br/>#services"]
     Home --> H7["Join Our Community<br/>#community"]
 
@@ -126,9 +126,9 @@ says nothing about where content lives or how much of it there is.
 ## Proposed nav
 
 ```
-Home ▾         How does it work? · User Data · Our Mission ·
+Home ▾         How does it work? · User Data (Highlights) · Our Mission ·
                Why Choose FreeMoCap? · This Is FreeMoCap ·
-               Download Our Cheatsheet · Services · Join Our Community
+               Cheatsheet · Services · Join Our Community
 Resources ▾    Documentation ↗ · Installation Guide ↗ · Source Code ↗ · Resources
 Community ▾    Showcase · Discord ↗ · YouTube ↗ · Twitch ↗
 About ▾        About Us · Donate
@@ -137,19 +137,23 @@ Shop ↗
 [ Services | Download ]
 ```
 
-`Home ▾` labels are the existing `<h2>` headings from each index section,
-verbatim. No new copy. Mapping:
+`Home ▾` labels start from the existing `<h2>` heading of each index section.
+Two diverge, both at Paul's direction. Section headings themselves are
+unchanged.
 
-| Label | Anchor |
-|---|---|
-| How does it work? | `#how-it-works` |
-| User Data | `#impact` |
-| Our Mission | `#mission` |
-| Why Choose FreeMoCap? | `#features` |
-| This Is FreeMoCap | `#video` |
-| Download Our Cheatsheet | `#cheatsheet` |
-| Services | `#services` |
-| Join Our Community | `#community` |
+| Menu label | Anchor | Section heading |
+|---|---|---|
+| How does it work? | `#how-it-works` | same |
+| User Data (Highlights) | `#impact` | "User Data" |
+| Our Mission | `#mission` | same |
+| Why Choose FreeMoCap? | `#features` | same |
+| This Is FreeMoCap | `#video` | same |
+| Cheatsheet | `#cheatsheet` | "Download Our Cheatsheet" |
+| Services | `#services` | same |
+| Join Our Community | `#community` | same |
+
+"User Data (Highlights)" distinguishes the index teaser from the top-level
+`User Data` nav item, which goes to the full `/data` dashboard.
 
 Structural changes:
 
