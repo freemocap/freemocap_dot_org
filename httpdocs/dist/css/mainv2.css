@@ -296,7 +296,7 @@ body {
 
 /* Large in-page CTA modifier. Bigger than the nav .cta-button and sized
    to carry a leading icon. min-width keeps grouped buttons the same size
-   regardless of label length. Must stay after .cta-button — same
+   regardless of label length. Must stay after .cta-button, same
    specificity, so source order decides. */
 .cta-button-lg {
   display: inline-flex;
