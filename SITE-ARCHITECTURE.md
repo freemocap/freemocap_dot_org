@@ -81,7 +81,7 @@ flowchart TD
     Home --> H4["Why Choose FreeMoCap?<br/>#features"]
     Home --> HV["This Is FreeMoCap<br/>#video"]
     Home --> H5["Cheatsheet<br/>#cheatsheet"]
-    Home --> H6["Services<br/>#services"]
+    Home --> H6["Hire Us<br/>#services"]
     Home --> H7["Join Our Community<br/>#community"]
 
     R --> Docs["Documentation ↗<br/>docs.freemocap.org"]
@@ -128,7 +128,7 @@ says nothing about where content lives or how much of it there is.
 ```
 Home ▾         How does it work? · User Data (Highlights) · Our Mission ·
                Why Choose FreeMoCap? · This Is FreeMoCap ·
-               Cheatsheet · Services · Join Our Community
+               Cheatsheet · Hire Us · Join Our Community
 Resources ▾    Documentation ↗ · Installation Guide ↗ · Source Code ↗ · Resources
 Community ▾    Showcase · Discord ↗ · YouTube ↗ · Twitch ↗
 About ▾        About Us · Donate
@@ -137,9 +137,8 @@ Shop ↗
 [ Services | Download ]
 ```
 
-`Home ▾` labels start from the existing `<h2>` heading of each index section.
-Two diverge, both at Paul's direction. Section headings themselves are
-unchanged.
+`Home ▾` labels track the `<h2>` heading of each index section. Two diverge,
+both at Paul's direction.
 
 | Menu label | Anchor | Section heading |
 |---|---|---|
@@ -149,7 +148,7 @@ unchanged.
 | Why Choose FreeMoCap? | `#features` | same |
 | This Is FreeMoCap | `#video` | same |
 | Cheatsheet | `#cheatsheet` | "Download Our Cheatsheet" |
-| Services | `#services` | same |
+| Hire Us | `#services` | same |
 | Join Our Community | `#community` | same |
 
 "User Data (Highlights)" distinguishes the index teaser from the top-level
