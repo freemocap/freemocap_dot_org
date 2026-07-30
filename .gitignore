@@ -3,3 +3,7 @@
 .idea/
 .env
 .claude/
+
+# Local working docs, not part of the site
+SITE-ARCHITECTURE.md
+CLAUDE.md
