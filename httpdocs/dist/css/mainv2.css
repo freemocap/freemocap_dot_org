@@ -254,10 +254,21 @@ body {
 
 .hero-buttons {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   justify-content: center;
   margin-bottom: 3rem;
   padding: 0 1rem;
+}
+
+/* Hero CTAs are larger than the nav CTA and carry leading icons */
+.hero-buttons .cta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  font-size: 1rem;
 }
 
 .hero-video-container {
@@ -1362,8 +1373,15 @@ body {
   .hero-buttons {
     flex-direction: column;
     align-items: center;
+    gap: 0.75rem;
   }
-  
+
+  /* Stacked buttons share one width so they don't look ragged */
+  .hero-buttons .cta-button {
+    width: 100%;
+    max-width: 280px;
+  }
+
   .hero-video-container {
     width: 95%;
   }
