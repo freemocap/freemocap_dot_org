@@ -2,54 +2,60 @@
 
 Working document. Not a spec, not final. Edit freely.
 
-**Constraints this plan respects**
+## Hard constraint on this document
+
+**Nothing in this plan changes, shortens, moves, or removes any copy.**
+
+Every recommendation here is structural: where links point, how the nav is
+organised, what redirects exist, and which unlinked files get retired. Section
+content stays exactly as written unless Paul decides otherwise, and that is a
+separate decision that this document does not make and does not recommend.
+
+Where a structural choice would depend on a content decision, it is listed under
+"Content decisions" at the bottom as an open question with no recommendation
+attached.
+
+## Other constraints
 
 - v2 of the app is mid-release and the docs are not updated yet.
 - `docs.freemocap.org` owns Download for now. `/download` stays a 301.
 - A local download page is wanted eventually but is out of scope here.
-- This plan is about getting the org site into a shape that makes those
-  moves easy later, not about making them now.
 
 ---
 
 ## The core problem
 
-The site is running two information architectures at the same time.
+The problem is not the content. It is that **the same word points at different
+places depending on which piece of chrome you click.**
 
-There is an older **one-page scrolling site**, where the index holds all nine
-sections and the footer points at anchors inside it. And there is a newer
-**multi-page site**, with Services, Showcase, Resources, About Us, and User
-Data as real pages. Each time a page got built, the index section it replaced
-stayed where it was. Nothing was ever retired.
-
-The result is that a concept has no single home:
-
-| Concept | Where it currently lives |
+| Word | Where it takes you, depending on where you click it |
 |---|---|
-| Services | Nav split button → `services.html`, About Us dropdown → `services.html`, index `#services` section → contains a button to `services.html`, footer → index `#services` |
-| Community | Nav dropdown parent → index `#community`, dropdown child → `showcase.html`, index `#community` section with 4 cards, `resources.html` cards, footer → index `#community` |
-| Resources | `resources.html` has 6 cards, nav dropdown has 3 items, footer has 2. No two lists agree. Cheatsheet is in the dropdown but not on the Resources page. |
-| Mission | Index `#mission` section only, though `about-us.html` is where it belongs |
-| Discord | Index community card, Resources card, Showcase intro, Showcase CTA, footer, nav. Six places. |
+| Services | Nav split button goes to `services.html`. About Us dropdown goes to `services.html`. Footer goes to index `#services`. |
+| Community | Nav dropdown parent goes to index `#community`. Its child goes to `showcase.html`. Footer goes to index `#community`. |
+| Documentation | Nav header goes to `docs.freemocap.org`. Resources dropdown, Resources page, and footer all go to `freemocap.github.io`. |
+| Resources | The page lists 6 items. The dropdown lists 3. The footer lists 2. No two lists agree. |
 
-The fix is not to rearrange the menus. It is to decide, for each concept, which
-page owns it, and make everything else a pointer to that page.
+Nothing above is a content problem. Every row is a link target that disagrees
+with another link target for the same label.
+
+There is also a **predictability problem**: a visitor cannot tell in advance
+whether a nav item will load a page or jump to a spot on the index. Some do one,
+some do the other, with no pattern.
 
 ---
 
-## The proposed model
+## The proposed rule
 
-**One canonical owner per concept. The index is a funnel, not a container.**
+**Anchors live in exactly one menu. Everything else points at pages.**
 
-Every index section becomes one of two things: content that exists nowhere else
-(How It Works, Why Choose FreeMoCap), or a short teaser that links to the page
-that owns it. No index section duplicates a page.
+A `Home` dropdown becomes the map of the index page and owns every anchor link
+on the site. No other menu, and not the footer, uses an anchor. The rule a
+visitor learns in one interaction: under Home means a place on the homepage,
+anywhere else means a page.
 
-Three audiences drive the nav shape:
-
-1. **Run it**: Download, Documentation, Installation, Cheatsheet
-2. **Evaluate it**: How It Works, Showcase, User Data
-3. **Fund or hire you**: Services, Donate, About
+This is a pure linking change. No section is added, removed, resized, or
+rewritten. Two index sections that currently have no nav access at all,
+`#how-it-works` and `#features`, become reachable.
 
 ---
 
@@ -57,9 +63,10 @@ Three audiences drive the nav shape:
 
 ```mermaid
 flowchart TD
-    Home["/ index<br/>funnel only"]
+    Home["Home ▾<br/>map of the index"]
 
     subgraph nav["Top nav"]
+        Home
         R["Resources ▾"]
         C["Community ▾"]
         A["About ▾"]
@@ -68,56 +75,56 @@ flowchart TD
         CTA["Services | Download"]
     end
 
-    Home --> nav
+    Home --> H1["#how-it-works"]
+    Home --> H2["#impact"]
+    Home --> H3["#mission"]
+    Home --> H4["#features"]
+    Home --> H5["#cheatsheet"]
+    Home --> H6["#services"]
+    Home --> H7["#community"]
 
     R --> Docs["Documentation ↗<br/>docs.freemocap.org"]
     R --> Install["Installation Guide ↗"]
-    R --> Sheet["Cheatsheet<br/>/resources"]
     R --> Code["Source Code ↗<br/>github"]
+    R --> ResPage["/resources"]
 
+    C --> Show["/showcase"]
     C --> Comm["/community<br/>NEW, channels hub"]
-    C --> Show["/showcase<br/>community work"]
-    Comm --> Discord["Discord ↗"]
-    Comm --> Video["YouTube / Twitch ↗"]
-    Comm --> Social["Social accounts ↗"]
 
-    A --> About["/about-us<br/>who, mission, history"]
+    A --> About["/about-us"]
     A --> Donate["/about-us#donate"]
 
-    D --> Data["/data<br/>usage dashboard"]
+    D --> Data["/data"]
     CTA --> Serv["/services"]
     CTA --> Dl["/download → 301<br/>docs.freemocap.org"]
-
-    Home -.teaser.-> Show
-    Home -.teaser.-> Data
-    Home -.teaser.-> About
-    Home -.teaser.-> Serv
-    Home -.teaser.-> Comm
 ```
 
 ---
 
-## Canonical owners
+## Canonical destination per concept
 
-| Concept | Canonical home | Notes |
+This table says only **which URL a link with that label should point to**. It
+says nothing about where content lives or how much of it there is.
+
+| Label | Points at | Currently |
 |---|---|---|
-| How it works | index `#how-it-works` | Only place it exists. Keep as is. |
-| Why FreeMoCap | index `#features` | Only place it exists. Keep as is. |
-| Download | off-site, via `/download` | Becomes a local page after v2 |
-| Learning material | `/resources` | Docs, Installation, Cheatsheet, Code |
-| Cheatsheet | `/resources` | Moves off the index; index keeps a teaser or drops it |
-| Community channels | `/community` (**new page**) | Discord, YouTube, Twitch, socials |
-| Community work | `/showcase` | Unchanged |
-| Usage stats | `/data` | Unchanged |
-| Paid offerings | `/services` | Unchanged |
-| Who we are, mission, history, donate | `/about-us` | Mission moves here from the index |
+| Services | `/services` | Split CTA and About Us dropdown correct. Footer points at the index anchor. |
+| Community | `/community` (new page) | Nav parent and footer point at the index anchor. |
+| Showcase | `/showcase` | Correct everywhere. |
+| User Data | `/data` | Correct everywhere. |
+| About Us | `/about-us` | Correct everywhere. |
+| Donate | `/about-us#donate` | Correct everywhere. |
+| Documentation | `docs.freemocap.org` | Header correct. Resources dropdown, Resources page, and footer still on `freemocap.github.io`. |
+| Download | `/download` | Correct. |
+| Any index section | `Home ▾` only | Anchors are currently scattered across the nav and footer. |
 
 ---
 
 ## Proposed nav
 
 ```
-Resources ▾    Documentation ↗ · Installation Guide ↗ · Cheatsheet · Source Code ↗
+Home ▾         index sections, labels TBD by Paul
+Resources ▾    Documentation ↗ · Installation Guide ↗ · Source Code ↗ · Resources
 Community ▾    Showcase · Community
 About ▾        About Us · Donate
 User Data
@@ -125,55 +132,50 @@ Shop ↗
 [ Services | Download ]
 ```
 
-Changes from today:
+Structural changes:
 
-- **Services leaves the About Us dropdown.** We added it there recently, but
-  Services already occupies the most prominent slot on the page as half the
-  split CTA. Putting it under About Us was a symptom of the junk-drawer
-  problem, not a fix for it.
-- **Community dropdown parent stops linking to an index anchor.** It points at
+- **`Home ▾` added** in the leftmost slot, where the plaintext Services link
+  used to sit. It links to `/` on click and drops down to the index sections,
+  matching the existing pattern where dropdown parents are also links.
+- **Services leaves the About Us dropdown.** Services already holds the most
+  prominent slot on every page as half the split CTA. The About Us entry was
+  added because there was room in that menu, not because it belongs there.
+- **Community dropdown parent stops pointing at an index anchor** and points at
   the new `/community` page.
-- **Resources dropdown matches the Resources page.** Same four items, same
-  order. If it is on the page it is in the menu, and vice versa.
-- **Cheatsheet stays in the dropdown** but now resolves to `/resources`
-  instead of an index anchor.
+- **Cheatsheet moves out of the Resources dropdown into `Home ▾`,** because it
+  is an index anchor and all anchors go in one place. The cheatsheet section
+  itself does not move.
+- **`freemocap.github.io` URLs updated** to `docs.freemocap.org` in the
+  Resources dropdown, the Resources page, and the footer, so all four locations
+  agree with the header.
 
 ---
 
-## Index, section by section
+## Index page
 
-| Section | Action |
-|---|---|
-| Hero | Keep |
-| `#how-it-works` | Keep, canonical |
-| `#impact` (User Data) | Keep, already a proper teaser linking to `/data` |
-| `#mission` | Shrink to a teaser; canonical text moves to `/about-us` |
-| `#features` | Keep, canonical |
-| `#video` | Keep |
-| `#cheatsheet` | Move canonical to `/resources`; keep a teaser or drop |
-| `#services` | Shrink to a teaser linking to `/services` |
-| `#community` | Shrink from 4 cards to a short teaser linking to `/community` |
+**No index section is added, removed, resized, reordered, or rewritten.**
 
-Net effect: the index stops being nine full sections and becomes a hero, two
-pieces of genuinely unique content, a video, and four short pointers.
+The only index change is that its sections become reachable from `Home ▾`.
+`#how-it-works` and `#features` currently have no nav entry at all.
 
 ---
 
 ## Footer
 
-The footer currently mixes page links and index anchors, and disagrees with the
-nav about where Services and Community live. It should point only at pages, in
-three labelled groups:
+The footer currently mixes page links and index anchors and disagrees with the
+nav about where Services and Community go. Structural fix: every footer link
+points at a page, no anchors except Donate, which is a genuine deep link into
+`/about-us`.
 
-- **Get started**: Download, Documentation ↗, Resources, Cheatsheet
-- **Community**: Showcase, Community, Discord ↗, Shop ↗
-- **Project**: About Us, Donate, User Data, Source Code ↗
+Grouping the existing links into labelled columns is a layout question, not a
+copy question, as long as the link labels themselves stay as they are.
 
 ---
 
 ## Housekeeping
 
-**Orphaned files** currently shipping but linked from nothing:
+**Unlinked files** currently in the repo, referenced by nothing on the six live
+pages:
 
 ```
 about-us-button-template.html    announcements.html
@@ -184,53 +186,51 @@ header.html                      news.html
 ```
 
 `footer.html` and `header.html` at the dist root are stale duplicates of the
-`includes/` versions that the live pages actually load. `compact-hero.html` is
-still fetched by `js/custom.js`, which only the non-live pages use.
+`includes/` versions the live pages actually load. `compact-hero.html` is still
+fetched by `js/custom.js`, which only the non-live pages use.
 
-**Redirect conflict:** `.htaccess` currently has
-`RewriteRule ^community/?$ /showcase.html`. Creating a real `/community` page
-requires removing that rule first, or the page becomes unreachable.
+Retiring these deletes no copy that appears anywhere on the live site, but
+`community.html`, `news.html`, and `announcements.html` do contain written
+content. Confirm before removing anything.
 
-**Stale docs URLs:** the Resources dropdown, the Resources page, and the footer
-still point at `freemocap.github.io/documentation`. The header was already moved
-to `docs.freemocap.org`. These should agree.
+**Redirect conflict:** `.htaccess` has `RewriteRule ^community/?$
+/showcase.html`. Creating a real `/community` page requires removing that rule
+first, or the new page is unreachable.
 
 ---
 
 ## Suggested phasing
 
-**Phase 1: safe now, no dependency on v2 or the docs rewrite**
+**Phase 1: pure link and nav changes, no content implications**
 
-1. Retire the orphaned files
-2. Rework the footer to pages-only, three groups
-3. Move Mission canonical text to `/about-us`, shrink the index section
-4. Shrink index `#services` and `#community` to teasers
+1. Add `Home ▾` and move all anchor links into it
+2. Remove Services from the About Us dropdown
+3. Point the footer at pages instead of index anchors
+4. Normalise the `freemocap.github.io` URLs to `docs.freemocap.org`
 5. Align the Resources dropdown with the Resources page
-6. Normalise the `freemocap.github.io` URLs
 
-**Phase 2: needs content decisions**
+**Phase 2: needs a new page**
 
-7. Remove the `/community` redirect rule
-8. Build `/community` as the channels hub
-9. Move Discord, YouTube, Twitch off `/resources` onto `/community`
-10. Move the Cheatsheet onto `/resources`
+6. Remove the `/community` redirect rule
+7. Build `/community` as the channels hub, using content Paul provides
+8. Point the Community dropdown parent at it
 
 **Phase 3: blocked on v2 and the docs rewrite**
 
-11. Build a local `/download` page, retire the 301
-12. Redraw the boundary between what `/resources` carries and what the docs
-    site carries. Once the docs site is current, `/resources` may have very
-    little left to justify its existence as a separate page.
+9. Build a local `/download` page, retire the 301
+10. Revisit what `/resources` carries once the docs site is current
 
 ---
 
-## Open questions
+## Content decisions
 
-- Does `/resources` survive Phase 3, or does it collapse into a nav dropdown
-  pointing straight at the docs site?
-- Should `User Data` stay a top-level nav item, or move under About? It is
-  strong credibility material for evaluators, which argues for keeping it
-  prominent.
-- Is Shop worth a top-level slot, or does it belong in the footer?
-- The two greens now in use, `#6aa3a2` on white text, sit below WCAG AA at
-  roughly 2.9:1. Worth resolving as part of any broader visual pass.
+These are Paul's alone. Listed as open questions, with no recommendation.
+
+- What are the `Home ▾` item labels? Nav labels are copy. The section headings
+  already exist, but whether the menu reuses them verbatim or uses something
+  shorter is a call I should not make.
+- Should the footer columns get group headings? Adding headings means writing
+  new copy.
+- Do any of the unlinked files contain copy worth keeping before retirement?
+- Does the index `#services` section, which contains a button to `/services`,
+  want to keep both? This is a content question and stays open.

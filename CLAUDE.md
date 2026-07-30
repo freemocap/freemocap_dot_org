@@ -18,13 +18,19 @@ The only way copy changes is if Paul explicitly asks for a copy change **and
 provides the specific text to use**. Not a direction, not a vibe, not "make it
 punchier". The literal words.
 
-If a structural task appears to require moving or cutting copy, **stop and ask
-first**. Do not proceed on the assumption that moving text is not the same as
-changing it.
+**Do not suggest, recommend, propose, or float copy changes either.** Not in
+chat, not in planning documents, not as an "option". Do not suggest shrinking a
+section, cutting a section, condensing anything, turning a section into a
+teaser, or moving text from one page to another. If a plan seems to call for it,
+the plan is wrong, not the copy.
 
-This applies to `SITE-ARCHITECTURE.md` as well. That document proposes moving
-the Mission text to `/about-us` and shrinking several index sections. Those are
-proposals only. None of them happen without explicit instruction.
+Architecture work is done with links, nav structure, redirects, and new pages.
+Content volume is never an architectural conclusion. It is Paul's decision and
+his alone, and he will raise it if he wants it.
+
+If a structural task genuinely cannot proceed without a copy decision, state the
+blocker in one line as an open question with **no recommendation attached**, and
+wait.
 
 ## RULE 2: Never run destructive git commands.
 
