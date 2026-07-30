@@ -1089,6 +1089,11 @@ body {
   color: var(--text-muted);
 }
 
+.contact-list strong {
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
 @media (max-width: 768px) {
   .contact-primary,
   .contact-list {
