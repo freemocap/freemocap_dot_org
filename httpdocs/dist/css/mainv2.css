@@ -1094,19 +1094,6 @@ body {
   color: var(--text-secondary);
 }
 
-/* Three of the four labels are also links. Inherit the label colour so
-   all four read identically, and reveal the link on hover. */
-.contact-list strong a {
-  color: inherit;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.contact-list strong a:hover {
-  color: var(--accent-teal);
-  text-decoration: underline;
-}
-
 @media (max-width: 768px) {
   .contact-primary,
   .contact-list {
