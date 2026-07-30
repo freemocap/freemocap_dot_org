@@ -1,10 +1,21 @@
+# IMPORTANT: Order goes external redirects, then aliases, then the generic .html rule.
+
+<IfModule mod_rewrite.c>
 RewriteEngine On
+RewriteBase /
 
-# Redirect /foo and /foo/ to /foo.html
-RewriteRule ^services/?$ services.html [L,R=301]
-RewriteRule ^showcase/?$ showcase.html [L,R=301]
-RewriteRule ^resources/?$ resources.html [L,R=301]
-RewriteRule ^about-us/?$ about-us.html [L,R=301]
+# 1. External redirects (off-site)
+RewriteRule ^download/?$ https://docs.freemocap.org/freemocap/download [NC,L,R=301]
 
-# Redirect old community URL to showcase
-RewriteRule ^community/?$ showcase.html [L,R=301]
+# 2. Internal aliases (old URLs -> current pages)
+RewriteRule ^community/?$ /showcase.html [NC,L,R=301]
+
+# 3. Generic: /foo and /foo/ -> /foo.html, when foo.html exists. Replaces the per-page rules. Works for any future page.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+RewriteRule ^(.+?)/?$ /$1.html [NC,L,R=301]
+</IfModule>
+
+# Custom 404 page (create 404.html before uncommenting)
+# ErrorDocument 404 /404.html
