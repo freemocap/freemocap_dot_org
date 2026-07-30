@@ -1120,6 +1120,11 @@ body {
   margin-bottom: 2rem;
 }
 
+.error-skully {
+  margin-top: 2rem;
+  font-size: 1.5rem;
+}
+
 @media (max-width: 768px) {
   .contact-primary,
   .contact-list {
