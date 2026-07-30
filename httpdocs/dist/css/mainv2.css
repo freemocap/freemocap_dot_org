@@ -3,6 +3,7 @@
   --bg-secondary: #2d2d2d;
   --bg-tertiary: #444444;
   --accent-teal: #7db8b7;
+  --accent-green: #6aa3a2;
   --accent-red: #d64550;
   --accent-highlight: #f0c674;
   --text-primary: #ffffff;
@@ -211,6 +212,41 @@ body {
   background-color: #c03a45;
   color: white;
   transform: translateY(-2px);
+}
+
+/* Split nav CTA: Services | Download. Outer corners stay rounded, the
+   two inner corners are square, and a hairline gap separates the halves.
+   Nav-only - not related to .cta-button-lg/-xl. */
+.nav-cta-group {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 2px;
+}
+
+.nav-cta-group .cta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0;
+}
+
+/* The halves must stay aligned, so neither one lifts on hover the way a
+   standalone .cta-button does. Colour change carries the hover state. */
+.nav-cta-group .cta-button:hover {
+  transform: none;
+}
+
+.nav-cta-group .cta-button:first-child {
+  border-radius: 6px 0 0 6px;
+  background-color: var(--accent-green);
+}
+
+.nav-cta-group .cta-button:first-child:hover {
+  background-color: #5a8b8a;
+}
+
+.nav-cta-group .cta-button:last-child {
+  border-radius: 0 6px 6px 0;
 }
 
 /* Hero Section */
@@ -1347,6 +1383,19 @@ body {
   .nav-links .cta-button {
     margin-top: 0.5rem;
     text-align: center;
+  }
+
+  /* Split CTA spans the stacked menu, halves share the width evenly.
+     Must come after .nav-links .cta-button - equal specificity. */
+  .nav-cta-group {
+    display: flex;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  .nav-cta-group .cta-button {
+    flex: 1 1 0;
+    margin-top: 0;
   }
 
   /* Mobile Dropdowns */
