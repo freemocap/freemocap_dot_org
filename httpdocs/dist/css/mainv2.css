@@ -96,6 +96,11 @@ body {
   font-weight: 500;
   transition: color 0.3s ease;
   font-size: 0.9rem;
+  /* data.html also loads Bootstrap, whose .nav-link sets padding .5rem 1rem.
+     That added ~190px across the six nav links and wrapped the header onto a
+     second row. No-op everywhere else, since anchors have no padding by
+     default. The mobile rule below re-adds padding inside its media query. */
+  padding: 0;
 }
 
 .nav-link:hover {
