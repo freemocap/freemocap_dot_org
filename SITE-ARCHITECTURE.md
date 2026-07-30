@@ -75,13 +75,13 @@ flowchart TD
         CTA["Services | Download"]
     end
 
-    Home --> H1["#how-it-works"]
-    Home --> H2["#impact"]
-    Home --> H3["#mission"]
-    Home --> H4["#features"]
-    Home --> H5["#cheatsheet"]
-    Home --> H6["#services"]
-    Home --> H7["#community"]
+    Home --> H1["How does it work?<br/>#how-it-works"]
+    Home --> H2["User Data<br/>#impact"]
+    Home --> H3["Our Mission<br/>#mission"]
+    Home --> H4["Why Choose FreeMoCap?<br/>#features"]
+    Home --> H5["Download Our Cheatsheet<br/>#cheatsheet"]
+    Home --> H6["Services<br/>#services"]
+    Home --> H7["Join Our Community<br/>#community"]
 
     R --> Docs["Documentation ↗<br/>docs.freemocap.org"]
     R --> Install["Installation Guide ↗"]
@@ -123,7 +123,9 @@ says nothing about where content lives or how much of it there is.
 ## Proposed nav
 
 ```
-Home ▾         index sections, labels TBD by Paul
+Home ▾         How does it work? · User Data · Our Mission ·
+               Why Choose FreeMoCap? · Download Our Cheatsheet ·
+               Services · Join Our Community
 Resources ▾    Documentation ↗ · Installation Guide ↗ · Source Code ↗ · Resources
 Community ▾    Showcase · Community
 About ▾        About Us · Donate
@@ -131,6 +133,19 @@ User Data
 Shop ↗
 [ Services | Download ]
 ```
+
+`Home ▾` labels are the existing `<h2>` headings from each index section,
+verbatim. No new copy. Mapping:
+
+| Label | Anchor |
+|---|---|
+| How does it work? | `#how-it-works` |
+| User Data | `#impact` |
+| Our Mission | `#mission` |
+| Why Choose FreeMoCap? | `#features` |
+| Download Our Cheatsheet | `#cheatsheet` |
+| Services | `#services` |
+| Join Our Community | `#community` |
 
 Structural changes:
 
@@ -167,8 +182,25 @@ nav about where Services and Community go. Structural fix: every footer link
 points at a page, no anchors except Donate, which is a genuine deep link into
 `/about-us`.
 
-Grouping the existing links into labelled columns is a layout question, not a
-copy question, as long as the link labels themselves stay as they are.
+Columns mirror the top nav, and the column headings reuse the existing top-nav
+labels verbatim, so no new copy is written:
+
+```
+Resources          Community          About              Get FreeMoCap
+Documentation ↗    Showcase           About Us           Download
+Installation ↗     Community          Donate             Services
+Source Code ↗      Shop ↗             User Data
+Resources
+```
+
+Two details worth noting:
+
+- **No Home column.** Anchors live in the nav only, so a footer Home column
+  would either duplicate anchors or contain a single link to `/`. Neither is
+  worth a column.
+- **The fourth column heading is the one exception** to reusing existing
+  labels. There is no current top-nav label covering Download and Services
+  together, so that heading is new copy. Placeholder above, Paul's call.
 
 ---
 
@@ -191,7 +223,10 @@ fetched by `js/custom.js`, which only the non-live pages use.
 
 Retiring these deletes no copy that appears anywhere on the live site, but
 `community.html`, `news.html`, and `announcements.html` do contain written
-content. Confirm before removing anything.
+content.
+
+**Decision: safe to remove, but held until all other work is finished.** Moved
+to the last phase.
 
 **Redirect conflict:** `.htaccess` has `RewriteRule ^community/?$
 /showcase.html`. Creating a real `/community` page requires removing that rule
@@ -220,17 +255,29 @@ first, or the new page is unreachable.
 9. Build a local `/download` page, retire the 301
 10. Revisit what `/resources` carries once the docs site is current
 
+**Phase 4: last, once everything above is done**
+
+11. Retire the unlinked files
+
 ---
 
 ## Content decisions
 
-These are Paul's alone. Listed as open questions, with no recommendation.
+Resolved by Paul.
 
-- What are the `Home ▾` item labels? Nav labels are copy. The section headings
-  already exist, but whether the menu reuses them verbatim or uses something
-  shorter is a call I should not make.
-- Should the footer columns get group headings? Adding headings means writing
-  new copy.
-- Do any of the unlinked files contain copy worth keeping before retirement?
-- Does the index `#services` section, which contains a button to `/services`,
-  want to keep both? This is a content question and stays open.
+| Question | Decision |
+|---|---|
+| `Home ▾` item labels | Use the existing section headings verbatim. |
+| Footer column headings | Add them, mirroring the top-nav structure. |
+| Index `#services` section keeping its own button to `/services` | Stays as is. Placing it under the Home menu is expected to make the relationship clear. |
+| Unlinked file retirement | Safe to remove, but hold until all other work is done. |
+
+**Still open, both blockers rather than preferences:**
+
+- The `#video` section has no `<h2>`, so it has no existing heading to reuse as
+  a `Home ▾` label. It is currently the only index section that cannot be listed
+  without new copy. Options are to leave it out of the menu or for Paul to
+  supply a label.
+- The fourth footer column groups Download and Services, which have no shared
+  top-nav label to reuse. That heading needs Paul's wording.
+
