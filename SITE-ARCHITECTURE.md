@@ -79,6 +79,7 @@ flowchart TD
     Home --> H2["User Data<br/>#impact"]
     Home --> H3["Our Mission<br/>#mission"]
     Home --> H4["Why Choose FreeMoCap?<br/>#features"]
+    Home --> HV["This Is FreeMoCap<br/>#video"]
     Home --> H5["Download Our Cheatsheet<br/>#cheatsheet"]
     Home --> H6["Services<br/>#services"]
     Home --> H7["Join Our Community<br/>#community"]
@@ -124,8 +125,8 @@ says nothing about where content lives or how much of it there is.
 
 ```
 Home ▾         How does it work? · User Data · Our Mission ·
-               Why Choose FreeMoCap? · Download Our Cheatsheet ·
-               Services · Join Our Community
+               Why Choose FreeMoCap? · This Is FreeMoCap ·
+               Download Our Cheatsheet · Services · Join Our Community
 Resources ▾    Documentation ↗ · Installation Guide ↗ · Source Code ↗ · Resources
 Community ▾    Showcase · Community
 About ▾        About Us · Donate
@@ -143,6 +144,7 @@ verbatim. No new copy. Mapping:
 | User Data | `#impact` |
 | Our Mission | `#mission` |
 | Why Choose FreeMoCap? | `#features` |
+| This Is FreeMoCap | `#video` |
 | Download Our Cheatsheet | `#cheatsheet` |
 | Services | `#services` |
 | Join Our Community | `#community` |
@@ -272,12 +274,11 @@ Resolved by Paul.
 | Index `#services` section keeping its own button to `/services` | Stays as is. Placing it under the Home menu is expected to make the relationship clear. |
 | Unlinked file retirement | Safe to remove, but hold until all other work is done. |
 
-**Still open, both blockers rather than preferences:**
+The `#video` section had no `<h2>`. Paul supplied "This Is FreeMoCap", which is
+now the section heading and its `Home ▾` label.
 
-- The `#video` section has no `<h2>`, so it has no existing heading to reuse as
-  a `Home ▾` label. It is currently the only index section that cannot be listed
-  without new copy. Options are to leave it out of the menu or for Paul to
-  supply a label.
-- The fourth footer column groups Download and Services, which have no shared
-  top-nav label to reuse. That heading needs Paul's wording.
+**Still open:**
+
+- The fourth footer column groups Download and Services and has no existing
+  top-nav label to reuse. Awaiting Paul's wording.
 
