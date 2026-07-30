@@ -265,7 +265,8 @@ body {
    carry leading icons. min-width keeps grouped buttons the same size
    regardless of label length. */
 .hero-buttons .cta-button,
-.impact-cta .cta-button {
+.impact-cta .cta-button,
+.community-cta .cta-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -637,6 +638,11 @@ body {
 
 .community-links-multi .community-link {
   margin-top: 0;
+}
+
+.community-cta {
+  text-align: center;
+  margin-top: 3rem;
 }
 
 .social-links {
@@ -1411,7 +1417,8 @@ body {
 
   /* Stacked buttons share one width so they don't look ragged */
   .hero-buttons .cta-button,
-  .impact-cta .cta-button {
+  .impact-cta .cta-button,
+  .community-cta .cta-button {
     width: 100%;
     max-width: 280px;
   }
