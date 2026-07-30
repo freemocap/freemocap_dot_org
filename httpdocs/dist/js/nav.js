@@ -50,7 +50,7 @@
 
   // ── set active state ────────────────────────────────────
   const activeMap = {
-    'index.html':    null,        // no active – or could highlight Services
+    'index.html':    'home',      // Home dropdown owns the index anchors
     'about-us.html': 'about-us',
     'services.html': 'services',
     'showcase.html': 'community', // showcase lives under Community
