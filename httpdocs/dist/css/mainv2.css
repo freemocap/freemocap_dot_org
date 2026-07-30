@@ -261,12 +261,11 @@ body {
   padding: 0 1rem;
 }
 
-/* Large in-page CTAs (hero + User Data). Larger than the nav CTA and
-   carry leading icons. min-width keeps grouped buttons the same size
-   regardless of label length. */
-.hero-buttons .cta-button,
-.impact-cta .cta-button,
-.community-cta .cta-button {
+/* Large in-page CTA modifier. Bigger than the nav .cta-button and sized
+   to carry a leading icon. min-width keeps grouped buttons the same size
+   regardless of label length. Must stay after .cta-button — same
+   specificity, so source order decides. */
+.cta-button-lg {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1416,9 +1415,7 @@ body {
   }
 
   /* Stacked buttons share one width so they don't look ragged */
-  .hero-buttons .cta-button,
-  .impact-cta .cta-button,
-  .community-cta .cta-button {
+  .cta-button-lg {
     width: 100%;
     max-width: 280px;
   }
