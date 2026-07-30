@@ -261,9 +261,11 @@ body {
   padding: 0 1rem;
 }
 
-/* Hero CTAs are larger than the nav CTA and carry leading icons.
-   min-width keeps all three the same size regardless of label length. */
-.hero-buttons .cta-button {
+/* Large in-page CTAs (hero + User Data). Larger than the nav CTA and
+   carry leading icons. min-width keeps grouped buttons the same size
+   regardless of label length. */
+.hero-buttons .cta-button,
+.impact-cta .cta-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1379,7 +1381,8 @@ body {
   }
 
   /* Stacked buttons share one width so they don't look ragged */
-  .hero-buttons .cta-button {
+  .hero-buttons .cta-button,
+  .impact-cta .cta-button {
     width: 100%;
     max-width: 280px;
   }
