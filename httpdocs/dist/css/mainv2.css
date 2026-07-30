@@ -1415,6 +1415,11 @@ body {
     max-width: 280px;
   }
 
+  .cta-button-xl {
+    font-size: 1.1rem;
+    padding: 0.8rem 1.5rem;
+  }
+
   .hero-video-container {
     width: 95%;
   }
@@ -1543,11 +1548,6 @@ body {
   .footer-links {
     flex-direction: column;
     gap: 1rem;
-  }
-  
-  .cta-button-xl {
-    font-size: 1.1rem;
-    padding: 0.8rem 1.5rem;
   }
   
   .download-button {
