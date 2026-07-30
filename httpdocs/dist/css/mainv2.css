@@ -275,6 +275,14 @@ body {
   font-size: 1rem;
 }
 
+/* One size up from .cta-button-lg, for a solo CTA that anchors a whole
+   section (e.g. Services). Stacks on top of .cta-button-lg. */
+.cta-button-xl {
+  min-width: 220px;
+  padding: 0.9rem 2rem;
+  font-size: 1.25rem;
+}
+
 .hero-video-container {
   position: relative;
   width: 90%; /* Center the video slightly inside the container */
@@ -541,22 +549,9 @@ body {
 }
 
 /* CTA Button */
-.services-button {
-  display: inline-block;
+/* Spacing only - the button styling comes from .cta-button-lg/-xl */
+.services-text .cta-button-lg {
   margin-top: 1rem;
-  background-color: var(--accent-red);
-  color: white;
-  padding: 0.6rem 1.5rem;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1.5rem;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.services-button:hover {
-  background-color: #c03a45;
-  transform: translateY(-2px);
 }
 
 /* Community Section */
@@ -1550,9 +1545,9 @@ body {
     gap: 1rem;
   }
   
-  .services-button {
-    font-size: 1.25rem;
-    padding: 0.5rem 1.25rem;
+  .cta-button-xl {
+    font-size: 1.1rem;
+    padding: 0.8rem 1.5rem;
   }
   
   .download-button {
