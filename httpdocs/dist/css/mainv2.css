@@ -577,6 +577,22 @@ body {
   padding: 2rem;
   border-radius: 10px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+/* The description absorbs the leftover height so every card's link row
+   sits the same distance from the bottom edge, regardless of how long
+   the copy is. */
+.community-card > p {
+  flex: 1 1 auto;
+  margin-bottom: 0;
+}
+
+.community-card > .community-link,
+.community-card > .community-links-multi,
+.community-card > .social-links {
+  margin-top: 1.5rem;
 }
 
 .community-card:hover {
@@ -602,12 +618,25 @@ body {
   font-weight: 500;
   display: inline-flex;
   align-items: center;
+  align-self: center;
   gap: 0.5rem;
   margin-top: 1rem;
 }
 
 .community-link:hover {
   text-decoration: underline;
+}
+
+/* Cards with two links (YouTube / Twitch) */
+.community-links-multi {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.community-links-multi .community-link {
+  margin-top: 0;
 }
 
 .social-links {
