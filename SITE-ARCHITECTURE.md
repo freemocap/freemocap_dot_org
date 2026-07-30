@@ -90,7 +90,9 @@ flowchart TD
     R --> ResPage["/resources"]
 
     C --> Show["/showcase"]
-    C --> Comm["/community<br/>NEW, channels hub"]
+    C --> Disc["Discord ↗"]
+    C --> YT["YouTube ↗"]
+    C --> Tw["Twitch ↗"]
 
     A --> About["/about-us"]
     A --> Donate["/about-us#donate"]
@@ -110,7 +112,7 @@ says nothing about where content lives or how much of it there is.
 | Label | Points at | Currently |
 |---|---|---|
 | Services | `/services` | Split CTA and About Us dropdown correct. Footer points at the index anchor. |
-| Community | `/community` (new page) | Nav parent and footer point at the index anchor. |
+| Community | `/showcase` | **Done.** Nav parent now points at `/showcase`, matching where `/community` has always redirected. Footer still points at the index anchor. |
 | Showcase | `/showcase` | Correct everywhere. |
 | User Data | `/data` | Correct everywhere. |
 | About Us | `/about-us` | Correct everywhere. |
@@ -128,7 +130,7 @@ Home ▾         How does it work? · User Data · Our Mission ·
                Why Choose FreeMoCap? · This Is FreeMoCap ·
                Download Our Cheatsheet · Services · Join Our Community
 Resources ▾    Documentation ↗ · Installation Guide ↗ · Source Code ↗ · Resources
-Community ▾    Showcase · Community
+Community ▾    Showcase · Discord ↗ · YouTube ↗ · Twitch ↗
 About ▾        About Us · Donate
 User Data
 Shop ↗
@@ -158,7 +160,9 @@ Structural changes:
   prominent slot on every page as half the split CTA. The About Us entry was
   added because there was room in that menu, not because it belongs there.
 - **Community dropdown parent stops pointing at an index anchor** and points at
-  the new `/community` page.
+  `/showcase`, which is where `/community` has always redirected. The dropdown
+  itself becomes the channel directory, so no `/community` page is needed and
+  the existing redirect rule stays untouched.
 - **Cheatsheet moves out of the Resources dropdown into `Home ▾`,** because it
   is an index anchor and all anchors go in one place. The cheatsheet section
   itself does not move.
@@ -246,20 +250,17 @@ first, or the new page is unreachable.
 4. Normalise the `freemocap.github.io` URLs to `docs.freemocap.org`
 5. Align the Resources dropdown with the Resources page
 
-**Phase 2: needs a new page**
+Phase 2 is gone. It called for building a `/community` page, which the dropdown
+now covers without one.
 
-6. Remove the `/community` redirect rule
-7. Build `/community` as the channels hub, using content Paul provides
-8. Point the Community dropdown parent at it
+**Phase 2: blocked on v2 and the docs rewrite**
 
-**Phase 3: blocked on v2 and the docs rewrite**
+6. Build a local `/download` page, retire the 301
+7. Revisit what `/resources` carries once the docs site is current
 
-9. Build a local `/download` page, retire the 301
-10. Revisit what `/resources` carries once the docs site is current
+**Phase 3: last, once everything above is done**
 
-**Phase 4: last, once everything above is done**
-
-11. Retire the unlinked files
+8. Retire the unlinked files
 
 ---
 
@@ -281,5 +282,29 @@ Both previously open items are now resolved:
 | `#video` had no heading to reuse as a menu label | Paul supplied "This Is FreeMoCap". Added to the section and the menu. |
 | Fourth footer column heading | "Get Started". |
 
-No open content questions remain. Phase 1 and Phase 2 are fully specified.
+No open content questions remain for the phases above.
+
+---
+
+## Future development
+
+Not scheduled. Recorded so the reasoning is not lost.
+
+A real `/community` page is worth building once there is community content that
+does not exist on the site yet. The dropdown handles channel links fine, but it
+cannot hold any of the following:
+
+- Code of conduct
+- Contributor guidelines
+- Events or office hours
+- Contributors list
+
+If that content gets written, the page earns its place and the channel links
+become its top section rather than a menu. Two things to know when that happens:
+
+- `.htaccess` redirects `/community` to `showcase.html`. That rule has to go
+  first, or the new page is unreachable.
+- `community.html` already exists in `dist` as an orphan. It is an old version
+  of the Showcase page, `<h1>` reads "Community Showcase". It has to be dealt
+  with before that filename can be reused.
 
