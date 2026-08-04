@@ -43,6 +43,12 @@ body {
   z-index: 1000;
 }
 
+/* Clear the sticky header when jumping to an anchor-linked section
+   (native browser jump, JS scroll, or back/forward), on every page. */
+section[id] {
+  scroll-margin-top: 75px;
+}
+
 .header {
   background-color: var(--bg-tertiary);
   padding: 0.75rem 0;
