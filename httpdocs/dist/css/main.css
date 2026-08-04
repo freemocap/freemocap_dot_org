@@ -1478,9 +1478,19 @@ body {
     max-width: 400px;
     margin: 0 auto;
   }
-  
+
   .services-image img {
     max-height: 500px;
+  }
+
+  /* Dissolve the text wrapper so the title can order ahead of the image
+     while the rest of the copy and the button stay after it. */
+  .services-text {
+    display: contents;
+  }
+
+  .services-text .section-title {
+    order: -2;
   }
 }
 
@@ -1659,7 +1669,17 @@ body {
     max-width: 100%;
     order: -1;
   }
-  
+
+  /* Dissolve the text wrapper so the title can order ahead of the image
+     while the rest of the copy and the button stay after it. */
+  .cheatsheet-text {
+    display: contents;
+  }
+
+  .cheatsheet-text .section-title {
+    order: -2;
+  }
+
   /* Footer */
   .footer-top {
     flex-direction: column;
