@@ -246,6 +246,11 @@ body {
   border-radius: 0 6px 6px 0;
 }
 
+/* Persistent header copy is mobile-only, the nav-links copy handles desktop. */
+.header-content > .nav-cta-group {
+  display: none;
+}
+
 /* Hero Section */
 .hero {
   padding: 3rem 0;
@@ -1529,17 +1534,22 @@ body {
     text-align: center;
   }
 
-  /* Split CTA spans the stacked menu, halves share the width evenly.
-     Must come after .nav-links .cta-button - equal specificity. */
-  .nav-cta-group {
-    display: flex;
-    width: 100%;
-    margin-top: 0.5rem;
+  /* Dropdown copy is replaced by the persistent header copy below. */
+  .nav-links > .nav-cta-group {
+    display: none;
   }
 
-  .nav-cta-group .cta-button {
-    flex: 1 1 0;
-    margin-top: 0;
+  /* Persistent header copy: sits between the logo and toggle, always visible.
+     Normal flex flow (not absolute centering) so it can never overlap either
+     sibling, even when the logo text pushes it around at wider mobile widths. */
+  .header-content > .nav-cta-group {
+    display: flex;
+  }
+
+  .header-content > .nav-cta-group .cta-button {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.75rem;
+    flex: 0 0 auto;
   }
 
   /* Mobile Dropdowns */
