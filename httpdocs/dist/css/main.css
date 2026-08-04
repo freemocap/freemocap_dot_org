@@ -1272,6 +1272,46 @@ body {
   line-height: 1.7;
 }
 
+/* Crypto Wallets page */
+.wallet-section {
+  padding: 3rem 0;
+  background-color: var(--bg-primary);
+}
+
+.wallet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.wallet-card {
+  background-color: var(--bg-tertiary);
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.wallet-card h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+}
+
+.wallet-card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.wallet-address {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  word-break: break-all;
+}
+
 /* Services CTA */
 .cta-container {
   text-align: center;

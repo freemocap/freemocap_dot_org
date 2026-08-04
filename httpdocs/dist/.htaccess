@@ -9,6 +9,7 @@ RewriteRule ^download/?$ https://docs.freemocap.org/freemocap/download [NC,L,R=3
 
 # 2. Internal aliases (old URLs -> current pages)
 RewriteRule ^community/?$ /showcase.html [NC,L,R=301]
+RewriteRule ^crypto-wallet-page(\.html)?/?$ /crypto-wallets.html [NC,L,R=301]
 
 # 3. Generic: /foo and /foo/ -> /foo.html, when foo.html exists. Replaces the per-page rules. Works for any future page.
 RewriteCond %{REQUEST_FILENAME} !-f
