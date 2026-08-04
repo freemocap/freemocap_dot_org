@@ -1368,6 +1368,110 @@ body {
   line-height: 1.6;
 }
 
+/* Data Dashboard page */
+.data-stats-section {
+  padding: 3rem 0;
+  background-color: var(--bg-secondary);
+}
+
+.dashboard-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid var(--bg-tertiary);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+  border-color: var(--accent-teal);
+  color: var(--text-primary);
+  background: rgba(125, 184, 183, 0.1);
+}
+
+.tab-btn.active {
+  border-color: var(--accent-teal);
+  background: rgba(125, 184, 183, 0.15);
+  color: var(--text-primary);
+}
+
+.tab-btn i {
+  font-size: 1.1rem;
+}
+
+.tab-text-short {
+  display: none;
+}
+
+.dashboard-frame-container {
+  position: relative;
+  width: 100%;
+}
+
+.dashboard-frame {
+  width: 100%;
+  border: none;
+  display: none;
+}
+
+.dashboard-frame.active {
+  display: block;
+}
+
+#frame-growth {
+  height: calc(100vh - 250px);
+  min-height: 500px;
+}
+
+#frame-analytics,
+#frame-lifespan {
+  min-height: calc(100vh - 250px);
+}
+
+.frame-loading {
+  position: absolute;
+  top: 200px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--text-secondary);
+  text-align: center;
+  z-index: 10;
+}
+
+.frame-loading.hidden {
+  display: none;
+}
+
+.frame-loading .spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--bg-tertiary);
+  border-top-color: var(--accent-teal);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 /* Services CTA */
 .cta-container {
   text-align: center;
@@ -1756,6 +1860,25 @@ body {
   /* Resources section */
   .resources-grid {
     grid-template-columns: 1fr;
+  }
+
+  /* Data Dashboard section */
+  .tab-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .tab-text-full {
+    display: none;
+  }
+
+  .tab-text-short {
+    display: inline;
+  }
+
+  #frame-growth {
+    height: calc(100vh - 200px);
+    min-height: 400px;
   }
 
   /* Services section */

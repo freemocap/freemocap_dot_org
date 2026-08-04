@@ -4,117 +4,113 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="description"
-    content="FreeMoCap usage statistics and growth data - see how our free motion capture software is being used worldwide." />
-  <meta name="author" content="Jonathan Samir Matthis" />
+  <meta name="description" content="FreeMoCap usage statistics and growth data - see how our free motion capture software is being used worldwide." />
+  <meta name="author" content="The FreeMoCap Project" />
   <title>Data Dashboard | The FreeMoCap Project</title>
 
-  <!-- Twitter Card -->
-  <meta name="twitter:title" content="FreeMoCap Data Dashboard" />
-  <meta name="twitter:description"
-    content="See FreeMoCap's global reach - usage statistics, growth trends, and user engagement data." />
-  <meta name="twitter:image" content="" />
-  <meta name="twitter:card" content="summary_large_image" />
+  <!-- Open Graph / Social Media -->
+  <meta property="og:title" content="Data Dashboard | The FreeMoCap Project" />
+  <meta property="og:description" content="See FreeMoCap's global reach - usage statistics, growth trends, and user engagement data." />
+  <meta property="og:image" content="./assets/logos/fmc-logo-3-4-22.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://freemocap.org/data.html" />
 
-  <!-- Favicon-->
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="FreeMoCap Data Dashboard" />
+  <meta name="twitter:description" content="See FreeMoCap's global reach - usage statistics, growth trends, and user engagement data." />
+  <meta name="twitter:image" content="./assets/logos/fmc-logo-3-4-22.png" />
+
+  <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="./assets/favicons/favicon-black.png" />
 
-  <!-- FORK Awesome icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css"
-    integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous" />
-
-  <!-- Bootstrap icons-->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-
-  <!-- Google fonts-->
-  <link rel="preconnect" href="https://fonts.gstatic.com" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Dosis:wght@200;300;400;500;600&family=Roboto:ital,wght@0,300;0,400;1,300;1,400&display=swap"
-    rel="stylesheet" />
-  <!-- Inter, required by main.css. Without it the shared nav falls back to a
-       wider system font and wraps to two rows. -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
-    rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 
   <!-- Custom CSS -->
   <link rel="stylesheet" href="./css/main.css">
-  <link rel="stylesheet" href="./css/data.css" />
-
-  <style>
-    /* Override data.css padding (was for old fixed nav) */
-    .data-page-wrapper { padding-top: 0; }
-  </style>
 </head>
 
-<body id="page-top" style="overflow-x: hidden">
+<body>
   <!-- Header (loaded by nav.js) -->
   <div id="site-header"></div>
 
-  <!-- Main Data Dashboard Wrapper -->
-  <div class="data-page-wrapper">
-    <!-- Dashboard Header -->
-    <div class="dashboard-header text-center">
-      <div class="container">
-        <h1>🦴 FreeMoCap Data Dashboard</h1>
-        <p>Explore how FreeMoCap is being used around the world</p>
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <video class="page-hero-video" autoplay muted loop playsinline>
+      <source src="./assets/video/home-header-short.mp4" type="video/mp4">
+    </video>
+    <div class="page-hero-overlay"></div>
+    <div class="container">
+      <h1 class="page-hero-title">🦴 FreeMoCap Data Dashboard</h1>
+      <p class="page-hero-subtitle">Explore how FreeMoCap is being used around the world</p>
+    </div>
+  </section>
+
+  <!-- Quick Stats -->
+  <section class="data-stats-section">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-card purple">
+          <div id="qs-users" class="stat-value">--</div>
+          <div class="stat-label">Users</div>
+        </div>
+        <div class="stat-card green">
+          <div id="qs-pings" class="stat-value">--</div>
+          <div class="stat-label">Pings</div>
+        </div>
+        <div class="stat-card yellow">
+          <div id="qs-countries" class="stat-value">--</div>
+          <div class="stat-label">Countries</div>
+        </div>
       </div>
     </div>
+  </section>
 
-    <!-- Quick Stats Preview -->
-    <div class="quick-stats">
-      <div class="quick-stat">
-        <span class="quick-stat-value" id="qs-users">--</span>
-        <span class="quick-stat-label">Users</span>
-      </div>
-      <div class="quick-stat">
-        <span class="quick-stat-value" id="qs-pings">--</span>
-        <span class="quick-stat-label">Pings</span>
-      </div>
-      <div class="quick-stat">
-        <span class="quick-stat-value" id="qs-countries">--</span>
-        <span class="quick-stat-label">Countries</span>
-      </div>
-    </div>
-
-    <!-- Tab Navigation - Analytics is first and default -->
-    <div class="dashboard-tabs">
-      <button class="tab-btn active" data-tab="analytics" onclick="switchTab('analytics')">
-        <i class="fa fa-bar-chart"></i>
-        <span class="tab-text">FreeMoCap User Analytics</span>
-      </button>
-      <button class="tab-btn" data-tab="growth" onclick="switchTab('growth')">
-        <i class="fa fa-line-chart"></i>
-        <span class="tab-text">FreeMoCap Growth Animation</span>
-      </button>
+  <!-- Tab Navigation - Analytics is first and default -->
+  <div class="dashboard-tabs">
+    <button class="tab-btn active" data-tab="analytics" onclick="switchTab('analytics')">
+      <i class="bi bi-bar-chart"></i>
+      <span class="tab-text tab-text-full">FreeMoCap User Analytics</span>
+      <span class="tab-text tab-text-short">Users</span>
+    </button>
+    <button class="tab-btn" data-tab="growth" onclick="switchTab('growth')">
+      <i class="bi bi-graph-up"></i>
+      <span class="tab-text tab-text-full">FreeMoCap Growth Animation</span>
+      <span class="tab-text tab-text-short">Growth</span>
+    </button>
 <!--      <button class="tab-btn" data-tab="lifespan" onclick="switchTab('lifespan')">-->
-<!--        <i class="fa fa-clock-o"></i>-->
+<!--        <i class="bi bi-clock"></i>-->
 <!--        <span class="tab-text">User Lifespan</span>-->
 <!--      </button>-->
+  </div>
+
+  <!-- Dashboard Frames -->
+  <div class="dashboard-frame-container">
+    <div class="frame-loading" id="loading-indicator">
+      <div class="spinner"></div>
+      <p>Loading dashboard...</p>
     </div>
 
-    <!-- Dashboard Frames -->
-    <div class="dashboard-frame-container">
-      <div class="frame-loading" id="loading-indicator">
-        <div class="spinner"></div>
-        <p>Loading dashboard...</p>
-      </div>
+    <!-- Analytics is first and active by default, lazy loaded -->
+    <iframe
+      id="frame-analytics"
+      class="dashboard-frame active"
+      data-src="./data/freemocap_users_dashboard.html"
+      onload="frameLoaded('analytics')"
+    ></iframe>
 
-      <!-- Analytics is first and active by default, lazy loaded -->
-      <iframe
-        id="frame-analytics"
-        class="dashboard-frame active"
-        data-src="./data/freemocap_users_dashboard.html"
-        onload="frameLoaded('analytics')"
-      ></iframe>
-
-      <iframe
-        id="frame-growth"
-        class="dashboard-frame"
-        data-src="./data/freemocap_growth_animation.html"
-        onload="frameLoaded('growth')"
-      ></iframe>
+    <iframe
+      id="frame-growth"
+      class="dashboard-frame"
+      data-src="./data/freemocap_growth_animation.html"
+      onload="frameLoaded('growth')"
+    ></iframe>
 
 <!--      <iframe-->
 <!--        id="frame-lifespan"-->
@@ -122,19 +118,16 @@
 <!--        data-src="./data/freemocap_lifespan_analysis.html"-->
 <!--        onload="frameLoaded('lifespan')"-->
 <!--      ></iframe>-->
-    </div>
+  </div>
 
   <!-- Footer (loaded by nav.js) -->
   <div id="site-footer"></div>
-  
-</div>
 
   <!-- Shared nav loader -->
   <script src="./js/nav.js"></script>
 
-
   <script>
-    
+
     // Track which frames have been loaded
     const loadedFrames = new Set();
     let currentTab = 'analytics';
@@ -242,6 +235,24 @@
         console.log('Could not load quick stats:', e);
       }
     }
+
+    // Nudge the active iframe's own resize handling (e.g. Plotly charts) to
+    // recalculate layout after the outer window resizes. A resize here does
+    // not automatically propagate into the iframe's document.
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        const frame = document.getElementById(`frame-${currentTab}`);
+        if (frame && frame.contentWindow) {
+          try {
+            frame.contentWindow.dispatchEvent(new Event('resize'));
+          } catch (e) {
+            // Cross-origin or not yet loaded, ignore.
+          }
+        }
+      }, 200);
+    });
 
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
