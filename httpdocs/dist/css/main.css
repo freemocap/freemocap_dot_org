@@ -1471,12 +1471,14 @@ body {
   .services-content {
     flex-direction: column;
     text-align: center;
+    gap: 0;
   }
-  
+
   .services-image {
     order: -1;
     max-width: 400px;
     margin: 0 auto;
+    margin-bottom: 3rem;
   }
 
   .services-image img {
@@ -1663,11 +1665,13 @@ body {
   /* Cheatsheet section */
   .cheatsheet-content {
     flex-direction: column;
+    gap: 0;
   }
-  
+
   .cheatsheet-image {
     max-width: 100%;
     order: -1;
+    margin-bottom: 3rem;
   }
 
   /* Dissolve the text wrapper so the title can order ahead of the image
