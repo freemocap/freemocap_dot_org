@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="description" content="Download FreeMoCap" />
+  <title>Download | The FreeMoCap Project</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="./assets/favicons/favicon-black.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="./css/main.css">
+</head>
+
+<body>
+  <!-- Header (loaded by nav.js) -->
+  <div id="site-header"></div>
+
+  <section class="dl-page">
+    <div class="container dl-container">
+
+      <div class="dl-hero">
+        <h1 class="dl-title">Free<span class="dl-title-accent">MoCap</span></h1>
+        <p class="dl-tagline">
+          Free, open-source markerless motion capture. Record with ordinary cameras and reconstruct full-body 3D movement, no suits, markers, or expensive hardware required.
+        </p>
+        <div class="dl-repo-links">
+          <a href="https://github.com/freemocap/freemocap">GitHub</a>
+          <span class="dl-repo-sep">&middot;</span>
+          <a href="https://github.com/freemocap/freemocap/releases">Release Notes</a>
+          <span class="dl-repo-sep">&middot;</span>
+          <a href="https://github.com/freemocap/freemocap/blob/main/LICENSE">AGPL-3.0</a>
+        </div>
+      </div>
+
+      <div class="dl-detect-row" id="dl-system-detect">
+        <div class="dl-detected">
+          <span class="dl-dot"></span>
+          <span id="dl-detected-text">Detecting your system&hellip;</span>
+        </div>
+        <div class="dl-pills-wrap">
+          <span class="dl-wrong-detect">Not right? Select your system:</span>
+          <div class="dl-pills" id="dl-os-pills" role="group" aria-label="Select your operating system">
+            <button type="button" class="dl-pill" data-os="windows" data-arch="x64">Windows</button>
+            <button type="button" class="dl-pill" data-os="macos" data-arch="arm64">Mac (Apple Silicon)</button>
+            <button type="button" class="dl-pill" data-os="macos" data-arch="x64">Mac (Intel)</button>
+            <button type="button" class="dl-pill" data-os="linux" data-arch="x64">Linux x64</button>
+            <button type="button" class="dl-pill" data-os="linux" data-arch="arm64">Linux ARM64</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="dl-detect-row" id="dl-variant-detect" hidden>
+        <div class="dl-detected">
+          <span class="dl-dot"></span>
+          <span id="dl-variant-detected-text"></span>
+        </div>
+        <div class="dl-pills-wrap">
+          <span class="dl-wrong-detect">Not right? Select a build:</span>
+          <div class="dl-pills" id="dl-variant-pills" role="group" aria-label="Select GPU or CPU build">
+            <button type="button" class="dl-pill" data-variant="cuda">GPU (CUDA)</button>
+            <button type="button" class="dl-pill" data-variant="cpu">CPU only</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="dl-system-help">
+        <details class="dl-details dl-details-help">
+          <summary class="dl-toggle dl-toggle-help"><span class="dl-arrow">&#9654;</span> Not sure what system you have?</summary>
+          <div class="dl-help-content">
+            <div class="dl-help-section">
+              <div class="dl-help-section-title"><span class="dl-help-icon">&#x1F34E;</span> macOS &mdash; Intel or Apple Silicon?</div>
+              <p>Click the Apple menu (&#xF8FF;) in the top-left corner &rarr; <strong>About This Mac</strong>.</p>
+              <ul>
+                <li>If <strong>Chip</strong> says <strong>Apple M1, M2, M3, M4</strong> (or similar) &rarr; you&rsquo;re on <strong>Apple Silicon (ARM64)</strong></li>
+                <li>If <strong>Processor</strong> says <strong>Intel Core i5, i7, i9</strong> etc &rarr; you&rsquo;re on <strong>Intel (x64)</strong></li>
+              </ul>
+              <p>Or run in Terminal: <code>uname -m</code> &mdash; it prints <code>arm64</code> or <code>x86_64</code>.</p>
+            </div>
+            <div class="dl-help-section">
+              <div class="dl-help-section-title"><span class="dl-help-icon">&#x1F427;</span> Linux &mdash; x64 or ARM64?</div>
+              <p>Run in a terminal:</p>
+              <p><code>uname -m</code></p>
+              <ul>
+                <li><code>x86_64</code> &rarr; download the <strong>x64</strong> version</li>
+                <li><code>aarch64</code> &rarr; download the <strong>ARM64</strong> version</li>
+              </ul>
+              <p>Common ARM64 devices: Raspberry Pi 3/4/5, NVIDIA Jetson, some cloud VMs (AWS Graviton, Ampere).</p>
+            </div>
+            <div class="dl-help-section">
+              <div class="dl-help-section-title"><span class="dl-help-icon">&#x1F427;</span> Linux &mdash; AppImage or .deb?</div>
+              <ul>
+                <li><strong>AppImage</strong> &mdash; works on any Linux distro (Ubuntu, Fedora, Arch, etc). Just download and run. No install, no root. Best choice if you&rsquo;re not sure.</li>
+                <li><strong>.deb</strong> &mdash; for Debian-based distros (Ubuntu, Pop!_OS, Linux Mint, Raspberry Pi OS). Integrates with your package manager so it appears in your app launcher and can be cleanly uninstalled.</li>
+              </ul>
+            </div>
+            <div class="dl-help-section">
+              <div class="dl-help-section-title"><span class="dl-help-icon">&#x1FA9F;</span> Windows</div>
+              <p>FreeMoCap provides a single <strong>x64 (64-bit)</strong> build, which works on virtually all modern Windows PCs &mdash; Intel, AMD, and Snapdragon/ARM laptops. If you have a newer Snapdragon X / Windows on ARM machine, the x64 installer still works via Microsoft&rsquo;s built-in emulation layer. There&rsquo;s only one download &mdash; you don&rsquo;t need to choose.</p>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <div class="dl-version-row" id="dl-version-row" hidden>
+        <label for="dl-version-select">Version:</label>
+        <select id="dl-version-select" class="dl-version-select"></select>
+      </div>
+
+      <div id="dl-content"></div>
+
+      <div class="dl-note">
+        Part of the <a href="https://freemocap.org">FreeMoCap</a> project.
+        Source code on <a href="https://github.com/freemocap/freemocap">GitHub</a>.
+        Release notes and changelogs on the
+        <a href="https://github.com/freemocap/freemocap/releases">Releases</a> page.
+        Licensed under <code>AGPL-3.0</code>.
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer (loaded by nav.js) -->
+  <div id="site-footer"></div>
+
+  <!-- Shared nav loader -->
+  <script src="./js/nav.js"></script>
+  <script src="./js/download.js"></script>
+</body>
+</html>
