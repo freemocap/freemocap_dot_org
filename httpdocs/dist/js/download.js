@@ -47,11 +47,11 @@
 
   function buildServerDownloads(version) {
     return [
-      { os: 'windows', arch: 'x64', variant: 'cuda', fmt: 'zip', recommended: false, label: 'Server — Windows x64 (CUDA)', file: `freemocap_server_${version}_windows-x64-cuda.zip`, size: '' },
-      { os: 'windows', arch: 'x64', variant: 'cpu', fmt: 'zip', recommended: false, label: 'Server — Windows x64 (CPU)', file: `freemocap_server_${version}_windows-x64-cpu.zip`, size: '' },
-      { os: 'macos', arch: 'arm64', fmt: 'zip', recommended: false, label: 'Server — macOS Apple Silicon', file: `freemocap_server_${version}_macos-arm64-apple-silicon.zip`, size: '' },
-      { os: 'linux', arch: 'x64', variant: 'cuda', fmt: 'zip', recommended: false, label: 'Server — Linux x64 (CUDA)', file: `freemocap_server_${version}_linux-x64-cuda.zip`, size: '' },
-      { os: 'linux', arch: 'x64', variant: 'cpu', fmt: 'zip', recommended: false, label: 'Server — Linux x64 (CPU)', file: `freemocap_server_${version}_linux-x64-cpu.zip`, size: '' },
+      { os: 'windows', arch: 'x64', variant: 'cuda', fmt: 'zip', recommended: false, label: 'Server – Windows x64 (CUDA)', file: `freemocap_server_${version}_windows-x64-cuda.zip`, size: '' },
+      { os: 'windows', arch: 'x64', variant: 'cpu', fmt: 'zip', recommended: false, label: 'Server – Windows x64 (CPU)', file: `freemocap_server_${version}_windows-x64-cpu.zip`, size: '' },
+      { os: 'macos', arch: 'arm64', fmt: 'zip', recommended: false, label: 'Server – macOS (Apple Silicon)', file: `freemocap_server_${version}_macos-arm64-apple-silicon.zip`, size: '' },
+      { os: 'linux', arch: 'x64', variant: 'cuda', fmt: 'zip', recommended: false, label: 'Server – Linux x64 (CUDA)', file: `freemocap_server_${version}_linux-x64-cuda.zip`, size: '' },
+      { os: 'linux', arch: 'x64', variant: 'cpu', fmt: 'zip', recommended: false, label: 'Server – Linux x64 (CPU)', file: `freemocap_server_${version}_linux-x64-cpu.zip`, size: '' },
     ];
   }
 
@@ -130,8 +130,8 @@
     }
     if (os === 'macos') {
       return [
-        { text: '<strong>.dmg</strong> — Open the disk image and drag FreeMoCap into Applications. On first launch, right-click the app and select <strong>Open</strong> to bypass Gatekeeper.' },
-        { text: '<strong>.zip</strong> — Portable version. Unzip and double-click to run without installing.' },
+        { text: '<strong class="dl-install-term">.dmg</strong> Open the disk image and drag FreeMoCap into Applications. On first launch, right-click the app and select <strong>Open</strong> to bypass Gatekeeper.' },
+        { text: '<strong class="dl-install-term">.zip</strong> Portable version. Unzip and double-click to run without installing.' },
       ];
     }
     if (os === 'linux') {
@@ -139,12 +139,12 @@
       const ai = `freemocap_${version}_${label}.AppImage`;
       const deb = `freemocap_${version}_${label}.deb`;
       return [
-        { text: '<strong>AppImage</strong> — Portable, works on any distro. Download, make executable, and run. No root needed.' },
+        { text: '<strong class="dl-install-term">AppImage</strong> Portable, works on any distro. Download, make executable, and run. No root needed.' },
         { codeLines: [
           { type: 'prompt', content: `chmod +x ${ai}`, promptChar: '$' },
           { type: 'prompt', content: `./${ai}`, promptChar: '$' },
         ] },
-        { text: '<strong>.deb</strong> — For Debian, Ubuntu, Pop!_OS, and similar. Installs system-wide with desktop integration.' },
+        { text: '<strong class="dl-install-term">.deb</strong> For Debian, Ubuntu, Pop!_OS, and similar. Installs system-wide with desktop integration.' },
         { codeLines: [{ type: 'prompt', content: `sudo apt install ./${deb}`, promptChar: '$' }] },
       ];
     }
@@ -468,7 +468,6 @@
 
   function renderOsNote(note, idx) {
     const variantClass = note.variant === 'warning' ? 'dl-os-note-warning' : note.variant === 'info' ? 'dl-os-note-info' : '';
-    const icon = note.variant === 'warning' ? '⚠️' : note.variant === 'info' ? 'ℹ️' : '💡';
     const issuesHtml = (note.issues && note.issues.length > 0) ? `
       <details class="dl-linked-issues" data-note-index="${idx}">
         <summary class="dl-linked-issues-toggle"><span class="dl-arrow">&#9654;</span> Linked Issues <span class="dl-linked-issues-count">${note.issues.length}</span></summary>
@@ -478,7 +477,6 @@
 
     return `
       <div class="dl-os-note ${variantClass}">
-        <span class="dl-os-note-icon">${icon}</span>
         <div class="dl-os-note-content">
           <div class="dl-os-note-title">${note.title}</div>
           <p>${note.content}</p>
@@ -586,7 +584,9 @@
     return `
       <div class="${blockClass}">
         <div class="dl-section-header">
-          <div class="dl-section-title">${opts.icon ? `<span class="dl-section-title-icon">${opts.icon}</span> ` : ''}${escapeHtml(opts.title)}</div>
+          <div class="dl-section-title-row">
+            <div class="dl-section-title">${opts.icon ? `<span class="dl-section-title-icon">${opts.icon}</span> ` : ''}${escapeHtml(opts.title)}</div>
+          </div>
           ${headerBodyHtml}
         </div>
         ${notesHtml}
@@ -606,7 +606,6 @@
     return `
       <details class="dl-details">
         <summary class="dl-toggle"><span class="dl-arrow">&#9654;</span> Install from terminal</summary>
-        <div class="dl-section-label" style="margin-top:8px">One-liner install from terminal</div>
         <p class="dl-install-hint">Download and run directly using <code>curl</code>.</p>
         ${blocksHtml}
         ${renderTerminalTip(os)}
@@ -617,7 +616,6 @@
   function renderAllPlatformsSection(otherApp, otherServer, version, defaultOpen) {
     if (otherApp.length === 0 && otherServer.length === 0) return '';
     const appHtml = otherApp.length > 0 ? `
-      <div class="dl-section-label" style="margin-top:8px">App Installer — other platforms</div>
       <div class="dl-downloads">${otherApp.map(d => renderCard(d, 'secondary', version)).join('')}</div>
     ` : '';
     const serverHtml = otherServer.length > 0 ? `
@@ -644,7 +642,6 @@
 
     return `
       <div class="dl-legacy-notice">
-        <span class="dl-legacy-notice-icon">📦</span>
         <div>This release (<strong>${escapeHtml(tagName)}</strong>) predates our smart download page. Here are all available files — pick the one that matches your system.</div>
       </div>
       <div class="dl-legacy-asset-list">${itemsHtml}</div>
@@ -780,17 +777,29 @@
       terminalInstallHtml: !isUnavailablePlatform ? renderTerminalInstallSection(state.os, state.arch, variantForInstructions, version) : '',
     });
 
+    // Grab the version row before the innerHTML wipe below, since by the
+    // second render it lives inside primaryContainer (moved there at the
+    // end of the previous call) and would otherwise be destroyed along
+    // with the rest of the old markup before we could reattach it.
+    const versionRow = document.getElementById('dl-version-row');
+
     primaryContainer.innerHTML = primaryHtml;
     wireLinkedIssues(primaryContainer, activeNotes);
     wireCopyButtons(primaryContainer);
+
+    // Move the (already-wired) version row into place next to the title.
+    // A plain move, not a rebuild, so its select element and change
+    // listener survive the reattachment untouched.
+    const titleRow = primaryContainer.querySelector('.dl-section-title-row');
+    if (titleRow && versionRow) titleRow.appendChild(versionRow);
 
     let secondaryHtml = '';
     if (!isUnavailablePlatform) {
       secondaryHtml += '<hr class="dl-section-divider">';
       secondaryHtml += renderDownloadSection({
-        icon: '⚡',
+        icon: '',
         title: 'FreeMoCap Backend Server',
-        subtitleHtml: '<strong>Advanced</strong> — headless machines, remote capture rigs, API use',
+        subtitleHtml: '<strong>Advanced.</strong> Headless machines, remote capture rigs, API use.',
         detailsLabel: 'When do I need this?',
         detailsContentHtml: 'Just the camera backend server binary, no GUI. Useful for headless capture rigs, remote systems you connect to over a network, or building a custom client against the FreeMoCap API. <strong>You don’t need this if you downloaded the App Installer above.</strong>',
         recommended: recServer,

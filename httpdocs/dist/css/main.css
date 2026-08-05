@@ -1882,10 +1882,6 @@ details[open] > .dl-toggle .dl-arrow {
   gap: 0.5rem;
 }
 
-.dl-help-icon {
-  font-size: 0.95rem;
-}
-
 .dl-help-section p,
 .dl-help-section li {
   color: var(--text-secondary);
@@ -1982,6 +1978,22 @@ details[open] > .dl-toggle .dl-arrow {
   margin-bottom: 1.1rem;
 }
 
+.dl-section-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* Neutralize the standalone version-row's own bottom margin once it's
+   living inline next to the section title instead of stacked in the
+   detect zone, so it centers cleanly against the title instead of
+   sitting low. */
+.dl-section-title-row .dl-version-row {
+  margin-bottom: 0;
+}
+
 .dl-section-title {
   font-weight: 700;
   font-size: 1.4rem;
@@ -2040,6 +2052,18 @@ details[open] > .dl-toggle .dl-arrow {
 .dl-section-details-content strong {
   color: var(--text-primary);
   font-weight: 600;
+}
+
+/* Leading term (".dmg", "AppImage", "macOS", etc.), replacing the old
+   em-dash with teal emphasis plus a little extra space before the rest of
+   the line starts. Scoped per container: in install instructions it needs
+   to outweigh the plain "strong" rule above; in help-section titles the
+   parent sets color directly rather than through a descendant selector, so
+   inheritance alone won't do it either. */
+.dl-section-details-content .dl-install-term,
+.dl-help-section-title .dl-install-term {
+  color: var(--accent-teal);
+  margin-right: 0.35em;
 }
 
 .dl-section-details-content code {
@@ -2247,12 +2271,6 @@ details[open] > .dl-toggle .dl-arrow {
 
 .dl-os-note-info {
   border-color: rgba(125, 184, 183, 0.4);
-}
-
-.dl-os-note-icon {
-  font-size: 1rem;
-  line-height: 1.4;
-  flex-shrink: 0;
 }
 
 .dl-os-note-title {
@@ -2505,11 +2523,6 @@ details[open] > .dl-toggle .dl-arrow {
 
 .dl-legacy-notice strong {
   color: var(--text-primary);
-}
-
-.dl-legacy-notice-icon {
-  font-size: 1rem;
-  flex-shrink: 0;
 }
 
 .dl-legacy-asset-list {
