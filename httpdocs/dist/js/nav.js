@@ -56,6 +56,7 @@
     'showcase.html': 'community', // showcase lives under Community
     'resources.html':'resources',
     'data.html':     'data',
+    'download.html': 'download',
   };
 
   const activeNav = activeMap[page] || (isIndex ? null : null);
