@@ -43,12 +43,14 @@
         </div>
       </div>
 
-      <div class="dl-detect-row" id="dl-system-detect">
-        <div class="dl-detected">
-          <span class="dl-dot"></span>
-          <span id="dl-detected-text">Detecting your system&hellip;</span>
-        </div>
-        <div class="dl-pills-wrap">
+      <div id="dl-primary"></div>
+
+      <div class="dl-detect-zone">
+        <div class="dl-detect-row" id="dl-system-detect">
+          <div class="dl-detected">
+            <span class="dl-dot"></span>
+            <span id="dl-detected-text">Detecting your system&hellip;</span>
+          </div>
           <span class="dl-wrong-detect">Not right? Select your system:</span>
           <div class="dl-pills" id="dl-os-pills" role="group" aria-label="Select your operating system">
             <button type="button" class="dl-pill" data-os="windows" data-arch="x64">Windows</button>
@@ -58,66 +60,64 @@
             <button type="button" class="dl-pill" data-os="linux" data-arch="arm64">Linux ARM64</button>
           </div>
         </div>
-      </div>
 
-      <div class="dl-detect-row" id="dl-variant-detect" hidden>
-        <div class="dl-detected">
-          <span class="dl-dot"></span>
-          <span id="dl-variant-detected-text"></span>
-        </div>
-        <div class="dl-pills-wrap">
+        <div class="dl-detect-row" id="dl-variant-detect" hidden>
+          <div class="dl-detected">
+            <span class="dl-dot"></span>
+            <span id="dl-variant-detected-text"></span>
+          </div>
           <span class="dl-wrong-detect">Not right? Select a build:</span>
           <div class="dl-pills" id="dl-variant-pills" role="group" aria-label="Select GPU or CPU build">
             <button type="button" class="dl-pill" data-variant="cuda">GPU (CUDA)</button>
             <button type="button" class="dl-pill" data-variant="cpu">CPU only</button>
           </div>
         </div>
+
+        <div class="dl-system-help">
+          <details class="dl-details dl-details-help">
+            <summary class="dl-toggle dl-toggle-help"><span class="dl-arrow">&#9654;</span> Not sure what system you have?</summary>
+            <div class="dl-help-content">
+              <div class="dl-help-section">
+                <div class="dl-help-section-title"><span class="dl-help-icon">&#x1F34E;</span> macOS &mdash; Intel or Apple Silicon?</div>
+                <p>Click the Apple menu (&#xF8FF;) in the top-left corner &rarr; <strong>About This Mac</strong>.</p>
+                <ul>
+                  <li>If <strong>Chip</strong> says <strong>Apple M1, M2, M3, M4</strong> (or similar) &rarr; you&rsquo;re on <strong>Apple Silicon (ARM64)</strong></li>
+                  <li>If <strong>Processor</strong> says <strong>Intel Core i5, i7, i9</strong> etc &rarr; you&rsquo;re on <strong>Intel (x64)</strong></li>
+                </ul>
+                <p>Or run in Terminal: <code>uname -m</code> &mdash; it prints <code>arm64</code> or <code>x86_64</code>.</p>
+              </div>
+              <div class="dl-help-section">
+                <div class="dl-help-section-title"><span class="dl-help-icon">&#x1F427;</span> Linux &mdash; x64 or ARM64?</div>
+                <p>Run in a terminal:</p>
+                <p><code>uname -m</code></p>
+                <ul>
+                  <li><code>x86_64</code> &rarr; download the <strong>x64</strong> version</li>
+                  <li><code>aarch64</code> &rarr; download the <strong>ARM64</strong> version</li>
+                </ul>
+                <p>Common ARM64 devices: Raspberry Pi 3/4/5, NVIDIA Jetson, some cloud VMs (AWS Graviton, Ampere).</p>
+              </div>
+              <div class="dl-help-section">
+                <div class="dl-help-section-title"><span class="dl-help-icon">&#x1F427;</span> Linux &mdash; AppImage or .deb?</div>
+                <ul>
+                  <li><strong>AppImage</strong> &mdash; works on any Linux distro (Ubuntu, Fedora, Arch, etc). Just download and run. No install, no root. Best choice if you&rsquo;re not sure.</li>
+                  <li><strong>.deb</strong> &mdash; for Debian-based distros (Ubuntu, Pop!_OS, Linux Mint, Raspberry Pi OS). Integrates with your package manager so it appears in your app launcher and can be cleanly uninstalled.</li>
+                </ul>
+              </div>
+              <div class="dl-help-section">
+                <div class="dl-help-section-title"><span class="dl-help-icon">&#x1FA9F;</span> Windows</div>
+                <p>FreeMoCap provides a single <strong>x64 (64-bit)</strong> build, which works on virtually all modern Windows PCs &mdash; Intel, AMD, and Snapdragon/ARM laptops. If you have a newer Snapdragon X / Windows on ARM machine, the x64 installer still works via Microsoft&rsquo;s built-in emulation layer. There&rsquo;s only one download &mdash; you don&rsquo;t need to choose.</p>
+              </div>
+            </div>
+          </details>
+        </div>
+  
+        <div class="dl-version-row" id="dl-version-row" hidden>
+          <label for="dl-version-select">Version:</label>
+          <select id="dl-version-select" class="dl-version-select"></select>
+        </div>
       </div>
 
-      <div class="dl-system-help">
-        <details class="dl-details dl-details-help">
-          <summary class="dl-toggle dl-toggle-help"><span class="dl-arrow">&#9654;</span> Not sure what system you have?</summary>
-          <div class="dl-help-content">
-            <div class="dl-help-section">
-              <div class="dl-help-section-title"><span class="dl-help-icon">&#x1F34E;</span> macOS &mdash; Intel or Apple Silicon?</div>
-              <p>Click the Apple menu (&#xF8FF;) in the top-left corner &rarr; <strong>About This Mac</strong>.</p>
-              <ul>
-                <li>If <strong>Chip</strong> says <strong>Apple M1, M2, M3, M4</strong> (or similar) &rarr; you&rsquo;re on <strong>Apple Silicon (ARM64)</strong></li>
-                <li>If <strong>Processor</strong> says <strong>Intel Core i5, i7, i9</strong> etc &rarr; you&rsquo;re on <strong>Intel (x64)</strong></li>
-              </ul>
-              <p>Or run in Terminal: <code>uname -m</code> &mdash; it prints <code>arm64</code> or <code>x86_64</code>.</p>
-            </div>
-            <div class="dl-help-section">
-              <div class="dl-help-section-title"><span class="dl-help-icon">&#x1F427;</span> Linux &mdash; x64 or ARM64?</div>
-              <p>Run in a terminal:</p>
-              <p><code>uname -m</code></p>
-              <ul>
-                <li><code>x86_64</code> &rarr; download the <strong>x64</strong> version</li>
-                <li><code>aarch64</code> &rarr; download the <strong>ARM64</strong> version</li>
-              </ul>
-              <p>Common ARM64 devices: Raspberry Pi 3/4/5, NVIDIA Jetson, some cloud VMs (AWS Graviton, Ampere).</p>
-            </div>
-            <div class="dl-help-section">
-              <div class="dl-help-section-title"><span class="dl-help-icon">&#x1F427;</span> Linux &mdash; AppImage or .deb?</div>
-              <ul>
-                <li><strong>AppImage</strong> &mdash; works on any Linux distro (Ubuntu, Fedora, Arch, etc). Just download and run. No install, no root. Best choice if you&rsquo;re not sure.</li>
-                <li><strong>.deb</strong> &mdash; for Debian-based distros (Ubuntu, Pop!_OS, Linux Mint, Raspberry Pi OS). Integrates with your package manager so it appears in your app launcher and can be cleanly uninstalled.</li>
-              </ul>
-            </div>
-            <div class="dl-help-section">
-              <div class="dl-help-section-title"><span class="dl-help-icon">&#x1FA9F;</span> Windows</div>
-              <p>FreeMoCap provides a single <strong>x64 (64-bit)</strong> build, which works on virtually all modern Windows PCs &mdash; Intel, AMD, and Snapdragon/ARM laptops. If you have a newer Snapdragon X / Windows on ARM machine, the x64 installer still works via Microsoft&rsquo;s built-in emulation layer. There&rsquo;s only one download &mdash; you don&rsquo;t need to choose.</p>
-            </div>
-          </div>
-        </details>
-      </div>
-
-      <div class="dl-version-row" id="dl-version-row" hidden>
-        <label for="dl-version-select">Version:</label>
-        <select id="dl-version-select" class="dl-version-select"></select>
-      </div>
-
-      <div id="dl-content"></div>
+      <div id="dl-secondary"></div>
 
       <div class="dl-note">
         Part of the <a href="https://freemocap.org">FreeMoCap</a> project.

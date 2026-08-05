@@ -557,7 +557,7 @@
       : opts.recommended.map(d => renderCard(d, cardVariant, opts.version)).join('');
 
     const alternatesHtml = (opts.alternates && opts.alternates.length > 0) ? `
-      <div class="dl-alt-format-label">Also available for your system</div>
+      <div class="dl-alt-format-label">Also available for your system:</div>
       <div class="dl-downloads">${opts.alternates.map(d => renderCard(d, 'secondary', opts.version)).join('')}</div>
     ` : '';
 
@@ -573,20 +573,27 @@
       `;
     }
 
+    const headerBodyHtml = opts.leadHtml
+      ? `<p class="dl-section-lead">${opts.leadHtml}</p>`
+      : `
+        <div class="dl-section-subtitle">${opts.subtitleHtml}</div>
+        <details class="dl-details">
+          <summary class="dl-toggle"><span class="dl-arrow">&#9654;</span> ${escapeHtml(opts.detailsLabel)}</summary>
+          <div class="dl-section-details-content">${opts.detailsContentHtml}</div>
+        </details>
+      `;
+
     return `
       <div class="${blockClass}">
         <div class="dl-section-header">
-          <div class="dl-section-title"><span class="dl-section-title-icon">${opts.icon}</span> ${escapeHtml(opts.title)}</div>
-          <div class="dl-section-subtitle">${opts.subtitleHtml}</div>
-          <details class="dl-details">
-            <summary class="dl-toggle"><span class="dl-arrow">&#9654;</span> ${escapeHtml(opts.detailsLabel)}</summary>
-            <div class="dl-section-details-content">${opts.detailsContentHtml}</div>
-          </details>
+          <div class="dl-section-title">${opts.icon ? `<span class="dl-section-title-icon">${opts.icon}</span> ` : ''}${escapeHtml(opts.title)}</div>
+          ${headerBodyHtml}
         </div>
         ${notesHtml}
         <div class="dl-downloads">${downloadsHtml}</div>
         ${alternatesHtml}
         ${instructionsHtml}
+        ${opts.terminalInstallHtml || ''}
       </div>
     `;
   }
@@ -708,13 +715,15 @@
   }
 
   function renderMainContent() {
-    const container = document.getElementById('dl-content');
+    const primaryContainer = document.getElementById('dl-primary');
+    const secondaryContainer = document.getElementById('dl-secondary');
     const version = stripVersionPrefix(state.tag);
     const selectedRelease = state.releases.find(r => r.tag_name === state.tag);
     const isLegacy = selectedRelease ? !matchesExpectedPattern(selectedRelease.assets, version) : false;
 
     if (isLegacy && selectedRelease) {
-      container.innerHTML = renderLegacyView(selectedRelease.assets, selectedRelease.tag_name);
+      primaryContainer.innerHTML = renderLegacyView(selectedRelease.assets, selectedRelease.tag_name);
+      secondaryContainer.innerHTML = '';
       return;
     }
 
@@ -754,12 +763,10 @@
     const noDetect = state.os === 'unknown';
     const terminalTipOs = (osForInstructions && osForInstructions !== 'windows') ? osForInstructions : undefined;
 
-    let html = renderDownloadSection({
-      icon: '💀📸',
-      title: 'FreeMoCap App Installer',
-      subtitleHtml: '<strong>Recommended</strong> — this is what most people want',
-      detailsLabel: "What's included?",
-      detailsContentHtml: 'Desktop application with camera preview, recording controls, and settings. The backend server is already bundled inside — you don’t need to download it separately.',
+    const primaryHtml = renderDownloadSection({
+      icon: '',
+      title: 'App Installer',
+      leadHtml: '<strong>Recommended.</strong> Desktop application with camera preview, recording controls, and settings. The backend server is already bundled inside, meaning you don’t need to download it separately.',
       recommended: recApp,
       alternates: altApp,
       installInstructions: appInstructions,
@@ -770,12 +777,17 @@
       terminalTipOs,
       notes: activeNotes,
       notesStartIndex: 0,
+      terminalInstallHtml: !isUnavailablePlatform ? renderTerminalInstallSection(state.os, state.arch, variantForInstructions, version) : '',
     });
 
+    primaryContainer.innerHTML = primaryHtml;
+    wireLinkedIssues(primaryContainer, activeNotes);
+    wireCopyButtons(primaryContainer);
+
+    let secondaryHtml = '';
     if (!isUnavailablePlatform) {
-      html += renderTerminalInstallSection(state.os, state.arch, variantForInstructions, version);
-      html += '<hr class="dl-section-divider">';
-      html += renderDownloadSection({
+      secondaryHtml += '<hr class="dl-section-divider">';
+      secondaryHtml += renderDownloadSection({
         icon: '⚡',
         title: 'FreeMoCap Backend Server',
         subtitleHtml: '<strong>Advanced</strong> — headless machines, remote capture rigs, API use',
@@ -793,11 +805,10 @@
       });
     }
 
-    html += renderAllPlatformsSection(otherApp, otherServer, version, noDetect);
+    secondaryHtml += renderAllPlatformsSection(otherApp, otherServer, version, noDetect);
 
-    container.innerHTML = html;
-    wireLinkedIssues(container, activeNotes);
-    wireCopyButtons(container);
+    secondaryContainer.innerHTML = secondaryHtml;
+    wireCopyButtons(secondaryContainer);
   }
 
   function render() {

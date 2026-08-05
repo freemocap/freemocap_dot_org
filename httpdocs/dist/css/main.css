@@ -1722,13 +1722,24 @@ section[id] {
   opacity: 0.5;
 }
 
+/* Wraps the OS/GPU detect rows now that they sit below the primary download,
+   as a secondary "not right? change it" control rather than a gate in front
+   of the download itself. */
+.dl-detect-zone {
+  margin-bottom: 1.5rem;
+}
+
 /* Download page detect rows */
 .dl-detect-row {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.6rem;
   flex-wrap: wrap;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.dl-detect-row:last-of-type {
+  margin-bottom: 0;
 }
 
 .dl-detect-row[hidden] {
@@ -1759,12 +1770,6 @@ section[id] {
 .dl-detected strong {
   color: var(--text-primary);
   font-weight: 600;
-}
-
-.dl-pills-wrap {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
 }
 
 .dl-wrong-detect {
@@ -1810,6 +1815,13 @@ section[id] {
 /* Download page system help / collapsibles (native <details>) */
 .dl-system-help {
   margin-bottom: 2rem;
+}
+
+/* Small consistent gap between stacked collapsibles (e.g. Install
+   instructions -> Install from terminal) so they read as distinct without
+   the full section-level margin between them. */
+.dl-details {
+  margin-top: 0.2rem;
 }
 
 .dl-toggle {
@@ -1949,9 +1961,17 @@ details[open] > .dl-toggle .dl-arrow {
   border-color: var(--accent-teal);
 }
 
-/* Download page section blocks */
+.dl-detect-zone .dl-system-help {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Download page section blocks. #dl-primary leads with plain .dl-section-block
+   (bigger, since it's the first thing after the compact detect rows), while
+   the server section in #dl-secondary adds .dl-section-block-secondary on
+   top to de-emphasize it. */
 .dl-section-block {
-  margin: 3rem 0;
+  margin: 0 0 1rem;
 }
 
 .dl-section-block-secondary {
@@ -1964,14 +1984,14 @@ details[open] > .dl-toggle .dl-arrow {
 
 .dl-section-title {
   font-weight: 700;
-  font-size: 1.25rem;
+  font-size: 1.4rem;
   display: flex;
   align-items: center;
   gap: 0.6rem;
 }
 
 .dl-section-title-icon {
-  font-size: 1.1rem;
+  font-size: 1.3rem;
 }
 
 .dl-section-block-secondary .dl-section-title {
@@ -1994,6 +2014,20 @@ details[open] > .dl-toggle .dl-arrow {
 
 .dl-section-block-secondary .dl-section-subtitle strong {
   color: var(--accent-highlight);
+}
+
+/* Always-visible replacement for the subtitle + collapsible-details pair,
+   used by sections that pass leadHtml instead of subtitleHtml/detailsLabel. */
+.dl-section-lead {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-top: 0.5rem;
+}
+
+.dl-section-lead strong {
+  color: var(--accent-teal);
+  font-weight: 600;
 }
 
 .dl-section-details-content {
@@ -2066,9 +2100,28 @@ details[open] > .dl-toggle .dl-arrow {
   border-color: var(--accent-teal);
 }
 
+/* The recommended app-installer card is the page's primary call to action,
+   sized up so it reads as the lede instead of just another list item. */
 .dl-card-recommended {
+  border-width: 2px;
   border-color: rgba(125, 184, 183, 0.4);
   background: linear-gradient(135deg, var(--bg-tertiary) 0%, rgba(125, 184, 183, 0.08) 100%);
+  padding: 1.5rem 1.75rem;
+}
+
+.dl-card-recommended .dl-card-name {
+  font-size: 1.25rem;
+}
+
+.dl-card-recommended .dl-card-meta,
+.dl-card-recommended .dl-card-size {
+  font-size: 0.8rem;
+}
+
+.dl-card-recommended .dl-card-btn-primary {
+  font-size: 0.95rem;
+  padding: 0.85rem 2rem;
+  border-radius: 8px;
 }
 
 .dl-card-server-rec {
