@@ -49,6 +49,14 @@ section[id] {
   scroll-margin-top: 75px;
 }
 
+/* Same clearance as section[id] above, for the two anchor-linked download
+   sections, which are div-based (rendered by download.js) rather than
+   actual <section> elements. */
+#app-installer,
+#backend-server {
+  scroll-margin-top: 75px;
+}
+
 .header {
   background-color: var(--bg-tertiary);
   padding: 0.75rem 0;
@@ -1155,6 +1163,15 @@ section[id] {
   line-height: 1.8;
 }
 
+.about-text a {
+  color: var(--accent-teal);
+  text-decoration: none;
+}
+
+.about-text a:hover {
+  text-decoration: underline;
+}
+
 .about-text:last-child {
   margin-bottom: 0;
 }
@@ -1666,49 +1683,21 @@ section[id] {
   max-width: 760px;
 }
 
-/* Download page hero */
-.dl-hero {
-  margin-bottom: 2.5rem;
-}
-
-.dl-title {
-  font-size: 2rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  margin-bottom: 0.75rem;
-}
-
-.dl-title-accent {
-  color: var(--accent-teal);
-}
-
-.dl-tagline {
-  color: var(--text-secondary);
-  font-size: 0.95rem;
-  line-height: 1.6;
-  max-width: 520px;
-  margin-bottom: 0.75rem;
-}
-
-.dl-tagline a {
-  color: var(--accent-teal);
-  text-decoration: none;
-}
-
-.dl-tagline a:hover {
-  text-decoration: underline;
-}
-
+/* Download page hero. Title/subtitle reuse the shared .page-hero-* classes
+   (same background video/overlay as every other page); these repo links
+   are the one piece of hero content unique to this page. */
 .dl-repo-links {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
+  margin-top: 0.75rem;
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.75rem;
 }
 
 .dl-repo-links a {
-  color: var(--text-muted);
+  color: #c2c2c2;
   text-decoration: none;
   transition: color 0.15s ease;
 }
@@ -1718,7 +1707,7 @@ section[id] {
 }
 
 .dl-repo-sep {
-  color: var(--text-muted);
+  color: #c2c2c2;
   opacity: 0.5;
 }
 
@@ -1971,7 +1960,7 @@ details[open] > .dl-toggle .dl-arrow {
 }
 
 .dl-section-block-secondary {
-  margin: 2.5rem 0;
+  margin: 2.5rem 0 1rem;
 }
 
 .dl-section-header {
@@ -2082,6 +2071,21 @@ details[open] > .dl-toggle .dl-arrow {
   letter-spacing: 0.1em;
   color: var(--text-muted);
   margin-bottom: 1rem;
+}
+
+/* "App Installer" / "Backend Server" subheaders inside All platforms &
+   formats, one step down from a .dl-section-title. */
+.dl-all-platforms-subheader {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin: 1rem 0 0.5rem;
+}
+
+.dl-all-platforms-subheader:first-of-type {
+  margin-top: 0.5rem;
 }
 
 .dl-alt-format-label {
@@ -3030,10 +3034,5 @@ details[open] > .dl-toggle .dl-arrow {
   
   .showcase-video-grid {
     grid-template-columns: 1fr;
-  }
-
-  /* Download page */
-  .dl-title {
-    font-size: 1.6rem;
   }
 }

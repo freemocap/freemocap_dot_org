@@ -111,13 +111,13 @@
   const OS_NOTES = [
     {
       os: 'macos', arch: 'x64', variant: 'warning',
-      title: 'Intel Mac builds aren’t available yet',
-      content: 'FreeMoCap’s pose-tracking backend (onnxruntime, via skellytracker) doesn’t currently publish a macOS x86_64 wheel, so we can’t build for Intel Macs yet. If you’re on Apple Silicon, select that option above instead.',
+      title: { app: 'Intel Mac app installer builds aren’t available yet', server: 'Intel Mac backend server builds aren’t available yet' },
+      content: 'FreeMoCap’s pose-tracking backend (onnxruntime, via skellytracker) doesn’t currently publish a macOS x86_64 wheel, so we can’t build for Intel Macs yet. If you’re on Apple Silicon, select that option instead.',
       issues: [{ label: 'Add macOS Intel (x86_64) installer build', url: 'https://github.com/freemocap/freemocap/issues/823' }],
     },
     {
       os: 'linux', arch: 'arm64', variant: 'warning',
-      title: 'Linux ARM64 builds aren’t available',
+      title: { app: 'Linux ARM64 app installer builds aren’t available', server: 'Linux ARM64 backend server builds aren’t available' },
       content: 'We can’t build a Linux ARM64 release (e.g. for Raspberry Pi) yet: mediapipe — a core dependency of the pose-tracking backend — ships no linux-aarch64 wheel, so the build is unsatisfiable on that platform. It’ll stay unavailable until mediapipe publishes ARM64 Linux wheels.',
       issues: [{ label: 'Add Linux ARM64 installer build', url: 'https://github.com/freemocap/freemocap/issues/822' }],
     },
@@ -466,8 +466,9 @@
     `;
   }
 
-  function renderOsNote(note, idx) {
+  function renderOsNote(note, idx, context) {
     const variantClass = note.variant === 'warning' ? 'dl-os-note-warning' : note.variant === 'info' ? 'dl-os-note-info' : '';
+    const title = typeof note.title === 'object' ? note.title[context] : note.title;
     const issuesHtml = (note.issues && note.issues.length > 0) ? `
       <details class="dl-linked-issues" data-note-index="${idx}">
         <summary class="dl-linked-issues-toggle"><span class="dl-arrow">&#9654;</span> Linked Issues <span class="dl-linked-issues-count">${note.issues.length}</span></summary>
@@ -478,7 +479,7 @@
     return `
       <div class="dl-os-note ${variantClass}">
         <div class="dl-os-note-content">
-          <div class="dl-os-note-title">${note.title}</div>
+          <div class="dl-os-note-title">${title}</div>
           <p>${note.content}</p>
           ${issuesHtml}
         </div>
@@ -548,7 +549,7 @@
   function renderDownloadSection(opts) {
     const blockClass = opts.sectionVariant === 'primary' ? 'dl-section-block' : 'dl-section-block dl-section-block-secondary';
     const cardVariant = opts.sectionVariant === 'primary' ? 'recommended' : 'server-rec';
-    const notesHtml = (opts.notes || []).map((n, i) => renderOsNote(n, opts.notesStartIndex + i)).join('');
+    const notesHtml = (opts.notes || []).map((n, i) => renderOsNote(n, opts.notesStartIndex + i, opts.noteContext)).join('');
 
     const downloadsHtml = (opts.recommended.length === 0 && opts.noDetectMessage)
       ? `<div class="dl-no-detect">${escapeHtml(opts.noDetectMessage)}</div>`
@@ -582,7 +583,7 @@
       `;
 
     return `
-      <div class="${blockClass}">
+      <div class="${blockClass}"${opts.id ? ` id="${opts.id}"` : ''}>
         <div class="dl-section-header">
           <div class="dl-section-title-row">
             <div class="dl-section-title">${opts.icon ? `<span class="dl-section-title-icon">${opts.icon}</span> ` : ''}${escapeHtml(opts.title)}</div>
@@ -613,21 +614,26 @@
     `;
   }
 
-  function renderAllPlatformsSection(otherApp, otherServer, version, defaultOpen) {
+  function renderAllPlatformsSection(otherApp, otherServer, version) {
     if (otherApp.length === 0 && otherServer.length === 0) return '';
     const appHtml = otherApp.length > 0 ? `
+      <div class="dl-all-platforms-subheader">App Installer</div>
       <div class="dl-downloads">${otherApp.map(d => renderCard(d, 'secondary', version)).join('')}</div>
     ` : '';
     const serverHtml = otherServer.length > 0 ? `
-      <div class="dl-section-label" style="margin-top:24px">Backend Server — other platforms</div>
+      <div class="dl-all-platforms-subheader">Backend Server</div>
       <div class="dl-downloads">${otherServer.map(d => renderCard(d, 'secondary', version)).join('')}</div>
     ` : '';
     return `
-      <details class="dl-details"${defaultOpen ? ' open' : ''}>
-        <summary class="dl-toggle"><span class="dl-arrow">&#9654;</span> All platforms &amp; formats</summary>
+      <div class="dl-section-block dl-section-block-secondary">
+        <div class="dl-section-header">
+          <div class="dl-section-title-row">
+            <div class="dl-section-title">All Platforms &amp; Formats</div>
+          </div>
+        </div>
         ${appHtml}
         ${serverHtml}
-      </details>
+      </div>
     `;
   }
 
@@ -763,6 +769,7 @@
     const primaryHtml = renderDownloadSection({
       icon: '',
       title: 'App Installer',
+      id: 'app-installer',
       leadHtml: '<strong>Recommended.</strong> Desktop application with camera preview, recording controls, and settings. The backend server is already bundled inside, meaning you don’t need to download it separately.',
       recommended: recApp,
       alternates: altApp,
@@ -774,6 +781,7 @@
       terminalTipOs,
       notes: activeNotes,
       notesStartIndex: 0,
+      noteContext: 'app',
       terminalInstallHtml: !isUnavailablePlatform ? renderTerminalInstallSection(state.os, state.arch, variantForInstructions, version) : '',
     });
 
@@ -793,30 +801,31 @@
     const titleRow = primaryContainer.querySelector('.dl-section-title-row');
     if (titleRow && versionRow) titleRow.appendChild(versionRow);
 
-    let secondaryHtml = '';
-    if (!isUnavailablePlatform) {
-      secondaryHtml += '<hr class="dl-section-divider">';
-      secondaryHtml += renderDownloadSection({
-        icon: '',
-        title: 'FreeMoCap Backend Server',
-        subtitleHtml: '<strong>Advanced.</strong> Headless machines, remote capture rigs, API use.',
-        detailsLabel: 'When do I need this?',
-        detailsContentHtml: 'Just the camera backend server binary, no GUI. Useful for headless capture rigs, remote systems you connect to over a network, or building a custom client against the FreeMoCap API. <strong>You don’t need this if you downloaded the App Installer above.</strong>',
-        recommended: recServer,
-        alternates: null,
-        installInstructions: serverInstructions,
-        version,
-        sectionVariant: 'secondary',
-        showTerminalTip: osForInstructions != null && osForInstructions !== 'windows',
-        terminalTipOs,
-        notes: [],
-        notesStartIndex: activeNotes.length,
-      });
-    }
+    let secondaryHtml = '<hr class="dl-section-divider">';
+    secondaryHtml += renderDownloadSection({
+      icon: '',
+      title: 'Backend Server',
+      id: 'backend-server',
+      subtitleHtml: '<strong>Advanced.</strong> Headless machines, remote capture rigs, API use.',
+      detailsLabel: 'When do I need this?',
+      detailsContentHtml: 'Just the camera backend server binary, no GUI. Useful for headless capture rigs, remote systems you connect to over a network, or building a custom client against the FreeMoCap API. <strong>You don’t need this if you downloaded the App Installer above.</strong>',
+      recommended: recServer,
+      alternates: null,
+      installInstructions: serverInstructions,
+      version,
+      sectionVariant: 'secondary',
+      showTerminalTip: osForInstructions != null && osForInstructions !== 'windows',
+      terminalTipOs,
+      notes: activeNotes,
+      notesStartIndex: 0,
+      noteContext: 'server',
+    });
 
-    secondaryHtml += renderAllPlatformsSection(otherApp, otherServer, version, noDetect);
+    secondaryHtml += '<hr class="dl-section-divider">';
+    secondaryHtml += renderAllPlatformsSection(otherApp, otherServer, version);
 
     secondaryContainer.innerHTML = secondaryHtml;
+    wireLinkedIssues(secondaryContainer, activeNotes);
     wireCopyButtons(secondaryContainer);
   }
 
