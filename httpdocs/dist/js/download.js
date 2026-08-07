@@ -98,12 +98,6 @@
     return parts.join(' · ');
   }
 
-  const OS_LABELS = { windows: 'Windows x64', macos: 'macOS', linux: 'Linux', unknown: 'Unknown OS' };
-
-  function archLabel(arch) {
-    return arch === 'arm64' ? 'ARM64 / Apple Silicon' : 'x64 / Intel';
-  }
-
   function stripVersionPrefix(tag) {
     return tag.replace(/^v/, '');
   }
@@ -158,7 +152,7 @@
 
     if (os === 'windows') {
       return [
-        { text: 'Download the <code>.zip</code>, extract it, then run the server from inside the extracted folder — it needs its bundled support files alongside it. Starts a local API on port <code>53117</code>.' },
+        { text: 'Download the <code>.zip</code>, extract it, then run the server from inside the extracted folder. Starts a local API on port <code>53117</code>.' },
         { codeLines: [
           { type: 'prompt', content: `Expand-Archive ${zip} -DestinationPath freemocap_server`, promptChar: '>' },
           { type: 'prompt', content: 'cd freemocap_server', promptChar: '>' },
@@ -168,7 +162,7 @@
     }
     if (os === 'macos') {
       return [
-        { text: 'Download the <code>.zip</code>, extract it, then make the binary executable and run it from Terminal — it needs its bundled support files alongside it.' },
+        { text: 'Download the <code>.zip</code>, extract it, then make the binary executable and run it from Terminal.' },
         { codeLines: [
           { type: 'prompt', content: `unzip ${zip} -d freemocap_server`, promptChar: '$' },
           { type: 'prompt', content: 'cd freemocap_server', promptChar: '$' },
@@ -181,7 +175,7 @@
     }
     if (os === 'linux') {
       return [
-        { text: 'Download the <code>.zip</code>, extract it, then make the binary executable and run it — it needs its bundled support files alongside it. Ideal for headless rigs and remote capture machines.' },
+        { text: 'Download the <code>.zip</code>, extract it, then make the binary executable and run it. Ideal for headless rigs and remote capture machines.' },
         { codeLines: [
           { type: 'prompt', content: `unzip ${zip} -d freemocap_server`, promptChar: '$' },
           { type: 'prompt', content: 'cd freemocap_server', promptChar: '$' },
@@ -548,6 +542,24 @@
 
   function renderDownloadSection(opts) {
     const blockClass = opts.sectionVariant === 'primary' ? 'dl-section-block' : 'dl-section-block dl-section-block-secondary';
+
+    // Legacy releases only get a title (so it and the version/OS selects
+    // stay visible, see attachTitleControls in renderMainContent) plus the
+    // flat asset list, none of the detection-driven cards/notes/instructions
+    // below apply since opts.recommended etc. aren't populated for this path.
+    if (opts.legacyHtml) {
+      return `
+        <div class="${blockClass}"${opts.id ? ` id="${opts.id}"` : ''}>
+          <div class="dl-section-header">
+            <div class="dl-section-title-row">
+              <div class="dl-section-title">${opts.icon ? `<span class="dl-section-title-icon">${opts.icon}</span> ` : ''}${escapeHtml(opts.title)}</div>
+            </div>
+          </div>
+          ${opts.legacyHtml}
+        </div>
+      `;
+    }
+
     const cardVariant = opts.sectionVariant === 'primary' ? 'recommended' : 'server-rec';
     const notesHtml = (opts.notes || []).map((n, i) => renderOsNote(n, opts.notesStartIndex + i, opts.noteContext)).join('');
 
@@ -572,22 +584,38 @@
       `;
     }
 
-    const headerBodyHtml = opts.leadHtml
-      ? `<p class="dl-section-lead">${opts.leadHtml}</p>`
-      : `
-        <div class="dl-section-subtitle">${opts.subtitleHtml}</div>
+    const detailsToggleHtml = opts.detailsLabel ? `
         <details class="dl-details">
           <summary class="dl-toggle"><span class="dl-arrow">&#9654;</span> ${escapeHtml(opts.detailsLabel)}</summary>
           <div class="dl-section-details-content">${opts.detailsContentHtml}</div>
         </details>
+      ` : '';
+
+    // leadHtml (App Installer) sits in its own row below the title, sharing
+    // that row with the version/OS controls attachTitleControls() appends
+    // to it (title stays full-width, alone, above both), so it reads as a
+    // natural two-line block next to the dropdowns instead of floating
+    // full-width between the title and the download cards, duplicating the
+    // card's own "Recommended" badge right below it. subtitleHtml (Backend
+    // Server) has no controls beside it, so it stays directly below the
+    // title as before, no separate row needed.
+    const leadRowHtml = opts.leadHtml ? `
+        <div class="dl-section-lead-row">
+          <p class="dl-section-lead">${opts.leadHtml}</p>
+        </div>
+      ` : '';
+    const headerBodyHtml = opts.leadHtml
+      ? ''
+      : `
+        <div class="dl-section-subtitle">${opts.subtitleHtml}</div>
+        ${detailsToggleHtml}
       `;
 
     return `
       <div class="${blockClass}"${opts.id ? ` id="${opts.id}"` : ''}>
         <div class="dl-section-header">
-          <div class="dl-section-title-row">
-            <div class="dl-section-title">${opts.icon ? `<span class="dl-section-title-icon">${opts.icon}</span> ` : ''}${escapeHtml(opts.title)}</div>
-          </div>
+          <div class="dl-section-title">${opts.icon ? `<span class="dl-section-title-icon">${opts.icon}</span> ` : ''}${escapeHtml(opts.title)}</div>
+          ${leadRowHtml}
           ${headerBodyHtml}
         </div>
         ${notesHtml}
@@ -660,8 +688,6 @@
     arch: 'x64',
     hasManualSystem: false,
     variant: 'cpu',
-    gpuDetected: false,
-    hasManualVariant: false,
     tag: `v${DEFAULT_VERSION}`,
     hasManualVersion: false,
     releases: [],
@@ -673,28 +699,18 @@
     return OS_NOTES.filter(n => n.os === state.os && (n.arch === undefined || n.arch === state.arch));
   }
 
-  function renderSystemDetector() {
-    const textEl = document.getElementById('dl-detected-text');
-    const label = OS_LABELS[state.os] || state.os;
-    textEl.innerHTML = `Detected: <strong>${escapeHtml(label)} · ${escapeHtml(archLabel(state.arch))}</strong>`;
-    document.querySelectorAll('#dl-os-pills .dl-pill').forEach(btn => {
-      btn.classList.toggle('dl-pill-active', btn.dataset.os === state.os && btn.dataset.arch === state.arch);
-    });
-  }
-
-  function renderVariantDetector() {
-    const row = document.getElementById('dl-variant-detect');
-    const show = state.os !== 'unknown' && hasVariant(state.os, state.arch);
-    row.hidden = !show;
-    if (!show) return;
-
-    document.getElementById('dl-variant-detected-text').innerHTML = state.gpuDetected
-      ? 'Detected: <strong>NVIDIA GPU</strong>'
-      : 'No GPU detected, recommending <strong>CPU-only</strong>';
-
-    document.querySelectorAll('#dl-variant-pills .dl-pill').forEach(btn => {
-      btn.classList.toggle('dl-pill-active', btn.dataset.variant === state.variant);
-    });
+  function renderOsSelect() {
+    // No option maps to 'unknown' (see download.html), a manual override
+    // list only makes sense with real choices on it. Leave the select on
+    // whatever it's already showing (its default first option, Windows,
+    // on first render) rather than force an unmatched value, which would
+    // clear the visible selection entirely. state.os stays 'unknown'
+    // either way, so the "couldn't detect your OS" messaging below is
+    // unaffected.
+    if (state.os === 'unknown') return;
+    const select = document.getElementById('dl-os-select');
+    const value = `${state.os}:${state.arch}`;
+    if (select.value !== value) select.value = value;
   }
 
   function renderVersionSelect() {
@@ -724,8 +740,43 @@
     const selectedRelease = state.releases.find(r => r.tag_name === state.tag);
     const isLegacy = selectedRelease ? !matchesExpectedPattern(selectedRelease.assets, version) : false;
 
+    // Grab the version and OS rows before either branch below wipes
+    // primaryContainer's innerHTML, since by the second render they live
+    // inside primaryContainer (moved there at the end of the previous
+    // call) and would otherwise be destroyed along with the rest of the
+    // old markup before we could reattach them.
+    const versionRow = document.getElementById('dl-version-row');
+    const osRow = document.getElementById('dl-os-row');
+
+    // Moves the (already-wired) version and OS rows into place, stacked in
+    // a small right-aligned column. A plain move, not a rebuild, so their
+    // select elements and change listeners survive the reattachment
+    // untouched. Called from both branches below so the title and both
+    // dropdowns stay visible even for a legacy release, which has no normal
+    // downloads/instructions to show. Prefers .dl-section-lead-row (sits
+    // below the title, alongside the lead paragraph) and falls back to
+    // .dl-section-title-row (the legacy template has no lead paragraph, so
+    // the controls pair with the title directly there instead).
+    function attachTitleControls() {
+      const targetRow = primaryContainer.querySelector('.dl-section-lead-row')
+        || primaryContainer.querySelector('.dl-section-title-row');
+      if (targetRow && versionRow && osRow) {
+        const controls = document.createElement('div');
+        controls.className = 'dl-title-controls';
+        controls.appendChild(versionRow);
+        controls.appendChild(osRow);
+        targetRow.appendChild(controls);
+      }
+    }
+
     if (isLegacy && selectedRelease) {
-      primaryContainer.innerHTML = renderLegacyView(selectedRelease.assets, selectedRelease.tag_name);
+      primaryContainer.innerHTML = renderDownloadSection({
+        title: 'App Installer',
+        id: 'app-installer',
+        sectionVariant: 'primary',
+        legacyHtml: renderLegacyView(selectedRelease.assets, selectedRelease.tag_name),
+      });
+      attachTitleControls();
       secondaryContainer.innerHTML = '';
       return;
     }
@@ -739,25 +790,48 @@
     appDownloads = enrichDownloadsWithR2Sizes(appDownloads, version, state.r2Sizes);
     serverDownloads = enrichDownloadsWithR2Sizes(serverDownloads, version, state.r2Sizes);
 
-    const matchesVariant = d => !d.variant || d.variant === state.variant;
+    // Both GPU/CPU variants show whenever the platform has both, instead of
+    // a manual picker gating which one is visible: the one matching the
+    // detected state.variant is the single "recommended" card, the other
+    // variant's equivalent lands in "alternates" alongside any secondary
+    // formats rather than being hidden away in "All Platforms & Formats".
+    const isDetectedVariant = d => !d.variant || d.variant === state.variant;
+    // Ranks alternates by how far they stray from the recommended card: a
+    // different format of the same (detected) variant is still hardware
+    // you actually have, so it ranks above the other variant entirely,
+    // and within that other variant its recommended format still ranks
+    // above its own secondary formats.
+    const altRank = d => isDetectedVariant(d) ? 0 : d.recommended ? 1 : 2;
+    const byAltRank = (a, b) => altRank(a) - altRank(b);
+
     const recApp = [], altApp = [], otherApp = [];
     appDownloads.forEach(d => {
-      if (d.os === state.os && d.arch === state.arch && matchesVariant(d)) {
-        (d.recommended ? recApp : altApp).push(d);
-      } else {
+      if (d.os !== state.os || d.arch !== state.arch) {
         otherApp.push(d);
+      } else if (d.recommended && isDetectedVariant(d)) {
+        recApp.push(d);
+      } else {
+        altApp.push(d);
       }
     });
-    const recServer = [], otherServer = [];
+    altApp.sort(byAltRank);
+
+    const recServer = [], altServer = [], otherServer = [];
     serverDownloads.forEach(d => {
-      if (d.os === state.os && d.arch === state.arch && matchesVariant(d)) recServer.push(d);
-      else otherServer.push(d);
+      if (d.os !== state.os || d.arch !== state.arch) {
+        otherServer.push(d);
+      } else if (isDetectedVariant(d)) {
+        recServer.push(d);
+      } else {
+        altServer.push(d);
+      }
     });
+    altServer.sort(byAltRank);
 
     const isUnavailablePlatform = state.os !== 'unknown' && recApp.length === 0 && altApp.length === 0 && recServer.length === 0;
     const osForInstructions = state.os === 'unknown' ? undefined : state.os;
-    const showVariantPicker = state.os !== 'unknown' && hasVariant(state.os, state.arch);
-    const variantForInstructions = showVariantPicker ? state.variant : undefined;
+    const osHasVariant = state.os !== 'unknown' && hasVariant(state.os, state.arch);
+    const variantForInstructions = osHasVariant ? state.variant : undefined;
 
     const appInstructions = (osForInstructions && !isUnavailablePlatform) ? getAppInstallInstructions(osForInstructions, state.arch, variantForInstructions, version) : [];
     const serverInstructions = (osForInstructions && !isUnavailablePlatform) ? getServerInstallInstructions(osForInstructions, state.arch, variantForInstructions, version) : [];
@@ -770,7 +844,7 @@
       icon: '',
       title: 'App Installer',
       id: 'app-installer',
-      leadHtml: '<strong>Recommended.</strong> Desktop application with camera preview, recording controls, and settings. The backend server is already bundled inside, meaning you don’t need to download it separately.',
+      leadHtml: '<strong>Recommended.</strong> Desktop application with camera preview, recording controls, and settings. If you are unsure which to choose, this is the one you want.',
       recommended: recApp,
       alternates: altApp,
       installInstructions: appInstructions,
@@ -785,32 +859,19 @@
       terminalInstallHtml: !isUnavailablePlatform ? renderTerminalInstallSection(state.os, state.arch, variantForInstructions, version) : '',
     });
 
-    // Grab the version row before the innerHTML wipe below, since by the
-    // second render it lives inside primaryContainer (moved there at the
-    // end of the previous call) and would otherwise be destroyed along
-    // with the rest of the old markup before we could reattach it.
-    const versionRow = document.getElementById('dl-version-row');
-
     primaryContainer.innerHTML = primaryHtml;
     wireLinkedIssues(primaryContainer, activeNotes);
     wireCopyButtons(primaryContainer);
-
-    // Move the (already-wired) version row into place next to the title.
-    // A plain move, not a rebuild, so its select element and change
-    // listener survive the reattachment untouched.
-    const titleRow = primaryContainer.querySelector('.dl-section-title-row');
-    if (titleRow && versionRow) titleRow.appendChild(versionRow);
+    attachTitleControls();
 
     let secondaryHtml = '<hr class="dl-section-divider">';
     secondaryHtml += renderDownloadSection({
       icon: '',
       title: 'Backend Server',
       id: 'backend-server',
-      subtitleHtml: '<strong>Advanced.</strong> Headless machines, remote capture rigs, API use.',
-      detailsLabel: 'When do I need this?',
-      detailsContentHtml: 'Just the camera backend server binary, no GUI. Useful for headless capture rigs, remote systems you connect to over a network, or building a custom client against the FreeMoCap API. <strong>You don’t need this if you downloaded the App Installer above.</strong>',
+      subtitleHtml: '<strong>Advanced.</strong> This is only necessary for headless machines, remote capture rigs, API use, etc. It is not necessary if you used the App Installer above.',
       recommended: recServer,
-      alternates: null,
+      alternates: altServer,
       installInstructions: serverInstructions,
       version,
       sectionVariant: 'secondary',
@@ -830,8 +891,7 @@
   }
 
   function render() {
-    renderSystemDetector();
-    renderVariantDetector();
+    renderOsSelect();
     renderVersionSelect();
     renderMainContent();
   }
@@ -862,23 +922,13 @@
 
   const gpu = detectGpu();
   state.variant = gpu.variant;
-  state.gpuDetected = gpu.detected;
 
-  document.querySelectorAll('#dl-os-pills .dl-pill').forEach(btn => {
-    btn.addEventListener('click', () => {
-      state.os = btn.dataset.os;
-      state.arch = btn.dataset.arch;
-      state.hasManualSystem = true;
-      render();
-    });
-  });
-
-  document.querySelectorAll('#dl-variant-pills .dl-pill').forEach(btn => {
-    btn.addEventListener('click', () => {
-      state.variant = btn.dataset.variant;
-      state.hasManualVariant = true;
-      render();
-    });
+  document.getElementById('dl-os-select').addEventListener('change', e => {
+    const [os, arch] = e.target.value.split(':');
+    state.os = os;
+    state.arch = arch;
+    state.hasManualSystem = true;
+    render();
   });
 
   document.getElementById('dl-version-select').addEventListener('change', e => {
