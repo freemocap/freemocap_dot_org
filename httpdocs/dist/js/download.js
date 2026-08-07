@@ -190,10 +190,15 @@
     return [];
   }
 
-  function getTerminalInstallBlocks(os, arch, variant, version) {
+  // Split by artifact (was one combined function) so the App Installer
+  // section's "Install from terminal" only ever shows App Installer
+  // commands, and the Backend Server section gets its own equivalent
+  // instead of the two being mixed into a single toggle under App
+  // Installer. Comment/command text is unchanged from the combined
+  // version, just relocated to whichever function matches its artifact.
+  function getAppTerminalInstallBlocks(os, arch, variant, version) {
     if (os !== 'linux' && os !== 'macos') return [];
     const label = fileLabel(os, arch, variant);
-    const srvZip = `freemocap_server_${version}_${label}.zip`;
     const blocks = [];
 
     if (os === 'linux') {
@@ -210,13 +215,6 @@
         { type: 'prompt', content: `curl -fSL -o freemocap.deb "${downloadUrl(deb, os, version, variant)}"`, promptChar: '$' },
         { type: 'prompt', content: 'sudo apt install ./freemocap.deb', promptChar: '$' },
       ] });
-      blocks.push({ codeLines: [
-        { type: 'comment', content: '# Backend Server (headless / remote capture)' },
-        { type: 'prompt', content: `curl -fSL -o freemocap_server.zip "${downloadUrl(srvZip, os, version, variant)}"`, promptChar: '$' },
-        { type: 'prompt', content: 'unzip freemocap_server.zip -d freemocap_server && cd freemocap_server', promptChar: '$' },
-        { type: 'prompt', content: 'chmod +x freemocap_server', promptChar: '$' },
-        { type: 'prompt', content: './freemocap_server', promptChar: '$' },
-      ] });
     }
 
     if (os === 'macos') {
@@ -226,16 +224,37 @@
         { type: 'prompt', content: `curl -fSL -o freemocap.dmg "${downloadUrl(dmg, os, version, variant)}"`, promptChar: '$' },
         { type: 'prompt', content: 'open freemocap.dmg', promptChar: '$' },
       ] });
-      blocks.push({ codeLines: [
+    }
+
+    return blocks;
+  }
+
+  function getServerTerminalInstallBlocks(os, arch, variant, version) {
+    if (os !== 'linux' && os !== 'macos') return [];
+    const label = fileLabel(os, arch, variant);
+    const srvZip = `freemocap_server_${version}_${label}.zip`;
+
+    if (os === 'linux') {
+      return [{ codeLines: [
+        { type: 'comment', content: '# Backend Server (headless / remote capture)' },
+        { type: 'prompt', content: `curl -fSL -o freemocap_server.zip "${downloadUrl(srvZip, os, version, variant)}"`, promptChar: '$' },
+        { type: 'prompt', content: 'unzip freemocap_server.zip -d freemocap_server && cd freemocap_server', promptChar: '$' },
+        { type: 'prompt', content: 'chmod +x freemocap_server', promptChar: '$' },
+        { type: 'prompt', content: './freemocap_server', promptChar: '$' },
+      ] }];
+    }
+
+    if (os === 'macos') {
+      return [{ codeLines: [
         { type: 'comment', content: '# Backend Server' },
         { type: 'prompt', content: `curl -fSL -o freemocap_server.zip "${downloadUrl(srvZip, os, version, variant)}"`, promptChar: '$' },
         { type: 'prompt', content: 'unzip freemocap_server.zip -d freemocap_server && cd freemocap_server', promptChar: '$' },
         { type: 'prompt', content: 'chmod +x freemocap_server && xattr -cr freemocap_server', promptChar: '$' },
         { type: 'prompt', content: './freemocap_server', promptChar: '$' },
-      ] });
+      ] }];
     }
 
-    return blocks;
+    return [];
   }
 
   function getTerminalTipContent(os) {
@@ -572,15 +591,22 @@
       <div class="dl-downloads">${opts.alternates.map(d => renderCard(d, 'secondary', opts.version)).join('')}</div>
     ` : '';
 
+    // Only worth hiding behind a click if there's actually code to hide.
+    // A one- or two-sentence, code-free block (Windows/macOS App Installer)
+    // renders directly instead of gated behind an "Install instructions"
+    // toggle with nothing to justify the click.
     let instructionsHtml = '';
     if (opts.installInstructions.length > 0) {
+      const hasCode = opts.installInstructions.some(block => block.codeLines);
       const blocksHtml = opts.installInstructions.map(block => block.codeLines ? renderCodeBlock(block.codeLines) : `<p>${block.text}</p>`).join('');
       const tipHtml = (opts.showTerminalTip && opts.terminalTipOs) ? renderTerminalTip(opts.terminalTipOs) : '';
-      instructionsHtml = `
+      instructionsHtml = hasCode ? `
         <details class="dl-details">
           <summary class="dl-toggle"><span class="dl-arrow">&#9654;</span> Install instructions</summary>
           <div class="dl-section-details-content">${blocksHtml}${tipHtml}</div>
         </details>
+      ` : `
+        <div class="dl-section-details-content">${blocksHtml}${tipHtml}</div>
       `;
     }
 
@@ -627,9 +653,11 @@
     `;
   }
 
-  function renderTerminalInstallSection(os, arch, variant, version) {
-    if (os === 'windows' || os === 'unknown') return '';
-    const blocks = getTerminalInstallBlocks(os, arch, variant, version);
+  // Takes pre-computed blocks (from getAppTerminalInstallBlocks or
+  // getServerTerminalInstallBlocks) rather than computing them itself, so
+  // the same renderer serves both the App Installer and Backend Server
+  // sections without either pulling in the other's commands.
+  function renderTerminalInstallSection(blocks, os) {
     if (blocks.length === 0) return '';
     const blocksHtml = blocks.map(b => b.codeLines ? renderCodeBlock(b.codeLines) : '').join('');
     return `
@@ -840,6 +868,14 @@
     const noDetect = state.os === 'unknown';
     const terminalTipOs = (osForInstructions && osForInstructions !== 'windows') ? osForInstructions : undefined;
 
+    // Computed once and reused for both showTerminalTip (suppresses the
+    // inline "New to the terminal?" tip inside "Install instructions" when
+    // there's also a separate "Install from terminal" toggle that already
+    // carries its own copy of that tip, see renderTerminalInstallSection)
+    // and terminalInstallHtml (the toggle itself) below.
+    const appTerminalBlocks = !isUnavailablePlatform ? getAppTerminalInstallBlocks(state.os, state.arch, variantForInstructions, version) : [];
+    const serverTerminalBlocks = !isUnavailablePlatform ? getServerTerminalInstallBlocks(state.os, state.arch, variantForInstructions, version) : [];
+
     const primaryHtml = renderDownloadSection({
       icon: '',
       title: 'App Installer',
@@ -851,12 +887,12 @@
       version,
       sectionVariant: 'primary',
       noDetectMessage: noDetect ? 'Could not detect your OS. See all downloads below.' : undefined,
-      showTerminalTip: osForInstructions === 'linux',
+      showTerminalTip: appTerminalBlocks.length === 0,
       terminalTipOs,
       notes: activeNotes,
       notesStartIndex: 0,
       noteContext: 'app',
-      terminalInstallHtml: !isUnavailablePlatform ? renderTerminalInstallSection(state.os, state.arch, variantForInstructions, version) : '',
+      terminalInstallHtml: renderTerminalInstallSection(appTerminalBlocks, state.os),
     });
 
     primaryContainer.innerHTML = primaryHtml;
@@ -875,11 +911,12 @@
       installInstructions: serverInstructions,
       version,
       sectionVariant: 'secondary',
-      showTerminalTip: osForInstructions != null && osForInstructions !== 'windows',
+      showTerminalTip: serverTerminalBlocks.length === 0,
       terminalTipOs,
       notes: activeNotes,
       notesStartIndex: 0,
       noteContext: 'server',
+      terminalInstallHtml: renderTerminalInstallSection(serverTerminalBlocks, state.os),
     });
 
     secondaryHtml += '<hr class="dl-section-divider">';
