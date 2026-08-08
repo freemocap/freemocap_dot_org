@@ -42,10 +42,14 @@
     });
   }
 
-  // ── fix Donate link on about-us page ────────────────────
+  // ── fix Donate link(s) on about-us page ──────────────────
+  // Matches by href rather than a single data-nav lookup since there are
+  // three of these now (the About Us dropdown item, and the nav-heart in
+  // both its mobile and desktop copies) and all three need the same fix.
   if (page === 'about-us.html') {
-    const donateLink = document.querySelector('#site-header [data-nav="donate"]');
-    if (donateLink) donateLink.setAttribute('href', '#donate');
+    document.querySelectorAll('#site-header a[href="about-us.html#donate"]').forEach(a => {
+      a.setAttribute('href', '#donate');
+    });
   }
 
   // ── set active state ────────────────────────────────────
