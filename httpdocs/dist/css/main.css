@@ -1711,94 +1711,10 @@ section[id] {
   opacity: 0.5;
 }
 
-/* Wraps the OS/GPU detect rows now that they sit below the primary download,
-   as a secondary "not right? change it" control rather than a gate in front
-   of the download itself. */
+/* Wraps the "not sure what system you have?" help collapsible below the
+   primary download. */
 .dl-detect-zone {
   margin-bottom: 1.5rem;
-}
-
-/* Download page detect rows */
-.dl-detect-row {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  flex-wrap: wrap;
-  margin-bottom: 0.5rem;
-}
-
-.dl-detect-row:last-of-type {
-  margin-bottom: 0;
-}
-
-.dl-detect-row[hidden] {
-  display: none;
-}
-
-.dl-detected {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: var(--bg-tertiary);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 8px;
-  padding: 0.6rem 1rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-}
-
-.dl-dot {
-  width: 6px;
-  height: 6px;
-  background: var(--accent-teal);
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.dl-detected strong {
-  color: var(--text-primary);
-  font-weight: 600;
-}
-
-.dl-wrong-detect {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.68rem;
-  color: var(--text-muted);
-}
-
-.dl-pills {
-  display: flex;
-  gap: 0.25rem;
-  background: var(--bg-tertiary);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 8px;
-  padding: 0.25rem;
-  flex-wrap: wrap;
-}
-
-.dl-pill {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.68rem;
-  padding: 0.4rem 0.6rem;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-  background: transparent;
-  color: var(--text-muted);
-  transition: all 0.15s ease;
-  white-space: nowrap;
-}
-
-.dl-pill:hover {
-  color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.06);
-}
-
-.dl-pill.dl-pill-active {
-  color: var(--accent-teal);
-  background: rgba(125, 184, 183, 0.18);
-  font-weight: 600;
 }
 
 /* Download page system help / collapsibles (native <details>) */
@@ -1938,6 +1854,7 @@ details[open] > .dl-toggle .dl-arrow {
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 6px;
   padding: 0.4rem 0.6rem;
+  width: 13rem;
   cursor: pointer;
   transition: border-color 0.15s ease;
 }
@@ -1946,17 +1863,46 @@ details[open] > .dl-toggle .dl-arrow {
   border-color: var(--accent-teal);
 }
 
+/* Download page OS selector, mirrors .dl-version-row/.dl-version-select */
+.dl-os-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.dl-os-select {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 0.4rem 0.6rem;
+  width: 13rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.dl-os-select:hover {
+  border-color: var(--accent-teal);
+}
+
 .dl-detect-zone .dl-system-help {
-  margin-top: 1rem;
+  margin-top: 0.2rem;
   margin-bottom: 1rem;
 }
 
-/* Download page section blocks. #dl-primary leads with plain .dl-section-block
-   (bigger, since it's the first thing after the compact detect rows), while
-   the server section in #dl-secondary adds .dl-section-block-secondary on
-   top to de-emphasize it. */
+/* Download page section blocks. #dl-primary leads with plain .dl-section-block,
+   given only a small margin-bottom so its trailing "Install from terminal"
+   toggle and the "Not sure what system you have?" help toggle right after it
+   in .dl-detect-zone read as one evenly-spaced stack (see .dl-details above),
+   while the server section in #dl-secondary adds .dl-section-block-secondary
+   on top to de-emphasize it. */
 .dl-section-block {
-  margin: 0 0 1rem;
+  margin: 0 0 0.2rem;
 }
 
 .dl-section-block-secondary {
@@ -1969,18 +1915,44 @@ details[open] > .dl-toggle .dl-arrow {
 
 .dl-section-title-row {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 1rem;
 }
 
+/* Wraps the version and OS selects once they're moved next to the section
+   title (see renderMainContent in download.js), stacking them instead of
+   letting .dl-section-title-row's own flex row put them side by side. */
+.dl-title-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.4rem;
+}
+
 /* Neutralize the standalone version-row's own bottom margin once it's
-   living inline next to the section title instead of stacked in the
-   detect zone, so it centers cleanly against the title instead of
-   sitting low. */
+   living inline instead of stacked in the detect zone, so it centers
+   cleanly against whatever it's paired with (the lead paragraph normally,
+   the title itself for a legacy release, see .dl-section-lead-row below
+   and attachTitleControls in download.js) instead of sitting low. */
+.dl-section-lead-row .dl-version-row,
 .dl-section-title-row .dl-version-row {
   margin-bottom: 0;
+}
+
+/* Row below the title: the leadHtml paragraph (App Installer only, see
+   renderDownloadSection in download.js) alongside .dl-title-controls,
+   which attachTitleControls() appends here at render time. See
+   .dl-section-lead below for why the paragraph needs its own flex-basis
+   here rather than relying on this row's layout alone. */
+.dl-section-lead-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 0.5rem;
 }
 
 .dl-section-title {
@@ -2018,12 +1990,20 @@ details[open] > .dl-toggle .dl-arrow {
 }
 
 /* Always-visible replacement for the subtitle + collapsible-details pair,
-   used by sections that pass leadHtml instead of subtitleHtml/detailsLabel. */
+   used by sections that pass leadHtml instead of subtitleHtml/detailsLabel.
+   flex-basis is a fixed 240px rather than 0 or auto: 0 would starve this
+   down to nothing once .dl-title-controls's fixed-width selects claim
+   their space on narrow screens (that width should trigger a wrap instead),
+   auto would size it off the paragraph's full unwrapped text length and
+   wrap .dl-title-controls onto its own line even on desktop, where there's
+   plenty of room. min-width matches so it never shrinks past that floor,
+   it only grows beyond it via flex-grow when space allows. */
 .dl-section-lead {
   color: var(--text-secondary);
   font-size: 0.9rem;
   line-height: 1.6;
-  margin-top: 0.5rem;
+  flex: 1 1 240px;
+  min-width: 240px;
 }
 
 .dl-section-lead strong {
@@ -2596,9 +2576,9 @@ details[open] > .dl-toggle .dl-arrow {
 }
 
 /* Download page focus visibility */
-.dl-pill:focus-visible,
 .dl-toggle:focus-visible,
 .dl-version-select:focus-visible,
+.dl-os-select:focus-visible,
 .dl-copy-btn:focus-visible,
 .dl-card:focus-visible,
 .dl-linked-issues-toggle:focus-visible,
@@ -2953,11 +2933,6 @@ details[open] > .dl-toggle .dl-arrow {
   .dl-card-right {
     align-self: stretch;
     justify-content: space-between;
-  }
-
-  .dl-detect-row {
-    flex-direction: column;
-    align-items: flex-start;
   }
 
   .dl-legacy-asset {

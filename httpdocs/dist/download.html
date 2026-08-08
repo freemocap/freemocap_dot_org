@@ -34,7 +34,7 @@
     <div class="container">
       <h1 class="page-hero-title">Download FreeMoCap</h1>
       <p class="page-hero-subtitle">
-        Free, open-source markerless motion capture.
+        Free and open-source markerless motion capture.
       </p>
       <div class="dl-repo-links">
         <a href="https://github.com/freemocap/freemocap">GitHub</a>
@@ -46,50 +46,12 @@
     </div>
   </section>
 
-  <!-- Intro Section -->
-  <section class="showcase-intro-section">
-    <div class="container">
-      <div class="about-content">
-        <p class="about-text text-center">
-          Record with ordinary cameras and reconstruct full-body 3D movement without suits, markers, or expensive hardware. Download the official FreeMoCap <a href="#app-installer">App Installer</a> for your system, or get the <a href="#backend-server">backend server binary</a> for headless rigs and advanced setups.
-        </p>
-      </div>
-    </div>
-  </section>
-
   <section class="dl-page">
     <div class="container dl-container">
 
       <div id="dl-primary"></div>
 
       <div class="dl-detect-zone">
-        <div class="dl-detect-row" id="dl-system-detect">
-          <div class="dl-detected">
-            <span class="dl-dot"></span>
-            <span id="dl-detected-text">Detecting your system&hellip;</span>
-          </div>
-          <span class="dl-wrong-detect">Not right? Select your system:</span>
-          <div class="dl-pills" id="dl-os-pills" role="group" aria-label="Select your operating system">
-            <button type="button" class="dl-pill" data-os="windows" data-arch="x64">Windows</button>
-            <button type="button" class="dl-pill" data-os="macos" data-arch="arm64">Mac (Apple Silicon)</button>
-            <button type="button" class="dl-pill" data-os="macos" data-arch="x64">Mac (Intel)</button>
-            <button type="button" class="dl-pill" data-os="linux" data-arch="x64">Linux x64</button>
-            <button type="button" class="dl-pill" data-os="linux" data-arch="arm64">Linux ARM64</button>
-          </div>
-        </div>
-
-        <div class="dl-detect-row" id="dl-variant-detect" hidden>
-          <div class="dl-detected">
-            <span class="dl-dot"></span>
-            <span id="dl-variant-detected-text"></span>
-          </div>
-          <span class="dl-wrong-detect">Not right? Select a build:</span>
-          <div class="dl-pills" id="dl-variant-pills" role="group" aria-label="Select GPU or CPU build">
-            <button type="button" class="dl-pill" data-variant="cuda">GPU (CUDA)</button>
-            <button type="button" class="dl-pill" data-variant="cpu">CPU only</button>
-          </div>
-        </div>
-
         <div class="dl-system-help">
           <details class="dl-details dl-details-help">
             <summary class="dl-toggle dl-toggle-help"><span class="dl-arrow">&#9654;</span> Not sure what system you have?</summary>
@@ -101,7 +63,7 @@
                   <li>If <strong>Chip</strong> says <strong>Apple M1, M2, M3, M4</strong> (or similar) &rarr; you&rsquo;re on <strong>Apple Silicon (ARM64)</strong></li>
                   <li>If <strong>Processor</strong> says <strong>Intel Core i5, i7, i9</strong> etc &rarr; you&rsquo;re on <strong>Intel (x64)</strong></li>
                 </ul>
-                <p>Or run in Terminal: <code>uname -m</code> &mdash; it prints <code>arm64</code> or <code>x86_64</code>.</p>
+                <p>Or run in Terminal: <code>uname -m</code> which prints either <code>arm64</code> or <code>x86_64</code>.</p>
               </div>
               <div class="dl-help-section">
                 <div class="dl-help-section-title"><span class="dl-install-term">Linux</span> x64 or ARM64?</div>
@@ -116,13 +78,13 @@
               <div class="dl-help-section">
                 <div class="dl-help-section-title"><span class="dl-install-term">Linux</span> AppImage or .deb?</div>
                 <ul>
-                  <li><strong>AppImage</strong> &mdash; works on any Linux distro (Ubuntu, Fedora, Arch, etc). Just download and run. No install, no root. Best choice if you&rsquo;re not sure.</li>
-                  <li><strong>.deb</strong> &mdash; for Debian-based distros (Ubuntu, Pop!_OS, Linux Mint, Raspberry Pi OS). Integrates with your package manager so it appears in your app launcher and can be cleanly uninstalled.</li>
+                  <li><strong>AppImage</strong> works on any Linux distro (Ubuntu, Fedora, Arch, etc). If you&rsquo;re not sure, choose this one.</li>
+                  <li><strong>.deb</strong> for Debian-based distros (Ubuntu, Pop!_OS, Linux Mint, Raspberry Pi OS). Integrates with your package manager so it appears in your app launcher and can be cleanly uninstalled.</li>
                 </ul>
               </div>
               <div class="dl-help-section">
                 <div class="dl-help-section-title"><span class="dl-install-term">Windows</span></div>
-                <p>FreeMoCap provides a single <strong>x64 (64-bit)</strong> build, which works on virtually all modern Windows PCs &mdash; Intel, AMD, and Snapdragon/ARM laptops. If you have a newer Snapdragon X / Windows on ARM machine, the x64 installer still works via Microsoft&rsquo;s built-in emulation layer. There&rsquo;s only one download &mdash; you don&rsquo;t need to choose.</p>
+                <p>FreeMoCap provides a single <strong>x64 (64-bit)</strong> build, which works on virtually all modern Windows PCs, including Intel, AMD, and Snapdragon/ARM laptops. If you have a newer Snapdragon X / Windows on ARM machine, the x64 installer still works via Microsoft&rsquo;s built-in emulation layer.</p>
               </div>
             </div>
           </details>
@@ -131,6 +93,17 @@
         <div class="dl-version-row" id="dl-version-row" hidden>
           <label for="dl-version-select">Version:</label>
           <select id="dl-version-select" class="dl-version-select"></select>
+        </div>
+
+        <div class="dl-os-row" id="dl-os-row">
+          <label for="dl-os-select">System OS:</label>
+          <select id="dl-os-select" class="dl-os-select">
+            <option value="windows:x64">Windows</option>
+            <option value="macos:arm64">Mac (Apple Silicon)</option>
+            <option value="macos:x64">Mac (Intel)</option>
+            <option value="linux:x64">Linux x64</option>
+            <option value="linux:arm64">Linux ARM64</option>
+          </select>
         </div>
       </div>
 
