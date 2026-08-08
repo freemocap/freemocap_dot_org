@@ -100,7 +100,7 @@ section[id] {
 
 .nav-links {
   display: flex;
-  gap: 1.5rem;
+  gap: 1.25rem;
   align-items: center;
 }
 
@@ -109,7 +109,7 @@ section[id] {
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s ease;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 .nav-link:hover {
@@ -260,8 +260,48 @@ section[id] {
   border-radius: 0 6px 6px 0;
 }
 
+/* Mobile only: pairs the donate heart with the hamburger toggle (small gap)
+   as a direct child of .header-content, instead of the heart sitting with
+   the CTA pill, so it reads as grouped with the menu button (heart to its
+   left) rather than looking like it belongs to Download. On desktop the
+   heart sits as a plain .nav-links sibling instead (see .nav-heart below),
+   evenly spaced between Shop and Services. */
+.nav-toggle-cluster {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+/* heart-icon.png is a black silhouette on a transparent background, used
+   as a mask rather than an <img> so it can be recolored with a plain
+   background-color the same way the rest of the nav's hover states work,
+   one source file instead of separate teal/red exports. */
+.nav-heart {
+  display: inline-block;
+  width: 1.15rem;
+  height: 1.15rem;
+  background-color: var(--accent-teal);
+  -webkit-mask-image: url('../assets/pictures/heart-icon.png');
+  mask-image: url('../assets/pictures/heart-icon.png');
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  transition: background-color 0.3s ease;
+}
+
+.nav-heart:hover {
+  background-color: var(--accent-red);
+}
+
 /* Persistent header copy is mobile-only, the nav-links copy handles desktop. */
 .header-content > .nav-cta-group {
+  display: none;
+}
+
+.header-content > .nav-toggle-cluster {
   display: none;
 }
 
@@ -2682,7 +2722,10 @@ details[open] > .dl-toggle .dl-arrow {
     text-align: center;
   }
 
-  /* Dropdown copy is replaced by the persistent header copy below. */
+  /* Dropdown copy is replaced by the persistent header copy below. Both are
+     plain .nav-links siblings on desktop now (see .nav-heart), not wrapped
+     in a cluster, so both need hiding individually here. */
+  .nav-links > .nav-heart,
   .nav-links > .nav-cta-group {
     display: none;
   }
@@ -2698,6 +2741,17 @@ details[open] > .dl-toggle .dl-arrow {
     padding: 0.35rem 0.7rem;
     font-size: 0.75rem;
     flex: 0 0 auto;
+  }
+
+  .header-content > .nav-toggle-cluster {
+    display: flex;
+  }
+
+  /* Bigger than the desktop size for a comfortable tap target, no padding
+     needed since it's the mask itself growing rather than space around it. */
+  .header-content > .nav-toggle-cluster .nav-heart {
+    width: 1.5rem;
+    height: 1.5rem;
   }
 
   /* Mobile Dropdowns */
