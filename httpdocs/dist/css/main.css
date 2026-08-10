@@ -1052,6 +1052,14 @@ section[id] {
   margin: 0 auto;
 }
 
+/* Shared thin intro-text section: a short centered blurb between .page-hero
+   and a page's main content section. Used on showcase.html and
+   download.html. */
+.page-intro-section {
+  padding: 2rem 0 1rem;
+  background-color: var(--bg-primary);
+}
+
 /* About Page Sections */
 .about-section {
   padding: 3rem 0;
@@ -1609,11 +1617,6 @@ section[id] {
 }
 
 /* Community Showcase Page Styles */
-.showcase-intro-section {
-  padding: 2rem 0;
-  background-color: var(--bg-primary);
-}
-
 .showcase-section {
   padding: 3rem 0;
   background-color: var(--bg-primary);
@@ -2152,7 +2155,7 @@ details[open] > .dl-toggle .dl-arrow {
 /* The recommended app-installer card is the page's primary call to action,
    sized up so it reads as the lede instead of just another list item. */
 .dl-card-recommended {
-  border-width: 2px;
+  border-width: 4px;
   border-color: rgba(125, 184, 183, 0.4);
   background: linear-gradient(135deg, var(--bg-tertiary) 0%, rgba(125, 184, 183, 0.08) 100%);
   padding: 1.5rem 1.75rem;
@@ -2168,8 +2171,8 @@ details[open] > .dl-toggle .dl-arrow {
 }
 
 .dl-card-recommended .dl-card-btn-primary {
-  font-size: 0.95rem;
-  padding: 0.85rem 2rem;
+  font-size: 1.05rem;
+  padding: 1rem 2.25rem;
   border-radius: 8px;
 }
 
@@ -2212,8 +2215,10 @@ details[open] > .dl-toggle .dl-arrow {
 }
 
 .dl-badge-rec {
-  background: rgba(125, 184, 183, 0.18);
-  color: var(--accent-teal);
+  background: rgba(214, 69, 80, 0.18);
+  color: var(--accent-red);
+  font-size: 0.7rem;
+  padding: 0.2rem 0.55rem;
 }
 
 .dl-badge-server {
@@ -2242,6 +2247,7 @@ details[open] > .dl-toggle .dl-arrow {
   padding: 0.5rem 1.1rem;
   border-radius: 6px;
   white-space: nowrap;
+  letter-spacing: 0.03em;
   transition: all 0.15s ease;
 }
 
