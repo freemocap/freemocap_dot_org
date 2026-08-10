@@ -86,9 +86,11 @@
     });
 
     // Mobile dropdown toggles (tap the chevron to expand, tap the label to navigate)
+    // 900px matches the nav hamburger-menu breakpoint in main.css, not the
+    // general 768px mobile breakpoint used elsewhere on the site.
     document.querySelectorAll('.nav-dropdown > .nav-link .bi-chevron-down').forEach(chevron => {
       chevron.addEventListener('click', function (e) {
-        if (window.innerWidth <= 768) {
+        if (window.innerWidth <= 900) {
           e.preventDefault();
           e.stopPropagation();
           const dropdown = this.closest('.nav-dropdown');
