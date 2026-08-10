@@ -265,7 +265,7 @@ section[id] {
    the CTA pill, so it reads as grouped with the menu button (heart to its
    left) rather than looking like it belongs to Download. On desktop the
    heart sits as a plain .nav-links sibling instead (see .nav-heart below),
-   evenly spaced between Shop and Services. */
+   to the right of the Services | Download pill. */
 .nav-toggle-cluster {
   display: flex;
   align-items: center;
@@ -278,6 +278,7 @@ section[id] {
    one source file instead of separate teal/red exports. */
 .nav-heart {
   display: inline-block;
+  flex-shrink: 0;
   width: 1.15rem;
   height: 1.15rem;
   background-color: var(--accent-teal);
@@ -2672,7 +2673,9 @@ details[open] > .dl-toggle .dl-arrow {
   }
 }
 
-@media (max-width: 768px) {
+/* Nav switches to the hamburger menu at 900px, wider than the general
+   768px mobile breakpoint below. */
+@media (max-width: 900px) {
   /* Mobile Navigation */
   .mobile-menu-toggle {
     display: block;
@@ -2747,13 +2750,6 @@ details[open] > .dl-toggle .dl-arrow {
     display: flex;
   }
 
-  /* Bigger than the desktop size for a comfortable tap target, no padding
-     needed since it's the mask itself growing rather than space around it. */
-  .header-content > .nav-toggle-cluster .nav-heart {
-    width: 1.5rem;
-    height: 1.5rem;
-  }
-
   /* Mobile Dropdowns */
   .nav-dropdown {
     width: 100%;
@@ -2814,7 +2810,9 @@ details[open] > .dl-toggle .dl-arrow {
     color: var(--text-muted);
     border-bottom: 1px solid rgba(255, 255, 255, 0.03);
   }
-  
+}
+
+@media (max-width: 768px) {
   /* Hero adjustments */
   .hero-title {
     font-size: 2.5rem;
