@@ -69,6 +69,40 @@
     if (el) el.classList.add('active');
   }
 
+  // ── theme toggle ─────────────────────────────────────────
+  // Two copies (desktop nav-links row, mobile persistent-header cluster),
+  // same duplicate-for-breakpoint pattern as .nav-heart. The early-applied
+  // data-theme attribute (see the inline snippet in each page's <head>,
+  // which runs before this script to avoid a flash) is the source of
+  // truth; this just keeps both button icons in sync with it and toggles
+  // it on click.
+  const themeToggles = document.querySelectorAll('.theme-toggle');
+  function syncThemeToggleIcons() {
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    themeToggles.forEach(btn => {
+      const icon = btn.querySelector('i');
+      icon.classList.toggle('bi-moon-stars', !isLight);
+      icon.classList.toggle('bi-sun', isLight);
+      const label = isLight ? 'Switch to dark mode' : 'Switch to light mode';
+      btn.setAttribute('aria-label', label);
+      btn.setAttribute('title', label);
+    });
+  }
+  syncThemeToggleIcons();
+  themeToggles.forEach(btn => {
+    btn.addEventListener('click', function () {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      if (isLight) {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light');
+      }
+      syncThemeToggleIcons();
+    });
+  });
+
   // ── mobile menu toggle ──────────────────────────────────
   const toggle = document.querySelector('.mobile-menu-toggle');
   const navLinks = document.querySelector('.nav-links');
