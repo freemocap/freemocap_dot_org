@@ -447,11 +447,17 @@ section[id] {
 }
 
 /* One size up from .cta-button-lg, for a solo CTA that anchors a whole
-   section (e.g. Services). Stacks on top of .cta-button-lg. */
+   section (e.g. Services). Stacks on top of .cta-button-lg. Rebuilt
+   2026-08-25: the original version (min-width 220px, padding 0.9rem 2rem,
+   font-size 1.25rem) caused the icon and text to animate apart on hover,
+   root cause never isolated. Rather than debug those specific numbers
+   further, rebuilt from values already proven safe elsewhere on the site:
+   the padding bump matches .donate-button (1rem vertical), the font-size
+   bump matches .download-button (1.1rem). No new min-width, .cta-button-lg's
+   180px already applies and 220px was never validated as safe. */
 .cta-button-xl {
-  min-width: 220px;
-  padding: 0.9rem 2rem;
-  font-size: 1.25rem;
+  padding: 1rem 1.5rem;
+  font-size: 1.1rem;
 }
 
 .hero-video-container {
