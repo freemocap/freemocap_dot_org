@@ -24,6 +24,11 @@
      pixels. */
   --media-placeholder-bg: #000;
   --card-border: rgba(255, 255, 255, 0.05);
+  /* .hero-title's gradient end stop only, kept separate from
+     --text-primary so this can be tuned (2026-08-25: softened from
+     black to dark gray in light mode) without also recoloring every
+     other use of --text-primary sitewide. */
+  --hero-gradient-end: #ffffff;
 }
 
 /* Light mode (2026-08-25): added alongside the dark-mode contrast fixes
@@ -47,6 +52,7 @@
   --accent-red-icon: #d5404b;
   --media-placeholder-bg: #e0e0e0;
   --card-border: rgba(0, 0, 0, 0.08);
+  --hero-gradient-end: #404040;
 }
 
 * {
@@ -392,12 +398,15 @@ section[id] {
   margin-bottom: 1.5rem;
   /* End stop was a hardcoded #ffffff: fine in dark mode (fades into a
      light color against a dark page), unreadable in light mode (fades
-     into white against a white page). var(--text-primary) resolves to
-     the exact same #ffffff in dark mode, so this is a no-op there, and
-     the correct dark endpoint in light mode. This section sits on the
-     theme's own flat background (unlike .page-hero-title, which sits on
-     a fixed video and intentionally isn't theme-aware). */
-  background: linear-gradient(135deg, var(--accent-teal, #00ced1) 0%, var(--text-primary) 100%);
+     into white against a white page). --hero-gradient-end resolves to
+     the exact same #ffffff in dark mode, so this is a no-op there; in
+     light mode it's dark gray rather than black, black read as a little
+     intense for a full-width gradient. Kept as its own variable rather
+     than var(--text-primary) so tuning it doesn't recolor body text
+     sitewide. This section sits on the theme's own flat background
+     (unlike .page-hero-title, which sits on a fixed video and
+     intentionally isn't theme-aware). */
+  background: linear-gradient(135deg, var(--accent-teal, #00ced1) 0%, var(--hero-gradient-end) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
