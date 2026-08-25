@@ -1082,8 +1082,8 @@ section[id] {
   font-weight: 600;
   font-size: 1.1rem;
   transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
+} 
+  
 .services-button:hover {
   background-color: #c03a45;
   transform: translateY(-2px);
