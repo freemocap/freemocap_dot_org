@@ -447,17 +447,11 @@ section[id] {
 }
 
 /* One size up from .cta-button-lg, for a solo CTA that anchors a whole
-   section (e.g. Services). Stacks on top of .cta-button-lg. Rebuilt
-   2026-08-25: the original version (min-width 220px, padding 0.9rem 2rem,
-   font-size 1.25rem) caused the icon and text to animate apart on hover,
-   root cause never isolated. Rather than debug those specific numbers
-   further, rebuilt from values already proven safe elsewhere on the site:
-   the padding bump matches .donate-button (1rem vertical), the font-size
-   bump matches .download-button (1.1rem). No new min-width, .cta-button-lg's
-   180px already applies and 220px was never validated as safe. */
+   section (e.g. Services). Stacks on top of .cta-button-lg. */
 .cta-button-xl {
-  padding: 1rem 1.5rem;
-  font-size: 1.1rem;
+  min-width: 220px;
+  padding: 0.9rem 2rem;
+  font-size: 1.25rem;
 }
 
 .hero-video-container {
@@ -1070,6 +1064,28 @@ section[id] {
 
 .download-button:hover {
   background-color: var(--accent-green-fill-hover);
+  transform: translateY(-2px);
+  color: white;
+}
+
+/* .download-button, copied as-is, color swapped to red. Not composed
+   with .cta-button/-lg/-xl on purpose. */
+.services-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--accent-red-fill);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.services-button:hover {
+  background-color: #c03a45;
   transform: translateY(-2px);
   color: white;
 }
