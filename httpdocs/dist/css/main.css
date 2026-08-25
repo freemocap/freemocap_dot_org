@@ -1,7 +1,7 @@
 :root {
   --bg-primary: #393939;
   --bg-secondary: #2d2d2d;
-  --bg-tertiary: #444444;
+  --bg-tertiary: #565656;
   --accent-teal: #7db8b7;
   --accent-green: #6aa3a2;
   --accent-red: #d64550;
@@ -9,6 +9,44 @@
   --text-primary: #ffffff;
   --text-secondary: #cccccc;
   --text-muted: #999999;
+  /* Contrast-driven variants (2026-08-25 accessibility pass): the base
+     accent colors above read fine as text/links/icons in most places,
+     but fail WCAG AA in these specific pairings. Same hue, adjusted
+     lightness only, nothing computed beyond what each pairing needed. */
+  --accent-green-fill: #4e7f7e;
+  --accent-green-fill-hover: #3f6665;
+  --accent-red-fill: #d5404b;
+  --accent-red-icon: #da5660;
+  /* Two spots hardcoded a literal black/white assuming a dark canvas
+     (a media-placeholder fill, a barely-visible card hairline). Named as
+     variables so light mode (below) can give them a real value instead
+     of an invisible or clashing one; dark mode keeps today's exact
+     pixels. */
+  --media-placeholder-bg: #000;
+  --card-border: rgba(255, 255, 255, 0.05);
+}
+
+/* Light mode (2026-08-25): added alongside the dark-mode contrast fixes
+   above. Same hues throughout, values computed for real WCAG AA against
+   a white background rather than reused from the dark palette, since a
+   color calibrated to read against #393939 doesn't just work in reverse
+   against white. Button fills (--accent-*-fill) aren't redefined here on
+   purpose: white text on those fills doesn't depend on what's around the
+   button, so the same values already pass in both modes. */
+[data-theme='light'] {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f2f2f2;
+  --bg-tertiary: #e0e0e0;
+  --text-primary: #000000;
+  --text-secondary: #404040;
+  --text-muted: #5c5c5c;
+  --accent-teal: #46807f;
+  --accent-green: #4e7f7e;
+  --accent-red: #d5404b;
+  --accent-highlight: #9c6d11;
+  --accent-red-icon: #d5404b;
+  --media-placeholder-bg: #e0e0e0;
+  --card-border: rgba(0, 0, 0, 0.08);
 }
 
 * {
@@ -210,7 +248,7 @@ section[id] {
 }
 
 .cta-button {
-  background-color: var(--accent-red);
+  background-color: var(--accent-red-fill);
   color: white;
   padding: 0.5rem 1.25rem;
   border-radius: 6px;
@@ -249,11 +287,11 @@ section[id] {
 
 .nav-cta-group .cta-button:first-child {
   border-radius: 6px 0 0 6px;
-  background-color: var(--accent-green);
+  background-color: var(--accent-green-fill);
 }
 
 .nav-cta-group .cta-button:first-child:hover {
-  background-color: #5a8b8a;
+  background-color: var(--accent-green-fill-hover);
 }
 
 .nav-cta-group .cta-button:last-child {
@@ -297,6 +335,30 @@ section[id] {
   background-color: var(--accent-red);
 }
 
+/* Theme toggle: same bare-icon-button reset as .mobile-menu-toggle, sized
+   like .nav-heart since it sits alongside it in both the desktop nav-links
+   row and the mobile persistent-header cluster (two copies, same
+   duplicate-for-breakpoint pattern documented on .nav-heart). */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 1.15rem;
+  height: 1.15rem;
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--text-primary);
+  font-size: 1.15rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.theme-toggle:hover {
+  color: var(--accent-teal);
+}
+
 /* Persistent header copy is mobile-only, the nav-links copy handles desktop. */
 .header-content > .nav-cta-group {
   display: none;
@@ -328,7 +390,14 @@ section[id] {
   font-weight: 700;
   line-height: 1.1;
   margin-bottom: 1.5rem;
-  background: linear-gradient(135deg, var(--accent-teal, #00ced1) 0%, #ffffff 100%);
+  /* End stop was a hardcoded #ffffff: fine in dark mode (fades into a
+     light color against a dark page), unreadable in light mode (fades
+     into white against a white page). var(--text-primary) resolves to
+     the exact same #ffffff in dark mode, so this is a no-op there, and
+     the correct dark endpoint in light mode. This section sits on the
+     theme's own flat background (unlike .page-hero-title, which sits on
+     a fixed video and intentionally isn't theme-aware). */
+  background: linear-gradient(135deg, var(--accent-teal, #00ced1) 0%, var(--text-primary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -467,13 +536,13 @@ section[id] {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  border: 1px solid rgba(255,255,255,0.05);
+  border: 1px solid var(--card-border);
 }
 
 /* 1/3rd of card - Media */
 .card-media {
   flex: 0 0 33%;
-  background: #000;
+  background: var(--media-placeholder-bg);
 }
 
 .card-media img,
@@ -493,7 +562,7 @@ section[id] {
 .card-text h3 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .card-text p {
@@ -689,7 +758,7 @@ section[id] {
 
 .community-icon {
   font-size: 3rem;
-  color: var(--accent-red);
+  color: var(--accent-red-icon);
   margin-bottom: 1.5rem;
 }
 
@@ -974,7 +1043,7 @@ section[id] {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: var(--accent-green);
+  background-color: var(--accent-green-fill);
   color: white;
   padding: 0.75rem 1.5rem;
   border-radius: 6px;
@@ -985,7 +1054,7 @@ section[id] {
 }
 
 .download-button:hover {
-  background-color: #5a8b8a;
+  background-color: var(--accent-green-fill-hover);
   transform: translateY(-2px);
   color: white;
 }
@@ -1047,7 +1116,12 @@ section[id] {
 
 .page-hero-subtitle {
   font-size: 1.1rem;
-  color: var(--text-secondary);
+  /* Deliberately not var(--text-secondary): this sits on .page-hero-video
+     plus a fixed rgba(0,0,0,0.5) overlay (see .page-hero-overlay), which
+     never changes with the site theme, so the text shouldn't either. This
+     is the dark-mode value written as a literal, matching .page-hero-title
+     next to it (also intentionally not theme-aware, same reasoning). */
+  color: #cccccc;
   max-width: 600px;
   margin: 0 auto;
 }
@@ -1109,7 +1183,7 @@ section[id] {
 
 .contact-card-icon {
   font-size: 1.75rem;
-  color: var(--accent-red);
+  color: var(--accent-red-icon);
 }
 
 .contact-card-title {
@@ -1259,7 +1333,7 @@ section[id] {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  background-color: var(--accent-red);
+  background-color: var(--accent-red-fill);
   color: white;
   padding: 1rem 1.5rem;
   border-radius: 6px;
@@ -1658,7 +1732,7 @@ section[id] {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  background: #000;
+  background: var(--media-placeholder-bg);
 }
 
 .showcase-video iframe {
@@ -2252,12 +2326,12 @@ details[open] > .dl-toggle .dl-arrow {
 }
 
 .dl-card-btn-primary {
-  background: var(--accent-green);
+  background: var(--accent-green-fill);
   color: white;
 }
 
 .dl-card:hover .dl-card-btn-primary {
-  background: #5a8b8a;
+  background: var(--accent-green-fill-hover);
 }
 
 .dl-card-btn-server {
