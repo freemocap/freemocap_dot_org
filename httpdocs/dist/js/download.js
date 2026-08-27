@@ -21,10 +21,11 @@
     return `${R2_PUBLIC_URL}/releases/v${version}`;
   }
 
-  // Only the Linux CUDA build exceeds GitHub's 2GB per-asset limit, so it
-  // alone is hosted on R2. Mirrors build-installers-pyinstaller.yml.
+  // All CUDA builds are hosted on Cloudflare R2.
+  // Non-CUDA builds are hosted on GitHub Releases.
+  // Mirrors build-installers-pyinstaller.yml.
   function isR2Hosted(os, variant) {
-    return os === 'linux' && variant === 'cuda';
+    return variant === 'cuda';
   }
 
   function downloadUrl(file, os, version, variant) {
