@@ -2318,10 +2318,15 @@ details[open] > .dl-toggle .dl-arrow {
 }
 
 .dl-badge-rec {
-  background: rgba(106, 163, 162, 0.18);
-  color: var(--accent-green);
+  background: rgba(74, 222, 128, 0.18);
+  color: #4ade80;
   font-size: 0.7rem;
   padding: 0.2rem 0.55rem;
+}
+
+[data-theme='light'] .dl-badge-rec {
+  background: rgba(22, 163, 74, 0.14);
+  color: #15803d;
 }
 
 .dl-badge-server {
