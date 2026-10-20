@@ -2318,8 +2318,8 @@ details[open] > .dl-toggle .dl-arrow {
 }
 
 .dl-badge-rec {
-  background: rgba(214, 69, 80, 0.18);
-  color: var(--accent-red);
+  background: rgba(106, 163, 162, 0.18);
+  color: var(--accent-green);
   font-size: 0.7rem;
   padding: 0.2rem 0.55rem;
 }
