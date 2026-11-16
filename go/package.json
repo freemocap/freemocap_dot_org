@@ -1,0 +1,12 @@
+{
+  "name": "freemocap-go-links",
+  "description": "freemocap.org/go short links and QR codes",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "type": "commonjs",
+  "dependencies": {
+    "qrcode": "^1.5.4"
+  },
+  "private": true
+}
