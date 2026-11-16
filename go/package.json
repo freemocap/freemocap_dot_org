@@ -6,7 +6,11 @@
   },
   "type": "commonjs",
   "dependencies": {
-    "qrcode": "^1.5.4"
+    "qrcode": "^1.5.4",
+    "sharp": "^0.34.4"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "jsqr": "^1.4.0"
+  }
 }

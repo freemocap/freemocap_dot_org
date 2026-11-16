@@ -11,6 +11,7 @@ import { readFileSync, writeFileSync, mkdirSync, readdirSync, rmSync } from "nod
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import QRCode from "qrcode";
+import sharp from "sharp";
 
 const BASE = "https://freemocap.org/go/";
 const here = dirname(fileURLToPath(import.meta.url));
@@ -61,14 +62,50 @@ const htaccess = [
 mkdirSync(dirname(htaccessPath), { recursive: true });
 writeFileSync(htaccessPath, htaccess);
 
+// QR codes: black modules, white circle in the middle with the b&w skelly logo.
+// Error correction H tolerates ~30% damage; the circle covers well under that.
+const MARGIN = 4; // quiet zone in modules; scanners need it
+const CIRCLE = 0.26; // circle diameter as a fraction of the code (without margin)
+const LOGO = 0.72; // logo height as a fraction of the circle
+const logoPng = readFileSync(join(here, "logo-bw.png"));
+const logoMeta = await sharp(logoPng).metadata();
+const logoHref = `data:image/png;base64,${logoPng.toString("base64")}`;
+
+function qrSvg(text) {
+  const { modules } = QRCode.create(text, { errorCorrectionLevel: "H" });
+  const n = modules.size;
+  const total = n + MARGIN * 2;
+  const c = total / 2;
+  const r = (n * CIRCLE) / 2;
+  let path = "";
+  for (let y = 0; y < n; y++) {
+    for (let x = 0; x < n; x++) {
+      if (!modules.get(y, x)) continue;
+      // Skip modules that touch the circle so its edge stays clean.
+      const dx = Math.max(Math.abs(x + MARGIN + 0.5 - c) - 0.5, 0);
+      const dy = Math.max(Math.abs(y + MARGIN + 0.5 - c) - 0.5, 0);
+      if (Math.hypot(dx, dy) < r) continue;
+      path += `M${x + MARGIN} ${y + MARGIN}h1v1h-1z`;
+    }
+  }
+  const lh = r * 2 * LOGO;
+  const lw = (lh * logoMeta.width) / logoMeta.height;
+  return [
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${total} ${total}" shape-rendering="crispEdges">`,
+    `<rect width="${total}" height="${total}" fill="#fff"/>`,
+    `<path d="${path}" fill="#000"/>`,
+    `<image href="${logoHref}" x="${c - lw / 2}" y="${c - lh / 2}" width="${lw}" height="${lh}" shape-rendering="auto"/>`,
+    `</svg>`,
+  ].join("");
+}
+
 // Regenerate QR codes from scratch so removed links don't leave stale images.
 rmSync(qrDir, { recursive: true, force: true });
 mkdirSync(qrDir, { recursive: true });
-const opts = { errorCorrectionLevel: "M", margin: 4 };
 for (const { slug } of links) {
-  const target = BASE + slug;
-  writeFileSync(join(qrDir, `${slug}.svg`), await QRCode.toString(target, { ...opts, type: "svg" }));
-  await QRCode.toFile(join(qrDir, `${slug}.png`), target, { ...opts, width: 1200 });
+  const svg = qrSvg(BASE + slug);
+  writeFileSync(join(qrDir, `${slug}.svg`), svg);
+  await sharp(Buffer.from(svg), { density: 1200 }).resize(1200, 1200).png().toFile(join(qrDir, `${slug}.png`));
 }
 
 console.log(`${links.length} link(s) -> ${htaccessPath}`);
