@@ -17,14 +17,19 @@
   const nested = path.split('/').length > 2;
   const isIndex = !nested && (page === '' || page === 'index.html' || path.endsWith('/'));
 
+  // On the live site the deploy workflow (tools/inline-includes.mjs) already put
+  // the header and footer into the page, so there is nothing to fetch. Locally
+  // the placeholders are empty and get filled here.
   async function inject(selector, url) {
     const el = document.querySelector(selector);
-    if (!el) return;
+    if (!el || el.hasAttribute('data-inlined')) return;
     try {
       const res = await fetch(url);
-      if (!res.ok) return;
+      if (!res.ok) throw new Error(res.status + ' ' + url);
       el.innerHTML = await res.text();
-    } catch (_) { /* fail silently – inline nav stays as fallback */ }
+    } catch (err) {
+      console.error('nav.js: could not load', url, err);
+    }
   }
 
   // ── fetch & inject ──────────────────────────────────────
