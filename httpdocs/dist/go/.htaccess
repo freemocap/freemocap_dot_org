@@ -4,6 +4,9 @@
 <IfModule mod_rewrite.c>
 RewriteEngine On
 
+# The public QR download page and its files are served as-is.
+RewriteRule ^qr(/.*)?$ - [L]
+
 RewriteRule ^docs/?$ https://docs.freemocap.org/ [NC,NE,L,R=302]
 RewriteRule ^mocap-kit/?$ https://shop.freemocap.org/products/mocap-kit [NC,NE,L,R=302]
 RewriteRule ^eye-trackers/?$ https://shop.freemocap.org/products/animal-eye-trackers [NC,NE,L,R=302]

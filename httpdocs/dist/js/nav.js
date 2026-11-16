@@ -13,7 +13,9 @@
   // ── helpers ──────────────────────────────────────────────
   const path = window.location.pathname;
   const page = path.split('/').pop() || 'index.html';
-  const isIndex = page === '' || page === 'index.html' || path.endsWith('/');
+  // Pages in a subfolder (e.g. /go/qr/) need the includes' relative links made root-absolute.
+  const nested = path.split('/').length > 2;
+  const isIndex = !nested && (page === '' || page === 'index.html' || path.endsWith('/'));
 
   async function inject(selector, url) {
     const el = document.querySelector(selector);
@@ -27,9 +29,17 @@
 
   // ── fetch & inject ──────────────────────────────────────
   await Promise.all([
-    inject('#site-header', './includes/header.html'),
-    inject('#site-footer', './includes/footer.html'),
+    inject('#site-header', '/includes/header.html'),
+    inject('#site-footer', '/includes/footer.html'),
   ]);
+
+  if (nested) {
+    document.querySelectorAll('#site-header [href], #site-header [src], #site-footer [href], #site-footer [src]').forEach(el => {
+      const attr = el.hasAttribute('href') ? 'href' : 'src';
+      const v = el.getAttribute(attr);
+      if (v && !/^([a-z]+:|\/|#)/i.test(v)) el.setAttribute(attr, '/' + v.replace(/^\.\//, ''));
+    });
+  }
 
   // ── fix links for index page ────────────────────────────
   // The template uses "./#services" etc. On the index we want just "#services".
