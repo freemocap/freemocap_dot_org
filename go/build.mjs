@@ -67,12 +67,13 @@ writeFileSync(htaccessPath, htaccess);
 const MARGIN = 4; // quiet zone in modules; scanners need it
 const CIRCLE = 0.26; // circle diameter as a fraction of the code (without margin)
 const LOGO = 0.72; // logo height as a fraction of the circle
-const LABEL_SIZE = 0.035; // link text height as a fraction of the code width
+const LABEL_GAP = 2; // modules between the code and the top of the link text
+const LABEL_FONT = "Helvetica, Arial, sans-serif";
 const logoPng = readFileSync(join(here, "logo-bw.png"));
 const logoMeta = await sharp(logoPng).metadata();
 const logoHref = `data:image/png;base64,${logoPng.toString("base64")}`;
 
-function qrSvg(text) {
+async function qrSvg(text, label) {
   const { modules } = QRCode.create(text, { errorCorrectionLevel: "H" });
   const n = modules.size;
   const total = n + MARGIN * 2;
@@ -91,11 +92,14 @@ function qrSvg(text) {
   }
   const lh = r * 2 * LOGO;
   const lw = (lh * logoMeta.width) / logoMeta.height;
-  // Small printed link under the code, in a band below the quiet zone so it never touches it.
-  const label = text.replace(/^https?:\/\//, "");
-  const font = total * LABEL_SIZE;
-  const band = font * 1.6;
-  const h = total + band;
+  // The destination URL under the code, scaled so its ink spans exactly the code's width.
+  const m = await measureText(label);
+  const font = (MEASURE_SIZE * n) / m.width;
+  const k = font / MEASURE_SIZE;
+  const inkTop = n + MARGIN + LABEL_GAP;
+  const x = MARGIN - m.left * k;
+  const y = inkTop - m.top * k;
+  const h = inkTop + m.height * k + MARGIN / 2;
   return {
     height: h / total,
     svg: [
@@ -103,17 +107,38 @@ function qrSvg(text) {
       `<rect width="${total}" height="${h}" fill="#fff"/>`,
       `<path d="${path}" fill="#000"/>`,
       `<image href="${logoHref}" x="${c - lw / 2}" y="${c - lh / 2}" width="${lw}" height="${lh}" shape-rendering="auto"/>`,
-      `<text x="${c}" y="${total + font * 0.4}" font-family="Helvetica, Arial, sans-serif" font-size="${font}" text-anchor="middle" fill="#000">${label}</text>`,
+      `<text x="${x}" y="${y}" font-family="${LABEL_FONT}" font-size="${font}" fill="#000" shape-rendering="auto">${xml(label)}</text>`,
       `</svg>`,
     ].join(""),
   };
 }
 
+// Measure the label's ink box (not its advance width) as the PNG renderer draws it,
+// with the baseline at y=0 and the text origin at x=0.
+const MEASURE_SIZE = 200;
+async function measureText(label) {
+  const W = MEASURE_SIZE * label.length;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${MEASURE_SIZE * 2}"><rect width="100%" height="100%" fill="#fff"/><text x="${MEASURE_SIZE}" y="${MEASURE_SIZE * 1.5}" font-family="${LABEL_FONT}" font-size="${MEASURE_SIZE}" fill="#000">${xml(label)}</text></svg>`;
+  const { info } = await sharp(Buffer.from(svg)).trim({ threshold: 128 }).toBuffer({ resolveWithObject: true });
+  return {
+    left: -info.trimOffsetLeft - MEASURE_SIZE,
+    top: -info.trimOffsetTop - MEASURE_SIZE * 1.5,
+    width: info.width,
+    height: info.height,
+  };
+}
+
+function xml(s) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
 // Regenerate QR codes from scratch so removed links don't leave stale images.
 rmSync(qrDir, { recursive: true, force: true });
 mkdirSync(qrDir, { recursive: true });
-for (const { slug } of links) {
-  const { svg, height } = qrSvg(BASE + slug);
+for (const { slug, url } of links) {
+  // Print exactly where the code ends up, minus https:// and a bare trailing slash.
+  const label = url.replace(/^https:\/\//, "").replace(/^([^/]+)\/$/, "$1");
+  const { svg, height } = await qrSvg(BASE + slug, label);
   writeFileSync(join(qrDir, `${slug}.svg`), svg);
   await sharp(Buffer.from(svg), { density: 1200 })
     .resize(1200, Math.round(1200 * height))
