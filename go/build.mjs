@@ -67,6 +67,7 @@ writeFileSync(htaccessPath, htaccess);
 const MARGIN = 4; // quiet zone in modules; scanners need it
 const CIRCLE = 0.26; // circle diameter as a fraction of the code (without margin)
 const LOGO = 0.72; // logo height as a fraction of the circle
+const LABEL_SIZE = 0.035; // link text height as a fraction of the code width
 const logoPng = readFileSync(join(here, "logo-bw.png"));
 const logoMeta = await sharp(logoPng).metadata();
 const logoHref = `data:image/png;base64,${logoPng.toString("base64")}`;
@@ -90,22 +91,34 @@ function qrSvg(text) {
   }
   const lh = r * 2 * LOGO;
   const lw = (lh * logoMeta.width) / logoMeta.height;
-  return [
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${total} ${total}" shape-rendering="crispEdges">`,
-    `<rect width="${total}" height="${total}" fill="#fff"/>`,
-    `<path d="${path}" fill="#000"/>`,
-    `<image href="${logoHref}" x="${c - lw / 2}" y="${c - lh / 2}" width="${lw}" height="${lh}" shape-rendering="auto"/>`,
-    `</svg>`,
-  ].join("");
+  // Small printed link under the code, in a band below the quiet zone so it never touches it.
+  const label = text.replace(/^https?:\/\//, "");
+  const font = total * LABEL_SIZE;
+  const band = font * 1.6;
+  const h = total + band;
+  return {
+    height: h / total,
+    svg: [
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${total} ${h}" shape-rendering="crispEdges">`,
+      `<rect width="${total}" height="${h}" fill="#fff"/>`,
+      `<path d="${path}" fill="#000"/>`,
+      `<image href="${logoHref}" x="${c - lw / 2}" y="${c - lh / 2}" width="${lw}" height="${lh}" shape-rendering="auto"/>`,
+      `<text x="${c}" y="${total + font * 0.4}" font-family="Helvetica, Arial, sans-serif" font-size="${font}" text-anchor="middle" fill="#000">${label}</text>`,
+      `</svg>`,
+    ].join(""),
+  };
 }
 
 // Regenerate QR codes from scratch so removed links don't leave stale images.
 rmSync(qrDir, { recursive: true, force: true });
 mkdirSync(qrDir, { recursive: true });
 for (const { slug } of links) {
-  const svg = qrSvg(BASE + slug);
+  const { svg, height } = qrSvg(BASE + slug);
   writeFileSync(join(qrDir, `${slug}.svg`), svg);
-  await sharp(Buffer.from(svg), { density: 1200 }).resize(1200, 1200).png().toFile(join(qrDir, `${slug}.png`));
+  await sharp(Buffer.from(svg), { density: 1200 })
+    .resize(1200, Math.round(1200 * height))
+    .png()
+    .toFile(join(qrDir, `${slug}.png`));
 }
 
 console.log(`${links.length} link(s) -> ${htaccessPath}`);

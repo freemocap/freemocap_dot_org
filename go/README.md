@@ -16,7 +16,7 @@ Our own replacement for Bitly. Each QR code points at `https://freemocap.org/go/
 
 The build writes `../httpdocs/dist/go/.htaccess` (the redirects) and `qr/<slug>.svg` + `qr/<slug>.png`. Use the SVG for print and the PNG for slides or the web.
 
-Every code has the b&w skelly (`logo-bw.png`) in a white circle in the center. The codes use the highest error correction level (H), so the logo doesn't hurt scanning. Swap `logo-bw.png` to change the logo; keep it black on transparent.
+Every code has the short link printed small underneath (without `https://`) and the b&w skelly (`logo-bw.png`) in a white circle in the center. The codes use the highest error correction level (H), so the logo doesn't hurt scanning. Swap `logo-bw.png` to change the logo; keep it black on transparent.
 
 ## Rules of thumb
 
