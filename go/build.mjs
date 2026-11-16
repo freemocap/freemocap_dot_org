@@ -216,6 +216,8 @@ writeFileSync(
     .qr-page { padding: 4rem 0 5rem; }
     .qr-page h1 { margin: 0 0 .75rem; }
     .qr-intro { color: var(--text-secondary); max-width: 46rem; margin: 0 0 2.5rem; line-height: 1.6; }
+    .qr-intro a { color: var(--accent-teal); }
+    [data-theme='light'] .qr-intro a { color: var(--text-primary); text-decoration: underline; }
     .qr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; }
     .qr-card { background: var(--bg-secondary); border: 1px solid var(--card-border); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; gap: .5rem; min-width: 0; }
     .qr-preview { display: block; background: #fff; border-radius: 8px; padding: .5rem; }
@@ -235,14 +237,7 @@ writeFileSync(
   <main class="qr-page">
     <div class="container">
       <h1>QR codes</h1>
-      <p class="qr-intro">
-        Official FreeMoCap QR codes, free to use. Each one opens a short
-        <code>freemocap.org/go/</code> link that forwards to the page printed
-        under it. Use the SVG for print and the PNG for slides, screens, and the web.
-      </p>
-      <p class="qr-intro">
-        <a class="cta-button" href="make.html"><i class="bi bi-qr-code"></i> Make your own QR code</a>
-      </p>
+      <p class="qr-intro"><a href="make.html">Create a QR code.</a></p>
       <div class="qr-grid">${cards}
       </div>
     </div>
