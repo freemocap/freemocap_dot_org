@@ -22,7 +22,11 @@ ErrorDocument 404 /404.html
 # Make browsers check for a newer copy of pages, styles, scripts, and data on
 # every visit (a quick 304 when nothing changed), so a deploy shows up right
 # away instead of whenever each browser's guessed cache time runs out.
+# No ETags: on this host they never match (so every check re-downloads the
+# file), while Last-Modified checks correctly return a quick 304.
+FileETag None
 <IfModule mod_headers.c>
+  Header unset ETag
   <FilesMatch "\.(html|css|js|json)$">
     Header set Cache-Control "no-cache"
   </FilesMatch>
