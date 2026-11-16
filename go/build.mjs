@@ -237,7 +237,7 @@ writeFileSync(
   <main class="qr-page">
     <div class="container">
       <h1>QR codes</h1>
-      <p class="qr-intro"><a href="make.html">Create a QR code.</a></p>
+      <p class="qr-intro"><a href="make.html">Create a QR code</a></p>
       <div class="qr-grid">${cards}
       </div>
     </div>
