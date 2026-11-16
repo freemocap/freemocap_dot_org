@@ -168,6 +168,8 @@ writeFileSync(
     "RewriteEngine Off",
     "<IfModule mod_headers.c>",
     '  Header set X-Robots-Tag "noindex, nofollow"',
+    "  # Codes change when a link is repointed, so always check for a newer copy.",
+    '  Header set Cache-Control "no-cache"',
     "</IfModule>",
     "",
   ].join("\n"),
