@@ -12,6 +12,11 @@ jobs:
     - name: Get latest code
       uses: actions/checkout@v3
 
+    # Put the shared header and footer straight into each page so they don't
+    # load late. Only changes this CI checkout, never the repo.
+    - name: Inline header and footer
+      run: node tools/inline-includes.mjs
+
     - name: Push files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:

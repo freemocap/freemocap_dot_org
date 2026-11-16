@@ -13,23 +13,38 @@
   // ── helpers ──────────────────────────────────────────────
   const path = window.location.pathname;
   const page = path.split('/').pop() || 'index.html';
-  const isIndex = page === '' || page === 'index.html' || path.endsWith('/');
+  // Pages in a subfolder (e.g. /go/qr/) need the includes' relative links made root-absolute.
+  const nested = path.split('/').length > 2;
+  const isIndex = !nested && (page === '' || page === 'index.html' || path.endsWith('/'));
 
+  // On the live site the deploy workflow (tools/inline-includes.mjs) already put
+  // the header and footer into the page, so there is nothing to fetch. Locally
+  // the placeholders are empty and get filled here.
   async function inject(selector, url) {
     const el = document.querySelector(selector);
-    if (!el) return;
+    if (!el || el.hasAttribute('data-inlined')) return;
     try {
       const res = await fetch(url);
-      if (!res.ok) return;
+      if (!res.ok) throw new Error(res.status + ' ' + url);
       el.innerHTML = await res.text();
-    } catch (_) { /* fail silently – inline nav stays as fallback */ }
+    } catch (err) {
+      console.error('nav.js: could not load', url, err);
+    }
   }
 
   // ── fetch & inject ──────────────────────────────────────
   await Promise.all([
-    inject('#site-header', './includes/header.html'),
-    inject('#site-footer', './includes/footer.html'),
+    inject('#site-header', '/includes/header.html'),
+    inject('#site-footer', '/includes/footer.html'),
   ]);
+
+  if (nested) {
+    document.querySelectorAll('#site-header [href], #site-header [src], #site-footer [href], #site-footer [src]').forEach(el => {
+      const attr = el.hasAttribute('href') ? 'href' : 'src';
+      const v = el.getAttribute(attr);
+      if (v && !/^([a-z]+:|\/|#)/i.test(v)) el.setAttribute(attr, '/' + v.replace(/^\.\//, ''));
+    });
+  }
 
   // ── fix links for index page ────────────────────────────
   // The template uses "./#services" etc. On the index we want just "#services".
