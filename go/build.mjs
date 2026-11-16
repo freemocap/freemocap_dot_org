@@ -141,8 +141,13 @@ function xml(s) {
 }
 
 // Regenerate QR codes from scratch so removed links don't leave stale images.
-rmSync(qrDir, { recursive: true, force: true });
+// Only generated files are removed; make.html (the hand-written QR maker) stays.
 mkdirSync(qrDir, { recursive: true });
+for (const f of readdirSync(qrDir)) {
+  if (/\.(png|svg)$/.test(f)) rmSync(join(qrDir, f));
+}
+// Web-sized copy of the logo for make.html.
+await sharp(logoPng).resize({ height: 400 }).png().toFile(join(qrDir, "logo-bw.png"));
 for (const { slug, url } of links) {
   // Print exactly where the code ends up, minus https:// and a bare trailing slash.
   const label = url.replace(/^https:\/\//, "").replace(/^([^/]+)\/$/, "$1");
@@ -232,6 +237,9 @@ writeFileSync(
         Official FreeMoCap QR codes, free to use. Each one opens a short
         <code>freemocap.org/go/</code> link that forwards to the page printed
         under it. Use the SVG for print and the PNG for slides, screens, and the web.
+      </p>
+      <p class="qr-intro">
+        <a class="cta-button" href="make.html"><i class="bi bi-qr-code"></i> Make your own QR code</a>
       </p>
       <div class="qr-grid">${cards}
       </div>

@@ -22,6 +22,10 @@ The build writes, all inside the site so they deploy with it:
 
 `qr` is reserved and can't be used as a slug.
 
+## Anyone can make their own
+
+Send people to **freemocap.org/go/qr/make.html**. They paste a link and download the same style of code (skelly in the middle, the address printed underneath) as an SVG or PNG. It runs entirely in their browser, so nothing to install. It's hand-written in `httpdocs/dist/go/qr/make.html`; if you change the look in `build.mjs`, change the matching constants there too. Those codes open the link directly, not a `/go` short link.
+
 Every code has its destination URL printed underneath (without `https://`), sized to span exactly the width of the code, and the b&w skelly (`logo-bw.png`) in a white circle in the center. The codes use the highest error correction level (H), so the logo doesn't hurt scanning. Swap `logo-bw.png` to change the logo; keep it black on transparent.
 
 ## Rules of thumb
