@@ -143,6 +143,8 @@ section[id] {
 }
 
 .site-switcher-chevron {
+  /* Tucked up to the name rather than a full .logo gap away. */
+  margin-left: -0.35rem;
   font-size: 0.6rem;
   color: var(--text-secondary);
   transition: transform 0.2s ease;
@@ -3224,7 +3226,7 @@ details[open] > .dl-toggle .dl-arrow {
     mask-size: 1.15rem;
   }
 
-  .header-content > .logo {
+  .header-content > .site-switcher {
     flex-shrink: 0;
   }
 
@@ -3592,5 +3594,77 @@ details[open] > .dl-toggle .dl-arrow {
   
   .showcase-video-grid {
     grid-template-columns: 1fr;
+  }
+}
+/* "The FreeMoCap Project" next to the logo: always one line. Where the
+   header gets tight it shrinks with the screen width, down to 1rem (body
+   text size), and below that only the logo shows. The sizes are measured
+   against the header's real contents.
+
+   - Phones and tablets (top bar with Services, Download, heart, menu):
+     full size from 590px, shrinks to 1rem at 544px, logo only below that.
+   - Small laptops (full desktop menu, 901-1199px): menu items stay on one
+     line and sit a little closer together; the name is full size from
+     1138px, shrinks to 1rem at 1090px, and below that only the logo shows.
+   The logo group always keeps 1rem clear of what follows it, ▾ included.
+   - The open phone menu's header: shrinks a little on narrow phones, down to
+     0.875rem, and shows just the logo below 360px. */
+.site-switcher .logo-text {
+  white-space: nowrap;
+}
+
+/* Breathing room between the logo group (name and ▾ included) and whatever
+   comes next in the header, at every width. */
+.header-content > .site-switcher {
+  flex-shrink: 0;
+  margin-right: 1rem;
+}
+
+@media (max-width: 900px) {
+  .site-switcher .logo-text {
+    font-size: clamp(1rem, 8.75vw - 31.5px, 1.25rem);
+  }
+
+  .mobile-menu-logo .logo-text {
+    font-size: clamp(0.875rem, 7.2vw - 12px, 0.95rem);
+  }
+}
+
+@media (max-width: 543px) {
+  .site-switcher .logo-text {
+    display: none;
+  }
+}
+
+@media (max-width: 359px) {
+  .mobile-menu-logo .logo-text {
+    display: none;
+  }
+}
+
+@media (min-width: 901px) {
+  .nav-links .nav-link {
+    white-space: nowrap;
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1199px) {
+  .nav-links {
+    gap: 0.8rem;
+  }
+
+  .nav-links .nav-cta-group .cta-button {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .site-switcher .logo-text {
+    font-size: clamp(1rem, 8vw - 71px, 1.25rem);
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1089px) {
+  .site-switcher .logo-text {
+    display: none;
   }
 }
