@@ -38,13 +38,28 @@
       </div>
     </div>
 
+    <!-- Newsletter (Buttondown). The form posts straight to Buttondown, which
+         sends the confirmation email; nothing is stored on this site. The
+         newsletter name in the action URL must match the Buttondown account. -->
+    <form class="footer-newsletter" action="https://buttondown.com/api/emails/embed-subscribe/freemocap" method="post" target="_blank" data-umami-event="newsletter_signup" data-umami-event-from="freemocap.org">
+      <label for="footer-newsletter-email" class="footer-newsletter-label">
+        <span class="footer-column-title">Newsletter</span>
+        <span class="footer-newsletter-blurb">News, releases, and new blog posts, a few times a year.</span>
+      </label>
+      <div class="footer-newsletter-row">
+        <input type="email" name="email" id="footer-newsletter-email" class="footer-newsletter-input" placeholder="you@example.com" autocomplete="email" required>
+        <input type="hidden" name="tag" value="freemocap.org">
+        <button type="submit" class="footer-newsletter-button">Subscribe</button>
+      </div>
+    </form>
+
     <div class="footer-content">
       <div class="footer-links">
         <div class="footer-column">
           <h3 class="footer-column-title">Get Started</h3>
           <a href="/download" class="footer-link">Download</a>
           <a href="services.html" class="footer-link">Services</a>
-          <a href="https://shop.freemocap.org/" target="_blank" rel="noopener" class="footer-link">Shop <i class="bi bi-arrow-up-right"></i></a>
+          <a href="https://shop.freemocap.org/?utm_source=freemocap.org&amp;utm_medium=footer" target="_blank" rel="noopener" class="footer-link" data-umami-event="shop_click" data-umami-event-from="footer">Shop <i class="bi bi-arrow-up-right"></i></a>
         </div>
 
         <div class="footer-column">

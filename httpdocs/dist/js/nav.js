@@ -9,6 +9,22 @@
  *   - Wires up mobile-menu toggle and dropdown behaviour
  *   - Adds the scroll shadow on the header
  */
+// ── Umami analytics ──────────────────────────────────────
+// Cookieless visit statistics (https://umami.is), shared with the docs site
+// and the shop. The website id is public. Leave it empty to turn Umami off.
+// data-domains keeps local previews out of the live numbers. Links marked
+// data-umami-event="..." are counted as clicks by Umami itself.
+(function loadUmami() {
+  var UMAMI_WEBSITE_ID = '';
+  if (!UMAMI_WEBSITE_ID || document.querySelector('script[data-website-id]')) return;
+  var s = document.createElement('script');
+  s.defer = true;
+  s.src = 'https://cloud.umami.is/script.js';
+  s.setAttribute('data-website-id', UMAMI_WEBSITE_ID);
+  s.setAttribute('data-domains', 'freemocap.org,www.freemocap.org');
+  document.head.appendChild(s);
+})();
+
 (async function initNav() {
   // ── helpers ──────────────────────────────────────────────
   const path = window.location.pathname;

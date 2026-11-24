@@ -964,6 +964,70 @@ section[id] {
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+/* Newsletter sign-up between the social row and the link columns. */
+.footer-newsletter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-newsletter-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin: 0;
+}
+
+.footer-newsletter-blurb {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.footer-newsletter-row {
+  display: flex;
+  gap: 0.5rem;
+  flex: 0 1 26rem;
+}
+
+.footer-newsletter-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid var(--divider);
+  border-radius: 6px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 0.95rem;
+}
+
+.footer-newsletter-input:focus-visible,
+.footer-newsletter-button:focus-visible {
+  outline: 2px solid var(--accent-teal);
+  outline-offset: 2px;
+}
+
+.footer-newsletter-button {
+  padding: 0.55rem 1.1rem;
+  border: none;
+  border-radius: 6px;
+  background: var(--accent-green-fill);
+  color: #ffffff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.footer-newsletter-button:hover {
+  background: var(--accent-green-fill-hover);
+}
+
 .footer-content {
   display: flex;
   justify-content: center;
@@ -3186,6 +3250,16 @@ details[open] > .dl-toggle .dl-arrow {
   .footer-content {
     flex-direction: column;
     text-align: center;
+  }
+
+  .footer-newsletter {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .footer-newsletter-row {
+    flex-basis: auto;
   }
 
   .footer-links {
