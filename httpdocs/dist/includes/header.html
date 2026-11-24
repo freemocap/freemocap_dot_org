@@ -1,10 +1,22 @@
 <header class="header">
   <div class="container">
     <div class="header-content">
-      <a href="/" class="logo">
-        <img src="./assets/logos/fmc-logo-3-4-22.png" alt="FreeMoCap Logo" class="logo-img">
-        <span class="logo-text">The FreeMoCap Project</span>
-      </a>
+      <!-- Site switcher: clicking the logo goes home, as before. On desktop,
+           hovering it (or tabbing to it) opens a menu of the three FreeMoCap
+           sites. On phones the first tap opens the mobile menu instead, and
+           a tap while that menu is open goes home (see js/nav.js). -->
+      <div class="site-switcher">
+        <a href="/" class="logo" aria-haspopup="true">
+          <img src="./assets/logos/fmc-logo-3-4-22.png" alt="FreeMoCap Logo" class="logo-img">
+          <span class="logo-text">The FreeMoCap Project</span>
+          <i class="bi bi-chevron-down site-switcher-chevron" aria-hidden="true"></i>
+        </a>
+        <div class="dropdown-menu site-switcher-menu" aria-label="FreeMoCap sites">
+          <a href="/" class="dropdown-item">Home</a>
+          <a href="https://docs.freemocap.org/" class="dropdown-item" data-umami-event="site_switch" data-umami-event-target="docs">Skelly Docs <i class="bi bi-arrow-up-right"></i></a>
+          <a href="https://shop.freemocap.org/?utm_source=freemocap.org&amp;utm_medium=site-switcher" class="dropdown-item" data-umami-event="site_switch" data-umami-event-target="shop">Skelly Shop <i class="bi bi-arrow-up-right"></i></a>
+        </div>
+      </div>
 
       <div class="nav-cta-group">
         <a href="services.html" class="cta-button" data-nav="services">Services</a>
@@ -22,6 +34,11 @@
       </div>
 
       <nav class="nav-links">
+        <div class="mobile-site-links" aria-label="FreeMoCap sites">
+          <a href="/" class="mobile-site-link">Home</a>
+          <a href="https://docs.freemocap.org/" class="mobile-site-link" data-umami-event="site_switch" data-umami-event-target="docs">Skelly Docs <i class="bi bi-arrow-up-right"></i></a>
+          <a href="https://shop.freemocap.org/?utm_source=freemocap.org&amp;utm_medium=site-switcher" class="mobile-site-link" data-umami-event="site_switch" data-umami-event-target="shop">Skelly Shop <i class="bi bi-arrow-up-right"></i></a>
+        </div>
         <div class="nav-dropdown">
           <a href="/" class="nav-link" data-nav="home">Home <i class="bi bi-chevron-down"></i></a>
           <div class="dropdown-menu">

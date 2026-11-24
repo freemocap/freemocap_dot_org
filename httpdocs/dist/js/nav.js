@@ -169,6 +169,18 @@
       });
     });
 
+    // Phones: the first tap on the logo opens the mobile menu (with the
+    // three sites at its top); a tap while the menu is open goes home.
+    const logo = document.querySelector('.site-switcher > .logo');
+    if (logo) {
+      logo.addEventListener('click', function (e) {
+        if (window.innerWidth <= 900 && !navLinks.classList.contains('active')) {
+          e.preventDefault();
+          toggle.click();
+        }
+      });
+    }
+
     // Close mobile menu when clicking a non-dropdown link
     navLinks.querySelectorAll('a:not(.nav-dropdown > .nav-link)').forEach(link => {
       link.addEventListener('click', () => {

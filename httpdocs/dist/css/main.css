@@ -127,6 +127,47 @@ section[id] {
   align-items: center;
 }
 
+/* Site switcher: the logo plus a hover menu of the three FreeMoCap sites. */
+.site-switcher {
+  position: relative;
+}
+
+/* Bridge so the menu stays open while the pointer crosses the gap. */
+.site-switcher::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 0.5rem;
+}
+
+.site-switcher-chevron {
+  font-size: 0.6rem;
+  color: var(--text-secondary);
+  transition: transform 0.2s ease;
+}
+
+.site-switcher-menu {
+  left: 0;
+  transform: none;
+}
+
+.site-switcher:hover > .site-switcher-menu,
+.site-switcher:focus-within > .site-switcher-menu {
+  display: block;
+}
+
+.site-switcher:hover .site-switcher-chevron,
+.site-switcher:focus-within .site-switcher-chevron {
+  transform: rotate(180deg);
+}
+
+/* The three sites at the top of the mobile menu; hidden on desktop. */
+.mobile-site-links {
+  display: none;
+}
+
 .logo {
   display: flex;
   align-items: center;
@@ -3018,6 +3059,37 @@ details[open] > .dl-toggle .dl-arrow {
   
   .nav-links.active {
     display: flex;
+  }
+
+  /* Phones: no hover menu or chevron on the logo; the sites are listed at
+     the top of the mobile menu instead. */
+  .site-switcher-chevron,
+  .site-switcher:hover > .site-switcher-menu,
+  .site-switcher:focus-within > .site-switcher-menu {
+    display: none;
+  }
+
+  .mobile-site-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    width: 100%;
+    padding: 0.25rem 1rem 0.9rem;
+    margin-bottom: 0.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .mobile-site-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .mobile-site-link .bi-arrow-up-right {
+    font-size: 0.7rem;
+    opacity: 0.6;
   }
   
   .nav-link {
