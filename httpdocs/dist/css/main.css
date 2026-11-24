@@ -3069,6 +3069,11 @@ details[open] > .dl-toggle .dl-arrow {
     display: none;
   }
 
+  /* The shop is already in the site links at the top of the mobile menu. */
+  .nav-links .nav-link-desktop-only {
+    display: none;
+  }
+
   .mobile-site-links {
     display: flex;
     justify-content: center;
