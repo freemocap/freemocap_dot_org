@@ -383,7 +383,7 @@ section[id] {
   display: none;
 }
 
-/* SfN '26 news banner (homepage, between the nav and the hero). The link
+/* What's New banner (homepage, between the nav and the hero). The link
    tiles are deliberately theme-invariant: white with a dark gray border
    and sharp corners in both dark and light mode. */
 .news-banner {
@@ -407,9 +407,14 @@ section[id] {
 }
 
 .news-banner-links {
+  --news-banner-gap: 0.75rem;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.75rem;
+  /* Each tile is a third of the container wide (the width it had in the
+     three-tile layout), however many tiles there are, and the row is
+     centered. Adding a third tile fills the row again. */
+  grid-template-columns: repeat(auto-fit, calc((100% - 2 * var(--news-banner-gap)) / 3));
+  justify-content: center;
+  gap: var(--news-banner-gap);
 }
 
 .news-banner-link {
