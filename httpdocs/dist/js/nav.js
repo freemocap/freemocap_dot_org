@@ -27,6 +27,48 @@
   document.head.appendChild(s);
 })();
 
+// ── Visit statistics for the FreeMoCap admin page ───────
+// Each page view, and each click on a link marked data-umami-event="...",
+// also goes to the shop's own event log (shop.freemocap.org/api/events), so
+// /admin/analytics on the shop can show this site beside the shop and docs.
+// No cookies and nothing stored in the browser; see the privacy page.
+(function trackVisits() {
+  var ENDPOINT = 'https://shop.freemocap.org/api/events';
+  var host = location.hostname;
+  if (host !== 'freemocap.org' && host !== 'www.freemocap.org' && host !== 'freemocap.localhost') return;
+  function send(name, data) {
+    var body = JSON.stringify({
+      name: name,
+      path: location.pathname + location.search,
+      referrer: document.referrer || undefined,
+      data: data
+    });
+    try {
+      if (navigator.sendBeacon && navigator.sendBeacon(ENDPOINT, body)) return;
+    } catch (e) { /* fall through */ }
+    try {
+      fetch(ENDPOINT, { method: 'POST', body: body, mode: 'no-cors', keepalive: true }).catch(function () {});
+    } catch (e) { /* never break the page */ }
+  }
+  send('pageview');
+  document.addEventListener('click', function (e) {
+    var el = e.target && e.target.closest && e.target.closest('[data-umami-event]');
+    if (!el || el.tagName === 'FORM') return;
+    var data = { label: el.getAttribute('data-umami-event') };
+    for (var i = 0; i < el.attributes.length; i++) {
+      var m = /^data-umami-event-(.+)$/.exec(el.attributes[i].name);
+      if (m) data[m[1]] = el.attributes[i].value;
+    }
+    send('outbound_click', data);
+  }, true);
+  document.addEventListener('submit', function (e) {
+    var form = e.target;
+    if (form && form.getAttribute && form.getAttribute('data-umami-event')) {
+      send('outbound_click', { label: form.getAttribute('data-umami-event') });
+    }
+  }, true);
+})();
+
 (async function initNav() {
   // ── helpers ──────────────────────────────────────────────
   const path = window.location.pathname;
