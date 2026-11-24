@@ -142,6 +142,7 @@
   if (toggle && navLinks) {
     toggle.addEventListener('click', function () {
       navLinks.classList.toggle('active');
+      document.body.classList.toggle('nav-open', navLinks.classList.contains('active'));
       const icon = this.querySelector('i');
       if (navLinks.classList.contains('active')) {
         icon.classList.remove('bi-list');
@@ -169,10 +170,21 @@
       });
     });
 
+    // The open menu closes from its own ✕, by tapping the dimmed page beside
+    // it, or with Escape.
+    function closeMenu() {
+      if (navLinks.classList.contains('active')) toggle.click();
+      document.querySelectorAll('.nav-dropdown.open').forEach(d => d.classList.remove('open'));
+    }
+    document.querySelector('.mobile-menu-close')?.addEventListener('click', closeMenu);
+    document.querySelector('.nav-backdrop')?.addEventListener('click', closeMenu);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+
     // Close mobile menu when clicking a non-dropdown link
     navLinks.querySelectorAll('a:not(.nav-dropdown > .nav-link)').forEach(link => {
       link.addEventListener('click', () => {
         navLinks.classList.remove('active');
+        document.body.classList.remove('nav-open');
         document.querySelectorAll('.nav-dropdown.open').forEach(d => d.classList.remove('open'));
         const icon = toggle.querySelector('i');
         icon.classList.remove('bi-x');

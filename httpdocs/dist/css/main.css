@@ -415,6 +415,13 @@ section[id] {
   color: var(--accent-teal);
 }
 
+/* The open phone menu's header (logo, dark/light toggle, close) and the dim
+   layer behind it: phones only. */
+.mobile-menu-header,
+.nav-backdrop {
+  display: none;
+}
+
 /* Persistent header copy is mobile-only, the nav-links copy handles desktop. */
 .header-content > .nav-cta-group {
   display: none;
@@ -3043,22 +3050,97 @@ details[open] > .dl-toggle .dl-arrow {
     justify-content: space-between;
   }
   
+  /* The menu is a panel that slides in from the right over the page, like
+     the docs site's, with its own header row (.mobile-menu-header). */
   .nav-links {
     display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
+    position: fixed;
+    top: 0;
     right: 0;
+    bottom: 0;
+    width: min(83vw, 22rem);
     background-color: var(--bg-nav);
     flex-direction: column;
-    padding: 1rem;
+    align-items: stretch;
+    padding: 0 0 1.5rem;
     gap: 0;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    overflow-y: auto;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.35);
+    z-index: 1101;
   }
-  
+
   .nav-links.active {
     display: flex;
+    animation: nav-slide-in 0.2s ease-out;
+  }
+
+  @keyframes nav-slide-in {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+  }
+
+  .nav-links.active ~ .nav-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1100;
+  }
+
+  body.nav-open {
+    overflow: hidden;
+  }
+
+  .mobile-menu-header {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    min-height: 3.5rem;
+    padding: 0 0.5rem 0 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .mobile-menu-logo {
+    gap: 0.5rem;
+    margin-right: auto;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .mobile-menu-logo .logo-img {
+    height: 26px;
+  }
+
+  /* Shown here even on the narrowest phones, where the top bar hides it. */
+  .mobile-menu-logo .logo-text {
+    display: inline;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .mobile-menu-header .theme-toggle,
+  .mobile-menu-close {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .mobile-menu-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    cursor: pointer;
+  }
+
+  .mobile-menu-close:hover {
+    color: var(--accent-teal);
   }
 
   /* Phones: no hover menu or chevron on the logo; the sites are listed at
@@ -3076,12 +3158,10 @@ details[open] > .dl-toggle .dl-arrow {
 
   .mobile-site-links {
     display: flex;
-    justify-content: center;
     flex-wrap: wrap;
-    gap: 0.5rem 1.25rem;
+    gap: 0.4rem 1.1rem;
     width: 100%;
-    padding: 0.25rem 1rem 0.9rem;
-    margin-bottom: 0.25rem;
+    padding: 0.75rem 1rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 
@@ -3101,8 +3181,8 @@ details[open] > .dl-toggle .dl-arrow {
     display: flex;
     align-items: center;
     gap: 0.3rem;
-    min-height: 3.75rem;
-    padding: 0.75rem 1rem;
+    min-height: 2.75rem;
+    padding: 0.4rem 1rem;
     width: 100%;
     text-align: left;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -3126,16 +3206,15 @@ details[open] > .dl-toggle .dl-arrow {
     display: none;
   }
 
-  /* Mobile cluster: heart and theme toggle get 2.25rem tap boxes with the
-     icon centered inside (the heart via a fixed mask-size), so the icons
-     sit apart visually and each has a comfortable touch target. */
+  /* Mobile cluster: the heart gets a 2.25rem tap box with the icon centered
+     inside (via a fixed mask-size), beside the menu button. The dark/light
+     toggle lives in the open menu's header instead. */
   .header-content > .nav-toggle-cluster {
     gap: 0.35rem;
     margin-left: 0.5rem;
   }
 
-  .nav-toggle-cluster > .nav-heart,
-  .nav-toggle-cluster > .theme-toggle {
+  .nav-toggle-cluster > .nav-heart {
     width: 2.25rem;
     height: 2.25rem;
   }
@@ -3175,20 +3254,27 @@ details[open] > .dl-toggle .dl-arrow {
   .nav-dropdown > .nav-link {
     justify-content: space-between;
     width: 100%;
-    padding: 0.75rem 1rem;
+    padding: 0.4rem 0.75rem 0.4rem 1rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
 
-  .nav-dropdown > .nav-link .bi-chevron-down {
+  /* Like the docs menu: points right when closed, down when open. */
+  .nav-dropdown > .nav-link .bi-chevron-down,
+  .nav-dropdown:hover > .nav-link .bi-chevron-down {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 2rem;
+    height: 2rem;
     background-color: rgba(255, 255, 255, 0.08);
-    border-radius: 8px;
-    font-size: 1rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
     flex-shrink: 0;
+    transform: rotate(-90deg);
+  }
+
+  .nav-dropdown.open > .nav-link .bi-chevron-down {
+    transform: none;
   }
 
   .nav-dropdown::after {
@@ -3220,10 +3306,10 @@ details[open] > .dl-toggle .dl-arrow {
   }
 
   .dropdown-item {
-    justify-content: center;
-    padding: 0.6rem 1rem;
-    font-size: 0.82rem;
-    color: var(--text-muted);
+    justify-content: flex-start;
+    padding: 0.5rem 1rem 0.5rem 2rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
     border-bottom: 1px solid rgba(255, 255, 255, 0.03);
   }
 }

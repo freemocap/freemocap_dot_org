@@ -25,15 +25,26 @@
 
       <div class="nav-toggle-cluster">
         <a href="about-us.html#donate" class="nav-heart" aria-label="Donate" title="Donate"></a>
-        <button class="theme-toggle" aria-label="Switch to light mode" title="Switch to light mode">
-          <i class="bi bi-moon-stars"></i>
-        </button>
-        <button class="mobile-menu-toggle" aria-label="Toggle menu">
+        <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-controls="site-nav">
           <i class="bi bi-list"></i>
         </button>
       </div>
 
-      <nav class="nav-links">
+      <nav class="nav-links" id="site-nav">
+        <!-- Phones only: the open menu's own header, like the docs site's:
+             logo and site name (home), the dark/light toggle, and close. -->
+        <div class="mobile-menu-header">
+          <a href="/" class="logo mobile-menu-logo">
+            <img src="./assets/logos/fmc-logo-3-4-22.png" alt="" class="logo-img">
+            <span class="logo-text">The FreeMoCap Project</span>
+          </a>
+          <button class="theme-toggle" aria-label="Switch to light mode" title="Switch to light mode">
+            <i class="bi bi-moon-stars"></i>
+          </button>
+          <button class="mobile-menu-close" aria-label="Close menu">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
         <div class="mobile-site-links" aria-label="FreeMoCap sites">
           <a href="/" class="mobile-site-link">Home</a>
           <a href="https://docs.freemocap.org/" class="mobile-site-link" data-umami-event="site_switch" data-umami-event-target="docs">Skelly Docs <i class="bi bi-arrow-up-right"></i></a>
@@ -89,6 +100,7 @@
           <i class="bi bi-moon-stars"></i>
         </button>
       </nav>
+      <div class="nav-backdrop" aria-hidden="true"></div>
     </div>
   </div>
 </header>
