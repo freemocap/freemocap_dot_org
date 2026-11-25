@@ -1,10 +1,22 @@
 <header class="header">
   <div class="container">
     <div class="header-content">
-      <a href="/" class="logo">
-        <img src="./assets/logos/fmc-logo-3-4-22.png" alt="FreeMoCap Logo" class="logo-img">
-        <span class="logo-text">The FreeMoCap Project</span>
-      </a>
+      <!-- Site switcher: clicking the logo goes home, as before. On desktop,
+           hovering it (or tabbing to it) opens a menu of the three FreeMoCap
+           sites. On phones the logo just goes home; the three sites are at
+           the top of the mobile menu (.mobile-site-links below). -->
+      <div class="site-switcher">
+        <a href="/" class="logo" aria-haspopup="true">
+          <img src="./assets/logos/fmc-logo-3-4-22.png" alt="FreeMoCap Logo" class="logo-img">
+          <span class="logo-text">The FreeMoCap Project</span>
+          <i class="bi bi-chevron-down site-switcher-chevron" aria-hidden="true"></i>
+        </a>
+        <div class="dropdown-menu site-switcher-menu" aria-label="FreeMoCap sites">
+          <a href="/" class="dropdown-item">Home</a>
+          <a href="https://docs.freemocap.org/" class="dropdown-item" data-umami-event="site_switch" data-umami-event-target="docs">Skelly Docs <i class="bi bi-arrow-up-right"></i></a>
+          <a href="https://shop.freemocap.org/?utm_source=freemocap.org&amp;utm_medium=site-switcher" class="dropdown-item" data-umami-event="site_switch" data-umami-event-target="shop">Skelly Shop <i class="bi bi-arrow-up-right"></i></a>
+        </div>
+      </div>
 
       <div class="nav-cta-group">
         <a href="services.html" class="cta-button" data-nav="services">Services</a>
@@ -13,15 +25,31 @@
 
       <div class="nav-toggle-cluster">
         <a href="about-us.html#donate" class="nav-heart" aria-label="Donate" title="Donate"></a>
-        <button class="theme-toggle" aria-label="Switch to light mode" title="Switch to light mode">
-          <i class="bi bi-moon-stars"></i>
-        </button>
-        <button class="mobile-menu-toggle" aria-label="Toggle menu">
+        <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-controls="site-nav">
           <i class="bi bi-list"></i>
         </button>
       </div>
 
-      <nav class="nav-links">
+      <nav class="nav-links" id="site-nav">
+        <!-- Phones only: the open menu's own header, like the docs site's:
+             logo and site name (home), the dark/light toggle, and close. -->
+        <div class="mobile-menu-header">
+          <a href="/" class="logo mobile-menu-logo">
+            <img src="./assets/logos/fmc-logo-3-4-22.png" alt="" class="logo-img">
+            <span class="logo-text">The FreeMoCap Project</span>
+          </a>
+          <button class="theme-toggle" aria-label="Switch to light mode" title="Switch to light mode">
+            <i class="bi bi-moon-stars"></i>
+          </button>
+          <button class="mobile-menu-close" aria-label="Close menu">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+        <div class="mobile-site-links" aria-label="FreeMoCap sites">
+          <a href="/" class="mobile-site-link">Home</a>
+          <a href="https://docs.freemocap.org/" class="mobile-site-link" data-umami-event="site_switch" data-umami-event-target="docs">Skelly Docs <i class="bi bi-arrow-up-right"></i></a>
+          <a href="https://shop.freemocap.org/?utm_source=freemocap.org&amp;utm_medium=site-switcher" class="mobile-site-link" data-umami-event="site_switch" data-umami-event-target="shop">Skelly Shop <i class="bi bi-arrow-up-right"></i></a>
+        </div>
         <div class="nav-dropdown">
           <a href="/" class="nav-link" data-nav="home">Home <i class="bi bi-chevron-down"></i></a>
           <div class="dropdown-menu">
@@ -58,10 +86,11 @@
             <a href="https://docs.freemocap.org/documentation" target="_blank" rel="noopener" class="dropdown-item">Documentation <i class="bi bi-arrow-up-right"></i></a>
             <a href="https://docs.freemocap.org/documentation/installation.html" target="_blank" rel="noopener" class="dropdown-item">Installation Guide <i class="bi bi-arrow-up-right"></i></a>
             <a href="https://github.com/freemocap/freemocap" target="_blank" rel="noopener" class="dropdown-item">Code (GitHub) <i class="bi bi-arrow-up-right"></i></a>
+            <a href="https://docs.freemocap.org/blog/" target="_blank" rel="noopener" class="dropdown-item" data-umami-event="nav_click" data-umami-event-target="blog">Blog <i class="bi bi-arrow-up-right"></i></a>
           </div>
         </div>
         <a href="data.html" class="nav-link" data-nav="data"><i class="bi bi-bar-chart"></i> User Data</a>
-        <a href="https://shop.freemocap.org/" target="_blank" class="nav-link">Shop <i class="bi bi-arrow-up-right"></i></a>
+        <a href="https://shop.freemocap.org/?utm_source=freemocap.org&amp;utm_medium=nav" target="_blank" class="nav-link nav-link-desktop-only" data-umami-event="shop_click" data-umami-event-from="nav">Shop <i class="bi bi-arrow-up-right"></i></a>
         <div class="nav-cta-group">
           <a href="services.html" class="cta-button" data-nav="services">Services</a>
           <a href="/download" class="cta-button" data-nav="download">Download</a>
@@ -71,6 +100,7 @@
           <i class="bi bi-moon-stars"></i>
         </button>
       </nav>
+      <div class="nav-backdrop" aria-hidden="true"></div>
     </div>
   </div>
 </header>

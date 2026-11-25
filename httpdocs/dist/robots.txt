@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+# Short links and their QR codes (freemocap.org/go/...) only redirect elsewhere.
+Disallow: /go/
 
 Sitemap: https://freemocap.org/sitemap.xml

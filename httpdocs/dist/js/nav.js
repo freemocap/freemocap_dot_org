@@ -9,6 +9,66 @@
  *   - Wires up mobile-menu toggle and dropdown behaviour
  *   - Adds the scroll shadow on the header
  */
+// ── Umami analytics ──────────────────────────────────────
+// Cookieless visit statistics (https://umami.is). One Umami website ("FMC
+// Umami TLD", Hobby plan: 1 website, 100K events/month shared by all three)
+// covers freemocap.org, docs.freemocap.org and shop.freemocap.org; its
+// dashboard filters by hostname. The id is public. Empty it to turn Umami off.
+// data-domains keeps local previews out of the live numbers. Links marked
+// data-umami-event="..." are counted as clicks by Umami itself.
+(function loadUmami() {
+  var UMAMI_WEBSITE_ID = 'da6d04c1-fb75-44f9-8891-368744806237';
+  if (!UMAMI_WEBSITE_ID || document.querySelector('script[data-website-id]')) return;
+  var s = document.createElement('script');
+  s.defer = true;
+  s.src = 'https://cloud.umami.is/script.js';
+  s.setAttribute('data-website-id', UMAMI_WEBSITE_ID);
+  s.setAttribute('data-domains', 'freemocap.org,www.freemocap.org');
+  document.head.appendChild(s);
+})();
+
+// ── Visit statistics for the FreeMoCap admin page ───────
+// Each page view, and each click on a link marked data-umami-event="...",
+// also goes to the shop's own event log (shop.freemocap.org/api/events), so
+// /admin/analytics on the shop can show this site beside the shop and docs.
+// No cookies and nothing stored in the browser; see the privacy page.
+(function trackVisits() {
+  var ENDPOINT = 'https://shop.freemocap.org/api/events';
+  var host = location.hostname;
+  if (host !== 'freemocap.org' && host !== 'www.freemocap.org' && host !== 'freemocap.localhost') return;
+  function send(name, data) {
+    var body = JSON.stringify({
+      name: name,
+      path: location.pathname + location.search,
+      referrer: document.referrer || undefined,
+      data: data
+    });
+    try {
+      if (navigator.sendBeacon && navigator.sendBeacon(ENDPOINT, body)) return;
+    } catch (e) { /* fall through */ }
+    try {
+      fetch(ENDPOINT, { method: 'POST', body: body, mode: 'no-cors', keepalive: true }).catch(function () {});
+    } catch (e) { /* never break the page */ }
+  }
+  send('pageview');
+  document.addEventListener('click', function (e) {
+    var el = e.target && e.target.closest && e.target.closest('[data-umami-event]');
+    if (!el || el.tagName === 'FORM') return;
+    var data = { label: el.getAttribute('data-umami-event') };
+    for (var i = 0; i < el.attributes.length; i++) {
+      var m = /^data-umami-event-(.+)$/.exec(el.attributes[i].name);
+      if (m) data[m[1]] = el.attributes[i].value;
+    }
+    send('outbound_click', data);
+  }, true);
+  document.addEventListener('submit', function (e) {
+    var form = e.target;
+    if (form && form.getAttribute && form.getAttribute('data-umami-event')) {
+      send('outbound_click', { label: form.getAttribute('data-umami-event') });
+    }
+  }, true);
+})();
+
 (async function initNav() {
   // ── helpers ──────────────────────────────────────────────
   const path = window.location.pathname;
@@ -124,6 +184,7 @@
   if (toggle && navLinks) {
     toggle.addEventListener('click', function () {
       navLinks.classList.toggle('active');
+      document.body.classList.toggle('nav-open', navLinks.classList.contains('active'));
       const icon = this.querySelector('i');
       if (navLinks.classList.contains('active')) {
         icon.classList.remove('bi-list');
@@ -151,10 +212,21 @@
       });
     });
 
+    // The open menu closes from its own ✕, by tapping the dimmed page beside
+    // it, or with Escape.
+    function closeMenu() {
+      if (navLinks.classList.contains('active')) toggle.click();
+      document.querySelectorAll('.nav-dropdown.open').forEach(d => d.classList.remove('open'));
+    }
+    document.querySelector('.mobile-menu-close')?.addEventListener('click', closeMenu);
+    document.querySelector('.nav-backdrop')?.addEventListener('click', closeMenu);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+
     // Close mobile menu when clicking a non-dropdown link
     navLinks.querySelectorAll('a:not(.nav-dropdown > .nav-link)').forEach(link => {
       link.addEventListener('click', () => {
         navLinks.classList.remove('active');
+        document.body.classList.remove('nav-open');
         document.querySelectorAll('.nav-dropdown.open').forEach(d => d.classList.remove('open'));
         const icon = toggle.querySelector('i');
         icon.classList.remove('bi-x');
