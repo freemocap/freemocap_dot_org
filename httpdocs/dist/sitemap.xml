@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Every public page on freemocap.org, for Google Search Console and other
+     search engines. Add a page here when one is added to the site. The docs
+     (docs.freemocap.org) and the shop (shop.freemocap.org) publish their own
+     sitemaps. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://freemocap.org/</loc>
+  </url>
+  <url>
+    <loc>https://freemocap.org/download.html</loc>
   </url>
   <url>
     <loc>https://freemocap.org/about-us.html</loc>
@@ -17,5 +24,8 @@
   </url>
   <url>
     <loc>https://freemocap.org/data.html</loc>
+  </url>
+  <url>
+    <loc>https://freemocap.org/crypto-wallets.html</loc>
   </url>
 </urlset>
