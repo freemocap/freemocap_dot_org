@@ -131,6 +131,7 @@
   const activeMap = {
     'index.html':    'home',      // Home dropdown owns the index anchors
     'about-us.html': 'about-us',
+    'validation.html': 'about-us', // validation lives under About Us
     'services.html': 'services',
     'showcase.html': 'community', // showcase lives under Community
     'resources.html':'resources',
