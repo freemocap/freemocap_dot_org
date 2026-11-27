@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <script>if(localStorage.getItem('theme')==='light')document.documentElement.setAttribute('data-theme','light');</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="description" content="Research validating FreeMoCap against marker-based motion capture." />
+  <meta name="author" content="The FreeMoCap Project" />
+  <title>Validation | The FreeMoCap Project</title>
+
+  <!-- Open Graph / Social Media -->
+  <meta property="og:title" content="Validation | The FreeMoCap Project" />
+  <meta property="og:description" content="Research validating FreeMoCap against marker-based motion capture." />
+  <meta property="og:image" content="./assets/logos/fmc-logo-3-4-22.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://freemocap.org/validation.html" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Validation | The FreeMoCap Project" />
+  <meta name="twitter:description" content="Research validating FreeMoCap against marker-based motion capture." />
+  <meta name="twitter:image" content="./assets/logos/fmc-logo-3-4-22.png" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="./assets/favicons/favicon-black.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="./css/main.css">
+</head>
+
+<body>
+  <!-- Header (loaded by nav.js) -->
+  <div id="site-header"></div>
+
+  <section class="validation-section">
+    <div class="container validation-container">
+      <h1 class="section-title validation-title">Validation</h1>
+
+      <video class="validation-video" autoplay muted loop playsinline preload="metadata" poster="./assets/video/jon-running-poster.jpg" aria-label="Treadmill running captured with FreeMoCap">
+        <source src="./assets/video/jon-running.mp4" type="video/mp4">
+      </video>
+
+      <!-- Primary source: one wide bar -->
+      <a class="validation-feature" href="https://repository.library.northeastern.edu/files/neu:ms425z58z" target="_blank" rel="noopener">
+        <span class="validation-text">
+          <span class="validation-kicker">PhD dissertation · Northeastern University · 2026</span>
+          <span class="validation-feature-title">Open-source development and validation of a low-cost markerless system for quantitative motion analysis</span>
+          <span class="validation-meta">Aaron T. Cherian</span>
+        </span>
+        <i class="bi bi-arrow-right validation-arrow" aria-hidden="true"></i>
+      </a>
+
+      <!-- Further reading: compact, square-cornered rows -->
+      <ul class="validation-list">
+        <li>
+          <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5089509" target="_blank" rel="noopener">
+            <span class="validation-text">
+              <span class="validation-item-title">Validation of Free-to-Use, Markerless Motion Capture for Field Based Measurements of Sagittal Plane Kinematics</span>
+              <span class="validation-meta">Minogue, Napierala, Lowe &amp; Drazan · SSRN preprint</span>
+            </span>
+            <i class="bi bi-box-arrow-up-right validation-arrow" aria-hidden="true"></i>
+          </a>
+        </li>
+        <li>
+          <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0346606" target="_blank" rel="noopener">
+            <span class="validation-text">
+              <span class="validation-item-title">A low-cost markerless motion capture system to automate functional gait assessment: Feasibility study</span>
+              <span class="validation-meta">Darici, Cabak &amp; Wong · PLOS ONE · 2026</span>
+            </span>
+            <i class="bi bi-box-arrow-up-right validation-arrow" aria-hidden="true"></i>
+          </a>
+        </li>
+        <li>
+          <a href="https://docs.freemocap.org/concepts/accuracy-and-limits/" target="_blank" rel="noopener">
+            <span class="validation-text">
+              <span class="validation-item-title">Accuracy, validity, and limits</span>
+              <span class="validation-meta">FreeMoCap documentation</span>
+            </span>
+            <i class="bi bi-box-arrow-up-right validation-arrow" aria-hidden="true"></i>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/aaroncherian/freemocap_validation" target="_blank" rel="noopener">
+            <span class="validation-text">
+              <span class="validation-item-title">freemocap_validation repo</span>
+              <span class="validation-meta">Aaron Cherian · GitHub</span>
+            </span>
+            <i class="bi bi-box-arrow-up-right validation-arrow" aria-hidden="true"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Footer (loaded by nav.js) -->
+  <div id="site-footer"></div>
+
+  <!-- Shared nav loader -->
+  <script src="./js/nav.js"></script>
+</body>
+</html>
